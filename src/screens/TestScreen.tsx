@@ -28,7 +28,9 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   aiText: {
-    color: ManuscriptColors.copperBrown,
+    color: '#B87333',
+    fontSize: 28,
+    fontWeight: 'bold',
   },
   subtitle: {
     fontSize: 16,

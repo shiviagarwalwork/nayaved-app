@@ -378,7 +378,9 @@ const styles = StyleSheet.create({
     fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif',
   },
   titleAI: {
-    color: ManuscriptColors.copperBrown,
+    color: '#B87333',
+    fontSize: 36,
+    fontWeight: 'bold',
   },
   subtitle: {
     fontSize: 16,
