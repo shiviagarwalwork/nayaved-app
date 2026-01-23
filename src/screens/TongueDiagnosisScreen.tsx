@@ -1,3 +1,27 @@
+/**
+ * ============================================================
+ * Tongue Diagnosis Screen (Jihva Pariksha)
+ * ============================================================
+ *
+ * This screen implements the ancient Ayurvedic practice of
+ * tongue diagnosis using AI-powered image analysis.
+ *
+ * FEATURES:
+ * - Camera/gallery image capture for tongue photos
+ * - AI analysis via Claude API (when backend available)
+ * - Educational fallback when AI unavailable
+ * - Dosha indication with percentage scores
+ * - Personalized Ayurvedic recommendations
+ * - Results saved to AsyncStorage for "My Plan" screen
+ *
+ * ERROR HANDLING:
+ * - Gracefully falls back to educational guide on API errors
+ * - Only shows alert for usage limit errors (prompts upgrade)
+ * - Null checks prevent crashes from missing data fields
+ *
+ * @author NayaVed Team
+ */
+
 import React, { useState } from 'react';
 import {
   View,
@@ -18,11 +42,15 @@ import { analyzeTongue as aiAnalyzeTongue, isApiConfigured, TongueAnalysisResult
 
 export default function TongueDiagnosisScreen() {
   const navigation = useNavigation();
-  const [tongueImage, setTongueImage] = useState<string | null>(null);
-  const [showAnalysis, setShowAnalysis] = useState(false);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [aiResult, setAiResult] = useState<TongueAnalysisResult | null>(null);
-  const [useAI, setUseAI] = useState(false);
+
+  // ============================================================
+  // STATE MANAGEMENT
+  // ============================================================
+  const [tongueImage, setTongueImage] = useState<string | null>(null);  // Captured image URI
+  const [showAnalysis, setShowAnalysis] = useState(false);              // Show results section
+  const [isAnalyzing, setIsAnalyzing] = useState(false);                // Loading state
+  const [aiResult, setAiResult] = useState<TongueAnalysisResult | null>(null);  // AI analysis result
+  const [useAI, setUseAI] = useState(false);                            // Whether AI was used (vs educational fallback)
 
   const requestCameraPermission = async () => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
@@ -118,11 +146,21 @@ export default function TongueDiagnosisScreen() {
 
       setShowAnalysis(true);
     } catch (error: any) {
-      Alert.alert(
-        'Analysis Error',
-        error.message || 'Failed to analyze tongue. Showing educational guide instead.',
-        [{ text: 'OK' }]
-      );
+      console.log('Tongue analysis error:', error.message);
+
+      // Check if it's a usage limit error - show specific message
+      if (error.code === 'USAGE_LIMIT') {
+        Alert.alert(
+          'Scan Limit Reached',
+          'You\'ve used your free scans. Upgrade to Premium for unlimited AI-powered diagnostics!',
+          [{ text: 'OK' }]
+        );
+      } else {
+        // For network/parsing errors, silently fall back to educational guide
+        // Don't alarm the user with technical errors
+        console.log('Falling back to educational guide');
+      }
+
       setUseAI(false);
 
       // Save educational fallback data even on error
@@ -288,40 +326,46 @@ export default function TongueDiagnosisScreen() {
           </View>
 
           {/* Dosha Indication */}
-          <View style={[styles.doshaCard, { borderColor: getDoshaColor(aiResult.doshaIndication.dominant) }]}>
-            <Text style={styles.doshaTitle}>Dominant Dosha Indication</Text>
-            <View style={styles.doshaScoresRow}>
-              <View style={styles.doshaScore}>
-                <Text style={[styles.doshaName, { color: '#60A5FA' }]}>Vata</Text>
-                <Text style={styles.doshaPercent}>{aiResult.doshaIndication.vataScore}%</Text>
+          {aiResult.doshaIndication && (
+            <View style={[styles.doshaCard, { borderColor: getDoshaColor(aiResult.doshaIndication.dominant) }]}>
+              <Text style={styles.doshaTitle}>Dominant Dosha Indication</Text>
+              <View style={styles.doshaScoresRow}>
+                <View style={styles.doshaScore}>
+                  <Text style={[styles.doshaName, { color: '#60A5FA' }]}>Vata</Text>
+                  <Text style={styles.doshaPercent}>{aiResult.doshaIndication.vataScore || 0}%</Text>
+                </View>
+                <View style={styles.doshaScore}>
+                  <Text style={[styles.doshaName, { color: '#EF4444' }]}>Pitta</Text>
+                  <Text style={styles.doshaPercent}>{aiResult.doshaIndication.pittaScore || 0}%</Text>
+                </View>
+                <View style={styles.doshaScore}>
+                  <Text style={[styles.doshaName, { color: '#10B981' }]}>Kapha</Text>
+                  <Text style={styles.doshaPercent}>{aiResult.doshaIndication.kaphaScore || 0}%</Text>
+                </View>
               </View>
-              <View style={styles.doshaScore}>
-                <Text style={[styles.doshaName, { color: '#EF4444' }]}>Pitta</Text>
-                <Text style={styles.doshaPercent}>{aiResult.doshaIndication.pittaScore}%</Text>
-              </View>
-              <View style={styles.doshaScore}>
-                <Text style={[styles.doshaName, { color: '#10B981' }]}>Kapha</Text>
-                <Text style={styles.doshaPercent}>{aiResult.doshaIndication.kaphaScore}%</Text>
-              </View>
+              <Text style={[styles.dominantDosha, { color: getDoshaColor(aiResult.doshaIndication.dominant) }]}>
+                {aiResult.doshaIndication.dominant || 'Unknown'} Dominant
+              </Text>
             </View>
-            <Text style={[styles.dominantDosha, { color: getDoshaColor(aiResult.doshaIndication.dominant) }]}>
-              {aiResult.doshaIndication.dominant} Dominant
-            </Text>
-          </View>
+          )}
 
           {/* Coating Analysis */}
-          <View style={styles.analysisCard}>
-            <Text style={styles.analysisCategory}>Coating</Text>
-            <View style={styles.analysisDetail}>
-              <Text style={styles.detailLabel}>Color:</Text>
-              <Text style={styles.detailValue}>{aiResult.coating.color}</Text>
+          {aiResult.coating && (
+            <View style={styles.analysisCard}>
+              <Text style={styles.analysisCategory}>Coating</Text>
+              <View style={styles.analysisDetail}>
+                <Text style={styles.detailLabel}>Color:</Text>
+                <Text style={styles.detailValue}>{aiResult.coating.color || 'Not detected'}</Text>
+              </View>
+              <View style={styles.analysisDetail}>
+                <Text style={styles.detailLabel}>Thickness:</Text>
+                <Text style={styles.detailValue}>{aiResult.coating.thickness || 'Not detected'}</Text>
+              </View>
+              {aiResult.coating.description && (
+                <Text style={styles.detailDescription}>{aiResult.coating.description}</Text>
+              )}
             </View>
-            <View style={styles.analysisDetail}>
-              <Text style={styles.detailLabel}>Thickness:</Text>
-              <Text style={styles.detailValue}>{aiResult.coating.thickness}</Text>
-            </View>
-            <Text style={styles.detailDescription}>{aiResult.coating.description}</Text>
-          </View>
+          )}
 
           {/* Other observations */}
           <View style={styles.analysisCard}>
@@ -338,7 +382,7 @@ export default function TongueDiagnosisScreen() {
               <Text style={styles.detailLabel}>Moisture:</Text>
               <Text style={styles.detailValue}>{aiResult.moisture}</Text>
             </View>
-            {aiResult.cracks.length > 0 && (
+            {aiResult.cracks && aiResult.cracks.length > 0 && (
               <View style={styles.analysisDetail}>
                 <Text style={styles.detailLabel}>Cracks:</Text>
                 <Text style={styles.detailValue}>{aiResult.cracks.join(', ')}</Text>
@@ -347,7 +391,7 @@ export default function TongueDiagnosisScreen() {
           </View>
 
           {/* Health Indicators */}
-          {aiResult.healthIndicators.length > 0 && (
+          {aiResult.healthIndicators && aiResult.healthIndicators.length > 0 && (
             <View style={styles.analysisCard}>
               <Text style={styles.analysisCategory}>Health Indicators</Text>
               {aiResult.healthIndicators.map((indicator, idx) => (
@@ -360,21 +404,25 @@ export default function TongueDiagnosisScreen() {
           )}
 
           {/* Recommendations */}
-          <View style={styles.recommendationsCard}>
-            <Text style={styles.recommendationsTitle}>Recommendations</Text>
-            {aiResult.recommendations.map((rec, idx) => (
-              <View key={idx} style={styles.recommendationRow}>
-                <Feather name="check" size={14} color="#4CAF50" />
-                <Text style={styles.recommendationText}>{rec}</Text>
-              </View>
-            ))}
-          </View>
+          {aiResult.recommendations && aiResult.recommendations.length > 0 && (
+            <View style={styles.recommendationsCard}>
+              <Text style={styles.recommendationsTitle}>Recommendations</Text>
+              {aiResult.recommendations.map((rec, idx) => (
+                <View key={idx} style={styles.recommendationRow}>
+                  <Feather name="check" size={14} color="#4CAF50" />
+                  <Text style={styles.recommendationText}>{rec}</Text>
+                </View>
+              ))}
+            </View>
+          )}
 
           {/* Ayurvedic Interpretation */}
-          <View style={styles.interpretationCard}>
-            <Text style={styles.interpretationTitle}>Ayurvedic Interpretation</Text>
-            <Text style={styles.interpretationText}>{aiResult.ayurvedicInterpretation}</Text>
-          </View>
+          {aiResult.ayurvedicInterpretation && (
+            <View style={styles.interpretationCard}>
+              <Text style={styles.interpretationTitle}>Ayurvedic Interpretation</Text>
+              <Text style={styles.interpretationText}>{aiResult.ayurvedicInterpretation}</Text>
+            </View>
+          )}
 
           {/* Auto-saved indicator */}
           <View style={styles.autoSavedBadge}>

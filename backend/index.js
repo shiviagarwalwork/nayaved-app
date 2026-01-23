@@ -1,6 +1,26 @@
 /**
+ * ============================================================
  * NayaVed Backend API
- * Handles Claude API calls, user usage tracking, and subscription management
+ * ============================================================
+ *
+ * This Express.js server handles:
+ * - Claude AI API calls for Ayurvedic diagnostic analysis
+ * - User usage tracking (free tier limits)
+ * - Developer mode activation
+ * - Premium subscription verification (RevenueCat integration ready)
+ *
+ * Endpoints:
+ * - GET  /                     - Health check
+ * - GET  /api/user/status      - Get user subscription & usage status
+ * - POST /api/developer/activate - Activate developer mode with code
+ * - POST /api/analyze/tongue   - AI tongue diagnosis (Jihva Pariksha)
+ * - POST /api/analyze/skin     - AI skin analysis (Twak Pariksha)
+ * - POST /api/analyze/eyes     - AI eye analysis (Netra Pariksha)
+ * - POST /api/analyze/nails    - AI nail analysis (Nakha Pariksha)
+ * - POST /api/chat/consultation - AI Ayurvedic chat consultation
+ *
+ * @author NayaVed Team
+ * @version 1.0.0
  */
 
 require('dotenv').config();
@@ -10,34 +30,87 @@ const { v4: uuidv4 } = require('uuid');
 
 const app = express();
 app.use(cors());
-app.use(express.json({ limit: '10mb' })); // For base64 images
+app.use(express.json({ limit: '10mb' })); // Increased limit for base64 encoded images
 
-// Configuration
+// ============================================================
+// CONFIGURATION
+// ============================================================
+
 const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
 const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
 const DEVELOPER_CODES = (process.env.DEVELOPER_CODES || 'AYUVED_DEV_2024').split(',');
-const FREE_SCAN_LIMIT = parseInt(process.env.FREE_SCAN_LIMIT || '2');
-const FREE_CHAT_LIMIT = parseInt(process.env.FREE_CHAT_LIMIT || '10');
+const FREE_SCAN_LIMIT = parseInt(process.env.FREE_SCAN_LIMIT || '2');  // Free users get 2 AI scans
+const FREE_CHAT_LIMIT = parseInt(process.env.FREE_CHAT_LIMIT || '10'); // Free users get 10 chat messages
 
-// In-memory storage (replace with database in production)
-// For production, use Firebase, Supabase, MongoDB, etc.
-const userUsage = new Map();
-const premiumUsers = new Set();
-const developerUsers = new Set();
+// ============================================================
+// IN-MEMORY STORAGE
+// Note: For production, replace with Firebase, Supabase, or MongoDB
+// ============================================================
 
-// Helper: Clean JSON response from Claude (removes markdown code blocks)
+const userUsage = new Map();      // Track scan/chat counts per user
+const premiumUsers = new Set();   // Users with active subscriptions
+const developerUsers = new Set(); // Users with developer access (unlimited)
+
+// ============================================================
+// JSON PARSING HELPERS
+// Claude sometimes returns JSON wrapped in markdown code blocks
+// ============================================================
+
+/**
+ * Cleans Claude's response by removing markdown code blocks
+ * and extracting pure JSON content
+ *
+ * @param {string} response - Raw response from Claude API
+ * @returns {string} - Cleaned JSON string ready for parsing
+ */
 const cleanJsonResponse = (response) => {
   let cleaned = response.trim();
-  // Remove markdown code blocks
+
+  // Remove markdown code block markers (```json, ```JSON, or just ```)
   if (cleaned.startsWith('```json')) {
+    cleaned = cleaned.slice(7);
+  } else if (cleaned.startsWith('```JSON')) {
     cleaned = cleaned.slice(7);
   } else if (cleaned.startsWith('```')) {
     cleaned = cleaned.slice(3);
   }
+
   if (cleaned.endsWith('```')) {
     cleaned = cleaned.slice(0, -3);
   }
-  return cleaned.trim();
+
+  cleaned = cleaned.trim();
+
+  // If Claude added extra text before/after JSON, extract just the JSON object
+  const jsonStart = cleaned.indexOf('{');
+  const jsonEnd = cleaned.lastIndexOf('}');
+
+  if (jsonStart !== -1 && jsonEnd !== -1 && jsonEnd > jsonStart) {
+    cleaned = cleaned.substring(jsonStart, jsonEnd + 1);
+  }
+
+  return cleaned;
+};
+
+/**
+ * Safely parses JSON with detailed error logging for debugging
+ *
+ * @param {string} response - Raw response from Claude API
+ * @param {string} endpoint - API endpoint name for logging
+ * @returns {object} - Parsed JSON object
+ * @throws {Error} - If JSON parsing fails
+ */
+const safeJsonParse = (response, endpoint) => {
+  const cleaned = cleanJsonResponse(response);
+  try {
+    return JSON.parse(cleaned);
+  } catch (parseError) {
+    console.error(`JSON parse error at ${endpoint}:`);
+    console.error('Original response (first 500 chars):', response.substring(0, 500));
+    console.error('Cleaned response (first 500 chars):', cleaned.substring(0, 500));
+    console.error('Parse error:', parseError.message);
+    throw new Error(`Failed to parse AI response: ${parseError.message}`);
+  }
 };
 
 // Helper: Get or create user usage record
@@ -310,7 +383,33 @@ Only return valid JSON, no markdown or explanation.`;
     ];
 
     const response = await callClaudeAPI(messages, systemPrompt, 1500);
-    const analysis = JSON.parse(cleanJsonResponse(response));
+    console.log('Claude tongue response received, length:', response.length);
+
+    const analysis = safeJsonParse(response, '/api/analyze/tongue');
+
+    // Ensure cracks is an array
+    if (!Array.isArray(analysis.cracks)) {
+      analysis.cracks = analysis.cracks ? [analysis.cracks] : [];
+    }
+
+    // Ensure healthIndicators is an array
+    if (!Array.isArray(analysis.healthIndicators)) {
+      analysis.healthIndicators = analysis.healthIndicators ? [analysis.healthIndicators] : [];
+    }
+
+    // Ensure recommendations is an array
+    if (!Array.isArray(analysis.recommendations)) {
+      analysis.recommendations = analysis.recommendations ? [analysis.recommendations] : [];
+    }
+
+    // Ensure dosha scores are numbers
+    if (analysis.doshaIndication) {
+      analysis.doshaIndication.vataScore = Number(analysis.doshaIndication.vataScore) || 0;
+      analysis.doshaIndication.pittaScore = Number(analysis.doshaIndication.pittaScore) || 0;
+      analysis.doshaIndication.kaphaScore = Number(analysis.doshaIndication.kaphaScore) || 0;
+    }
+
+    console.log('Tongue analysis parsed successfully:', analysis.doshaIndication?.dominant);
 
     // Increment usage only on success
     incrementUsage(userId, 'scan');
@@ -324,7 +423,7 @@ Only return valid JSON, no markdown or explanation.`;
       } : null,
     });
   } catch (error) {
-    console.error('Tongue analysis error:', error);
+    console.error('Tongue analysis error:', error.message);
     res.status(500).json({ error: error.message || 'Analysis failed' });
   }
 });
@@ -387,8 +486,20 @@ Only return valid JSON, no markdown or explanation.`;
     ];
 
     const response = await callClaudeAPI(messages, systemPrompt, 1500);
-    console.log('Claude API response received for skin analysis');
-    const analysis = JSON.parse(cleanJsonResponse(response));
+    console.log('Claude API response received for skin analysis, length:', response.length);
+    const analysis = safeJsonParse(response, '/api/analyze/skin');
+
+    // Ensure arrays
+    if (!Array.isArray(analysis.concerns)) {
+      analysis.concerns = analysis.concerns ? [analysis.concerns] : [];
+    }
+    if (!Array.isArray(analysis.recommendations)) {
+      analysis.recommendations = analysis.recommendations ? [analysis.recommendations] : [];
+    }
+    if (analysis.doshaIndication && !Array.isArray(analysis.doshaIndication.characteristics)) {
+      analysis.doshaIndication.characteristics = analysis.doshaIndication.characteristics ? [analysis.doshaIndication.characteristics] : [];
+    }
+
     console.log('Skin analysis result - Type:', analysis.skinType, '| Dosha:', analysis.doshaIndication?.dominant, '| Luminosity:', analysis.luminosity);
 
     incrementUsage(userId, 'scan');
@@ -466,7 +577,21 @@ Only return valid JSON, no markdown or explanation.`;
     ];
 
     const response = await callClaudeAPI(messages, systemPrompt, 1500);
-    const analysis = JSON.parse(cleanJsonResponse(response));
+    console.log('Claude eye response received, length:', response.length);
+    const analysis = safeJsonParse(response, '/api/analyze/eyes');
+
+    // Ensure arrays
+    if (!Array.isArray(analysis.concerns)) {
+      analysis.concerns = analysis.concerns ? [analysis.concerns] : [];
+    }
+    if (!Array.isArray(analysis.recommendations)) {
+      analysis.recommendations = analysis.recommendations ? [analysis.recommendations] : [];
+    }
+    if (analysis.doshaIndication && !Array.isArray(analysis.doshaIndication.characteristics)) {
+      analysis.doshaIndication.characteristics = analysis.doshaIndication.characteristics ? [analysis.doshaIndication.characteristics] : [];
+    }
+
+    console.log('Eye analysis parsed successfully:', analysis.doshaIndication?.dominant);
 
     incrementUsage(userId, 'scan');
 
@@ -476,8 +601,7 @@ Only return valid JSON, no markdown or explanation.`;
       usage: canProceed.reason === 'free_tier' ? { remaining: canProceed.remaining - 1, limit: FREE_SCAN_LIMIT } : null,
     });
   } catch (error) {
-    console.error('Eye analysis error:', error);
-    console.error('Full error details:', JSON.stringify(error, null, 2));
+    console.error('Eye analysis error:', error.message);
     res.status(500).json({ error: error.message || 'Analysis failed' });
   }
 });
@@ -544,7 +668,21 @@ Only return valid JSON, no markdown or explanation.`;
     ];
 
     const response = await callClaudeAPI(messages, systemPrompt, 1500);
-    const analysis = JSON.parse(cleanJsonResponse(response));
+    console.log('Claude nail response received, length:', response.length);
+    const analysis = safeJsonParse(response, '/api/analyze/nails');
+
+    // Ensure arrays
+    if (!Array.isArray(analysis.concerns)) {
+      analysis.concerns = analysis.concerns ? [analysis.concerns] : [];
+    }
+    if (!Array.isArray(analysis.recommendations)) {
+      analysis.recommendations = analysis.recommendations ? [analysis.recommendations] : [];
+    }
+    if (analysis.doshaIndication && !Array.isArray(analysis.doshaIndication.characteristics)) {
+      analysis.doshaIndication.characteristics = analysis.doshaIndication.characteristics ? [analysis.doshaIndication.characteristics] : [];
+    }
+
+    console.log('Nail analysis parsed successfully:', analysis.doshaIndication?.dominant);
 
     incrementUsage(userId, 'scan');
 
@@ -554,7 +692,7 @@ Only return valid JSON, no markdown or explanation.`;
       usage: canProceed.reason === 'free_tier' ? { remaining: canProceed.remaining - 1, limit: FREE_SCAN_LIMIT } : null,
     });
   } catch (error) {
-    console.error('Nail analysis error:', error);
+    console.error('Nail analysis error:', error.message);
     res.status(500).json({ error: error.message || 'Analysis failed' });
   }
 });

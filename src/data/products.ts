@@ -1,16 +1,46 @@
+/**
+ * ============================================================
+ * NayaVed Ayurvedic Products Catalog
+ * ============================================================
+ *
+ * This file contains curated Ayurvedic product recommendations
+ * with Amazon affiliate links for monetization.
+ *
+ * AFFILIATE SETUP:
+ * - Amazon Associates Tag: nayaved-20
+ * - Enable OneLink in Amazon Associates Central for global support
+ * - Links auto-redirect international users to their local Amazon store
+ *
+ * ADDING NEW PRODUCTS:
+ * 1. Find product on Amazon
+ * 2. Get ASIN (Amazon Standard Identification Number) from URL
+ * 3. Create link: https://www.amazon.com/dp/ASIN?tag=nayaved-20
+ * 4. Add product to appropriate dosha category below
+ *
+ * @author NayaVed Team
+ */
+
 export interface Product {
-  id: string;
-  name: string;
-  brand: string;
-  category: 'herb' | 'oil' | 'powder' | 'tea';
-  description: string;
-  price: string;
-  doshas: ('vata' | 'pitta' | 'kapha')[];
-  benefits: string[];
-  usage: string;
-  affiliateLink: string; // In production, these would be real affiliate URLs
-  image?: string;
+  id: string;                                    // Unique product identifier
+  name: string;                                  // Product display name
+  brand: string;                                 // Manufacturer/brand name
+  category: 'herb' | 'oil' | 'powder' | 'tea';  // Product category for filtering
+  description: string;                           // Short description
+  price: string;                                 // Display price (approximate)
+  doshas: ('vata' | 'pitta' | 'kapha')[];       // Which doshas this product helps balance
+  benefits: string[];                            // List of health benefits
+  usage: string;                                 // How to use the product
+  affiliateLink: string;                         // Amazon affiliate link with tag
+  image?: string;                                // Optional product image URL
 }
+
+// ============================================================
+// AMAZON AFFILIATE CONFIGURATION
+// ============================================================
+// Tag: nayaved-20
+// OneLink: Enable in Associates Central → Tools → OneLink
+// Supported countries: US, India, UK, Canada, Germany, etc.
+// ============================================================
 
 export const products: Product[] = [
   // Vata-balancing products
@@ -29,7 +59,7 @@ export const products: Product[] = [
       'Builds strength and immunity',
     ],
     usage: '1/2 tsp with warm milk before bed',
-    affiliateLink: 'https://www.banyanbotanicals.com/ashwagandha-powder',
+    affiliateLink: 'https://www.amazon.com/dp/B0013OQEO0?tag=nayaved-20',
   },
   {
     id: 'sesame-oil-1',
@@ -46,7 +76,7 @@ export const products: Product[] = [
       'Supports joints and muscles',
     ],
     usage: 'Warm and massage onto body daily',
-    affiliateLink: 'https://www.banyanbotanicals.com/sesame-oil-organic',
+    affiliateLink: 'https://www.amazon.com/dp/B001VNKZNS?tag=nayaved-20',
   },
   {
     id: 'vata-tea-1',
@@ -63,7 +93,7 @@ export const products: Product[] = [
       'Warms the body',
     ],
     usage: 'Steep 1 tea bag in hot water for 5-10 minutes',
-    affiliateLink: 'https://www.organicindia.com/vata-tea',
+    affiliateLink: 'https://www.amazon.com/dp/B000WLHUBY?tag=nayaved-20',
   },
 
   // Pitta-balancing products
@@ -82,12 +112,12 @@ export const products: Product[] = [
       'Promotes mental calm',
     ],
     usage: '1 capsule twice daily with water',
-    affiliateLink: 'https://himalayausa.com/products/brahmi',
+    affiliateLink: 'https://www.amazon.com/dp/B0006NZPGA?tag=nayaved-20',
   },
   {
     id: 'coconut-oil-1',
     name: 'Organic Coconut Oil',
-    brand: 'Banyan Botanicals',
+    brand: 'Viva Naturals',
     category: 'oil',
     description: 'Cooling oil for Pitta types, excellent for massage and cooking',
     price: '$14.99',
@@ -99,7 +129,7 @@ export const products: Product[] = [
       'Nourishes hair and skin',
     ],
     usage: 'Use for self-massage or in cooking',
-    affiliateLink: 'https://www.banyanbotanicals.com/coconut-oil-organic',
+    affiliateLink: 'https://www.amazon.com/dp/B00DS842HS?tag=nayaved-20',
   },
   {
     id: 'pitta-tea-1',
@@ -116,12 +146,12 @@ export const products: Product[] = [
       'Promotes emotional balance',
     ],
     usage: 'Steep 1 tea bag in hot water, let cool slightly',
-    affiliateLink: 'https://www.organicindia.com/pitta-tea',
+    affiliateLink: 'https://www.amazon.com/dp/B000WLHV32?tag=nayaved-20',
   },
   {
     id: 'aloe-vera-1',
     name: 'Aloe Vera Juice',
-    brand: 'Himalaya Wellness',
+    brand: 'Lily of the Desert',
     category: 'herb',
     description: 'Pure aloe vera juice for cooling and digestive support',
     price: '$12.99',
@@ -133,7 +163,7 @@ export const products: Product[] = [
       'Balances acidity',
     ],
     usage: '2 tbsp diluted in water, twice daily',
-    affiliateLink: 'https://himalayausa.com/products/aloe-vera-juice',
+    affiliateLink: 'https://www.amazon.com/dp/B00028OVXM?tag=nayaved-20',
   },
 
   // Kapha-balancing products
@@ -152,12 +182,12 @@ export const products: Product[] = [
       'Promotes weight management',
     ],
     usage: '1/2 tsp with warm water before bed',
-    affiliateLink: 'https://www.banyanbotanicals.com/triphala-powder',
+    affiliateLink: 'https://www.amazon.com/dp/B0013OXBHW?tag=nayaved-20',
   },
   {
     id: 'trikatu-1',
     name: 'Trikatu Churna',
-    brand: 'Organic India',
+    brand: 'Banyan Botanicals',
     category: 'powder',
     description: 'Warming digestive blend to kindle Agni',
     price: '$16.99',
@@ -169,7 +199,7 @@ export const products: Product[] = [
       'Clears congestion',
     ],
     usage: '1/4 tsp with honey before meals',
-    affiliateLink: 'https://www.organicindia.com/trikatu',
+    affiliateLink: 'https://www.amazon.com/dp/B0013OW2FE?tag=nayaved-20',
   },
   {
     id: 'kapha-tea-1',
@@ -186,12 +216,12 @@ export const products: Product[] = [
       'Promotes mental clarity',
     ],
     usage: 'Steep 1 tea bag in hot water for 5-10 minutes',
-    affiliateLink: 'https://www.organicindia.com/kapha-tea',
+    affiliateLink: 'https://www.amazon.com/dp/B000WLHV3W?tag=nayaved-20',
   },
   {
     id: 'guggulu-1',
     name: 'Guggulu (Triphala Guggulu)',
-    brand: 'Himalaya Wellness',
+    brand: 'Banyan Botanicals',
     category: 'herb',
     description: 'Traditional formula for metabolism and weight management',
     price: '$21.99',
@@ -203,7 +233,7 @@ export const products: Product[] = [
       'Reduces excess Kapha',
     ],
     usage: '2 tablets twice daily with water',
-    affiliateLink: 'https://himalayausa.com/products/guggulu',
+    affiliateLink: 'https://www.amazon.com/dp/B0013OXDVE?tag=nayaved-20',
   },
 
   // Universal/Multi-dosha products
@@ -222,7 +252,7 @@ export const products: Product[] = [
       'Promotes healthy digestion',
     ],
     usage: '1 capsule twice daily with food',
-    affiliateLink: 'https://www.organicindia.com/turmeric-formula',
+    affiliateLink: 'https://www.amazon.com/dp/B0019LRIUO?tag=nayaved-20',
   },
   {
     id: 'tulsi-1',
@@ -239,7 +269,7 @@ export const products: Product[] = [
       'Adaptogenic properties',
     ],
     usage: 'Steep 1-2 tea bags in hot water',
-    affiliateLink: 'https://www.organicindia.com/tulsi-tea',
+    affiliateLink: 'https://www.amazon.com/dp/B000TGH82Q?tag=nayaved-20',
   },
 ];
 

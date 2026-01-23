@@ -145,8 +145,12 @@ export default function SkinAnalysisScreen() {
           setShowAnalysis(true);
           await saveAnalysis(result);
         } catch (aiError: any) {
-          Alert.alert('AI Analysis Error', aiError.message || 'Failed to analyze image. Please check your connection.');
-          // Fall back to mock analysis
+          console.log('Skin analysis error:', aiError.message);
+          // Only show alert for usage limit errors
+          if (aiError.code === 'USAGE_LIMIT') {
+            Alert.alert('Scan Limit Reached', 'Upgrade to Premium for unlimited AI-powered diagnostics!');
+          }
+          // Fall back to mock analysis silently
           await performMockAnalysis();
         }
       } else {

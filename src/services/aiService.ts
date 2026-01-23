@@ -1,17 +1,43 @@
-// AI Service for NayaVed AI App
-// Connects to backend API for Claude AI integration
+/**
+ * ============================================================
+ * NayaVed AI Service
+ * ============================================================
+ *
+ * This service handles all communication with the backend API
+ * for AI-powered Ayurvedic diagnostic analysis.
+ *
+ * FEATURES:
+ * - Image-to-base64 conversion for API uploads
+ * - Tongue, skin, eye, nail analysis endpoints
+ * - Chat consultation with Ayurvedic AI
+ * - User status and subscription management
+ * - Developer mode activation
+ *
+ * CONFIGURATION:
+ * - Development: Uses local IP address for physical device testing
+ * - Production: Uses Vercel deployed backend URL
+ *
+ * ERROR HANDLING:
+ * - Throws errors with 'USAGE_LIMIT' code for free tier limits
+ * - Network errors propagate to calling screens for graceful fallback
+ *
+ * @author NayaVed Team
+ */
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { File } from 'expo-file-system';
 
-// Backend API URL - Change this when deploying
-// For local development: http://localhost:4000
-// For production: Deployed on Vercel
-// For physical device testing, use your computer's IP address
-// For simulator, localhost works fine
+// ============================================================
+// API CONFIGURATION
+// ============================================================
+// Development: Use your computer's local IP (run `ifconfig` to find it)
+// Production: Deployed Vercel backend URL
+// Note: iOS simulator can use localhost, but physical devices need IP
+// ============================================================
+
 const API_BASE_URL = __DEV__
-  ? 'http://10.0.0.218:4000'  // Your computer's local IP for development
-  : 'https://backend-8j5meijqw-shiviagarwalwork-6100s-projects.vercel.app'; // Production API on Vercel
+  ? 'http://10.0.0.218:4000'  // Replace with your local IP for physical device testing
+  : 'https://backend-8j5meijqw-shiviagarwalwork-6100s-projects.vercel.app';
 
 // Storage keys
 const USER_ID_KEY = '@nayaved_user_id';

@@ -1,14 +1,32 @@
 /**
+ * ============================================================
  * RevenueCat Purchase Service for NayaVed AI
+ * ============================================================
  *
- * Setup Instructions:
+ * Handles in-app purchases and subscription management using RevenueCat SDK.
+ * RevenueCat abstracts away the complexity of Apple/Google payment APIs.
+ *
+ * SETUP INSTRUCTIONS:
  * 1. Create account at https://www.revenuecat.com
- * 2. Create a new project
- * 3. Add iOS app (bundle ID: com.nayaved.app)
- * 4. Add Android app (package: com.nayaved.app)
- * 5. Create products in App Store Connect / Google Play Console
- * 6. Add products to RevenueCat
- * 7. Replace API keys below
+ * 2. Create a new project named "NayaVed"
+ * 3. Add iOS app with bundle ID: com.nayaved.app
+ * 4. Add Android app with package: com.nayaved.app
+ * 5. Upload P8 API key from App Store Connect
+ * 6. Create products in App Store Connect:
+ *    - nayaved_premium_monthly ($4.99/month)
+ *    - nayaved_premium_yearly ($39.99/year)
+ * 7. In RevenueCat:
+ *    - Add products under Products tab
+ *    - Create "premium" entitlement
+ *    - Create "default" offering with both packages
+ *
+ * KEY CONCEPTS:
+ * - Products: Individual purchasable items (monthly, yearly)
+ * - Entitlements: Features unlocked by purchase ("premium")
+ * - Offerings: Groups of products shown to users
+ * - Packages: Products within an offering (monthly, annual)
+ *
+ * @author NayaVed Team
  */
 
 import Purchases, {
@@ -18,20 +36,22 @@ import Purchases, {
 } from 'react-native-purchases';
 import { Platform } from 'react-native';
 
-// ============================================
-// CONFIGURATION - Replace with your keys
-// ============================================
+// ============================================================
+// REVENUECAT CONFIGURATION
+// ============================================================
 
-const REVENUECAT_API_KEY_IOS = 'appdf7562d03f';
-const REVENUECAT_API_KEY_ANDROID = 'YOUR_REVENUECAT_ANDROID_API_KEY';
+// API Keys from RevenueCat Dashboard → Project Settings → API Keys
+const REVENUECAT_API_KEY_IOS = 'appdf7562d03f';  // Your iOS public API key
+const REVENUECAT_API_KEY_ANDROID = 'YOUR_REVENUECAT_ANDROID_API_KEY';  // Add Android key when ready
 
-// Product identifiers (create these in App Store Connect / Google Play Console)
+// Product identifiers - must match App Store Connect / Google Play Console
 export const PRODUCT_IDS = {
-  PREMIUM_MONTHLY: 'nayaved_premium_monthly',    // $4.99/month
+  PREMIUM_MONTHLY: 'nayaved_premium_monthly',    // $4.99/month subscription
   PREMIUM_YEARLY: 'nayaved_premium_yearly',      // $39.99/year (saves 33%)
 };
 
-// Entitlement identifier (create in RevenueCat dashboard)
+// Entitlement ID - created in RevenueCat Dashboard → Entitlements
+// This unlocks premium features when active
 export const ENTITLEMENT_ID = 'premium';
 
 // ============================================
