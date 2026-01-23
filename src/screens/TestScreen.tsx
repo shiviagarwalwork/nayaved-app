@@ -1,10 +1,13 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { ManuscriptColors } from '../components/ManuscriptConstants';
 
 export default function TestScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>✅ NayaVed AI App Works!</Text>
+      <Text style={styles.text}>
+        NayaVed <Text style={styles.aiText}>AI</Text> App Works!
+      </Text>
       <Text style={styles.subtitle}>Testing minimal screen</Text>
     </View>
   );
@@ -23,6 +26,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#3E2723',
     marginBottom: 16,
+  },
+  aiText: {
+    color: ManuscriptColors.copperBrown,
   },
   subtitle: {
     fontSize: 16,

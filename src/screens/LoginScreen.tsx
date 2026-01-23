@@ -9,6 +9,7 @@ import {
   Platform,
   ScrollView,
   ActivityIndicator,
+  Image,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
@@ -148,12 +149,18 @@ export default function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
         {/* Logo/Icon */}
         <View style={styles.logoContainer}>
           <View style={styles.logoCircle}>
-            <MaterialCommunityIcons name="spa" size={48} color={ManuscriptColors.vermillion} />
+            <Image
+              source={require('../../assets/icon.png')}
+              style={styles.logoImage}
+              resizeMode="contain"
+            />
           </View>
         </View>
 
         {/* Title */}
-        <Text style={styles.title}>NayaVed AI</Text>
+        <Text style={styles.title}>
+          NayaVed <Text style={styles.titleAI}>AI</Text>
+        </Text>
         <Text style={styles.subtitle}>Ancient Wisdom for Modern Life</Text>
 
         {/* Exclusive message */}
@@ -359,12 +366,19 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 8,
   },
+  logoImage: {
+    width: 70,
+    height: 70,
+  },
   title: {
     fontSize: 36,
     fontWeight: 'bold',
     color: ManuscriptColors.inkBlack,
     textAlign: 'center',
     fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif',
+  },
+  titleAI: {
+    color: ManuscriptColors.copperBrown,
   },
   subtitle: {
     fontSize: 16,
