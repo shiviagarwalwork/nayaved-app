@@ -815,9 +815,9 @@ const styles = StyleSheet.create({
     color: ManuscriptColors.inkBlack,
   },
   heroIconContainer: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 120,
+    height: 120,
+    borderRadius: 60,
     backgroundColor: ManuscriptColors.parchment,
     justifyContent: 'center',
     alignItems: 'center',
@@ -826,8 +826,8 @@ const styles = StyleSheet.create({
     borderColor: ManuscriptColors.goldLeaf,
   },
   heroLogoImage: {
-    width: 75,
-    height: 75,
+    width: 90,
+    height: 90,
   },
   title: {
     fontSize: ManuscriptFonts.titleSize,

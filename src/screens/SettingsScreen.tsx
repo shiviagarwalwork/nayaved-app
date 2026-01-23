@@ -309,7 +309,7 @@ export default function SettingsScreen() {
           </View>
           <View style={styles.aboutRow}>
             <Text style={styles.aboutLabel}>Build</Text>
-            <Text style={styles.aboutValue}>2024.01</Text>
+            <Text style={styles.aboutValue}>2026.01</Text>
           </View>
         </View>
       </View>
