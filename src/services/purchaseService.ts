@@ -22,7 +22,7 @@ import { Platform } from 'react-native';
 // CONFIGURATION - Replace with your keys
 // ============================================
 
-const REVENUECAT_API_KEY_IOS = 'YOUR_REVENUECAT_IOS_API_KEY';
+const REVENUECAT_API_KEY_IOS = 'appdf7562d03f';
 const REVENUECAT_API_KEY_ANDROID = 'YOUR_REVENUECAT_ANDROID_API_KEY';
 
 // Product identifiers (create these in App Store Connect / Google Play Console)
