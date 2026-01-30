@@ -106,8 +106,10 @@ public class BrightnessFrameProcessorPlugin: FrameProcessorPlugin {
       variance = sumSquaredDiff / Double(sampleCount / 4)
     }
 
-    // Finger detection: high brightness (>100) + low variance (<500) = finger covering camera
-    let fingerDetected = averageBrightness > 100 && variance < 500
+    // Finger detection: more lenient thresholds
+    // When finger covers camera + torch, we see bright red glow
+    // Lower threshold (>50) to detect partial coverage, higher variance tolerance (<1000)
+    let fingerDetected = averageBrightness > 50 && variance < 1000
 
     return [
       "brightness": averageBrightness,

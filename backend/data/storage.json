@@ -1,0 +1,21 @@
+{
+  "userUsage": {
+    "user_1769549188701_jnahdk62g": {
+      "scanCount": 9,
+      "chatCount": 0,
+      "lastReset": "2026-01-29T21:34:31.547Z",
+      "createdAt": "2026-01-29T21:34:31.547Z"
+    },
+    "user_1769800504328_7t69fkzbm": {
+      "scanCount": 0,
+      "chatCount": 0,
+      "lastReset": "2026-01-30T19:15:04.392Z",
+      "createdAt": "2026-01-30T19:15:04.392Z"
+    }
+  },
+  "premiumUsers": [],
+  "developerUsers": [
+    "user_1769549188701_jnahdk62g"
+  ],
+  "lastUpdated": "2026-01-30T19:15:04.392Z"
+}
