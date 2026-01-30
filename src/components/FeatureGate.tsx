@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import PaywallScreen from '../screens/PaywallScreen';
 import { ManuscriptColors, ManuscriptFonts } from './ManuscriptConstants';
@@ -42,11 +42,14 @@ export default function FeatureGate({
         </TouchableOpacity>
       </View>
 
-      <PaywallScreen
+      <Modal
         visible={showPaywall}
-        onClose={() => setShowPaywall(false)}
-        feature={featureName}
-      />
+        animationType="slide"
+        presentationStyle="pageSheet"
+        onRequestClose={() => setShowPaywall(false)}
+      >
+        <PaywallScreen onClose={() => setShowPaywall(false)} />
+      </Modal>
     </View>
   );
 }

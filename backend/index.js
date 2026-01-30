@@ -26,10 +26,49 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 const { v4: uuidv4 } = require('uuid');
 
 const app = express();
-app.use(cors());
+
+// ============================================================
+// SECURITY MIDDLEWARE
+// ============================================================
+
+// Helmet for security headers (XSS protection, etc.)
+app.use(helmet());
+
+// CORS configuration - restrict origins in production
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'production'
+    ? ['https://nayaved.app', 'https://www.nayaved.app', 'exp://'] // Add your actual domains
+    : true, // Allow all origins in development
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'x-user-id'],
+  maxAge: 86400, // 24 hours
+};
+app.use(cors(corsOptions));
+
+// Rate limiting - prevent abuse
+const generalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // 100 requests per 15 minutes
+  message: { error: 'Too many requests, please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const aiLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 10, // 10 AI requests per minute
+  message: { error: 'Too many AI requests, please slow down.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+app.use(generalLimiter);
+
 app.use(express.json({ limit: '10mb' })); // Increased limit for base64 encoded images
 
 // ============================================================
@@ -43,13 +82,11 @@ const FREE_SCAN_LIMIT = parseInt(process.env.FREE_SCAN_LIMIT || '2');  // Free u
 const FREE_CHAT_LIMIT = parseInt(process.env.FREE_CHAT_LIMIT || '10'); // Free users get 10 chat messages
 
 // ============================================================
-// IN-MEMORY STORAGE
-// Note: For production, replace with Firebase, Supabase, or MongoDB
+// PERSISTENT STORAGE
+// Uses file-based storage (see storage.js for production options)
 // ============================================================
 
-const userUsage = new Map();      // Track scan/chat counts per user
-const premiumUsers = new Set();   // Users with active subscriptions
-const developerUsers = new Set(); // Users with developer access (unlimited)
+const storage = require('./storage');
 
 // ============================================================
 // JSON PARSING HELPERS
@@ -113,32 +150,19 @@ const safeJsonParse = (response, endpoint) => {
   }
 };
 
-// Helper: Get or create user usage record
-const getUserUsage = (userId) => {
-  if (!userUsage.has(userId)) {
-    userUsage.set(userId, {
-      scanCount: 0,
-      chatCount: 0,
-      lastReset: new Date().toISOString(),
-      createdAt: new Date().toISOString(),
-    });
-  }
-  return userUsage.get(userId);
-};
-
 // Helper: Check if user can perform action
 const canPerformAction = (userId, actionType) => {
   // Developers have unlimited access
-  if (developerUsers.has(userId)) {
+  if (storage.isDeveloperUser(userId)) {
     return { allowed: true, reason: 'developer' };
   }
 
   // Premium users have unlimited access
-  if (premiumUsers.has(userId)) {
+  if (storage.isPremiumUser(userId)) {
     return { allowed: true, reason: 'premium' };
   }
 
-  const usage = getUserUsage(userId);
+  const usage = storage.getUserUsage(userId);
 
   if (actionType === 'scan') {
     if (usage.scanCount >= FREE_SCAN_LIMIT) {
@@ -169,14 +193,9 @@ const canPerformAction = (userId, actionType) => {
   return { allowed: false, reason: 'unknown_action' };
 };
 
-// Helper: Increment usage
+// Helper: Increment usage (uses persistent storage)
 const incrementUsage = (userId, actionType) => {
-  const usage = getUserUsage(userId);
-  if (actionType === 'scan') {
-    usage.scanCount++;
-  } else if (actionType === 'chat') {
-    usage.chatCount++;
-  }
+  storage.incrementUsage(userId, actionType);
 };
 
 // Helper: Call Claude API
@@ -215,7 +234,12 @@ const callClaudeAPI = async (messages, systemPrompt, maxTokens = 1024) => {
 
 // Health check
 app.get('/', (req, res) => {
-  res.json({ status: 'ok', service: 'NayaVed API', version: '1.0.0' });
+  res.json({
+    status: 'ok',
+    service: 'NayaVed API',
+    version: '1.0.0',
+    storage: storage.getStats(),
+  });
 });
 
 // Get user status (usage, subscription tier)
@@ -225,9 +249,9 @@ app.get('/api/user/status', (req, res) => {
     return res.status(400).json({ error: 'User ID required' });
   }
 
-  const usage = getUserUsage(userId);
-  const isDeveloper = developerUsers.has(userId);
-  const isPremium = premiumUsers.has(userId);
+  const usage = storage.getUserUsage(userId);
+  const isDeveloper = storage.isDeveloperUser(userId);
+  const isPremium = storage.isPremiumUser(userId);
 
   res.json({
     userId,
@@ -266,7 +290,7 @@ app.post('/api/developer/activate', (req, res) => {
   }
 
   if (DEVELOPER_CODES.includes(code.trim())) {
-    developerUsers.add(userId);
+    storage.addDeveloperUser(userId);
     res.json({
       success: true,
       message: 'Developer access activated! You now have unlimited access to all features.',
@@ -277,27 +301,40 @@ app.post('/api/developer/activate', (req, res) => {
   }
 });
 
-// Activate premium (mock - in production, integrate with Apple/Google IAP)
+// Activate premium subscription
+// Note: In production, this should verify receipts with RevenueCat webhook
+// or directly with Apple/Google. This endpoint is called by RevenueCat webhooks.
 app.post('/api/subscription/activate', (req, res) => {
   const userId = req.headers['x-user-id'];
-  const { receiptData, platform } = req.body;
+  const { receiptData, platform, revenueCatUserId } = req.body;
 
-  if (!userId) {
+  if (!userId && !revenueCatUserId) {
     return res.status(400).json({ error: 'User ID required' });
   }
 
-  // TODO: In production, verify receipt with Apple/Google
-  // For now, mock activation for testing
-  if (receiptData === 'TEST_PREMIUM_RECEIPT') {
-    premiumUsers.add(userId);
-    res.json({
-      success: true,
-      message: 'Premium subscription activated!',
-      tier: 'premium',
-    });
-  } else {
-    res.status(400).json({ error: 'Invalid receipt. Please purchase through the app.' });
+  const targetUserId = userId || revenueCatUserId;
+
+  // Verify this is a legitimate RevenueCat webhook or has valid receipt
+  // In production, you should:
+  // 1. Verify the webhook signature from RevenueCat
+  // 2. Or verify receipt directly with Apple/Google APIs
+  const webhookSecret = process.env.REVENUECAT_WEBHOOK_SECRET;
+  const authHeader = req.headers['authorization'];
+
+  if (webhookSecret && authHeader !== `Bearer ${webhookSecret}`) {
+    console.log('Subscription activation rejected: invalid authorization');
+    return res.status(401).json({ error: 'Unauthorized' });
   }
+
+  // If webhook is properly authenticated, activate premium
+  storage.addPremiumUser(targetUserId);
+  console.log(`Premium activated for user: ${targetUserId}`);
+
+  res.json({
+    success: true,
+    message: 'Premium subscription activated!',
+    tier: 'premium',
+  });
 });
 
 // ============================================
@@ -305,7 +342,7 @@ app.post('/api/subscription/activate', (req, res) => {
 // ============================================
 
 // Tongue Analysis
-app.post('/api/analyze/tongue', async (req, res) => {
+app.post('/api/analyze/tongue', aiLimiter, async (req, res) => {
   console.log('Tongue analysis request received');
   const userId = req.headers['x-user-id'];
   const { imageBase64 } = req.body;
@@ -429,7 +466,7 @@ Only return valid JSON, no markdown or explanation.`;
 });
 
 // Skin Analysis
-app.post('/api/analyze/skin', async (req, res) => {
+app.post('/api/analyze/skin', aiLimiter, async (req, res) => {
   console.log('Skin/Facial analysis request received');
   const userId = req.headers['x-user-id'];
   const { imageBase64 } = req.body;
@@ -516,7 +553,7 @@ Only return valid JSON, no markdown or explanation.`;
 });
 
 // Eye Analysis
-app.post('/api/analyze/eyes', async (req, res) => {
+app.post('/api/analyze/eyes', aiLimiter, async (req, res) => {
   console.log('Eye analysis request received');
   const userId = req.headers['x-user-id'];
   const { imageBase64 } = req.body;
@@ -613,7 +650,7 @@ app.use((req, res, next) => {
 });
 
 // Nail Analysis
-app.post('/api/analyze/nails', async (req, res) => {
+app.post('/api/analyze/nails', aiLimiter, async (req, res) => {
   const userId = req.headers['x-user-id'];
   const { imageBase64 } = req.body;
 
@@ -701,7 +738,7 @@ Only return valid JSON, no markdown or explanation.`;
 // CHAT CONSULTATION ENDPOINT
 // ============================================
 
-app.post('/api/chat/consultation', async (req, res) => {
+app.post('/api/chat/consultation', aiLimiter, async (req, res) => {
   const userId = req.headers['x-user-id'];
   const { message, conversationHistory, userDosha } = req.body;
 

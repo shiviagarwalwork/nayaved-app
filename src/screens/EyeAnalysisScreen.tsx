@@ -15,6 +15,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialCommunityIcons, Ionicons, Feather } from '@expo/vector-icons';
 import { ManuscriptColors } from '../components/ManuscriptConstants';
 import { analyzeEyes as aiAnalyzeEyes, isApiConfigured, EyeAnalysisResult as AIEyeResult } from '../services/aiService';
+import { saveScanResult, saveScanOjasContribution, calculateScanOjasContribution } from '../services/dailyRitualService';
+import PremiumLock from '../components/PremiumLock';
+import { getRecommendedProducts } from '../data/products';
+import ProductCard from '../components/ProductCard';
 
 interface EyeMetrics {
   clarity: number; // 0-100 (clear vs cloudy)
@@ -123,12 +127,21 @@ export default function EyeAnalysisScreen() {
           await saveAnalysis(result);
         } catch (aiError: any) {
           console.log('Eye analysis error:', aiError.message);
-          // Only show alert for usage limit errors
           if (aiError.code === 'USAGE_LIMIT') {
-            Alert.alert('Scan Limit Reached', 'Upgrade to Premium for unlimited AI-powered diagnostics!');
+            setIsAnalyzing(false);
+            Alert.alert(
+              'Free Scans Used',
+              'Upgrade to Premium for unlimited AI-powered eye analysis!',
+              [
+                { text: 'Maybe Later', style: 'cancel' },
+                { text: 'Upgrade Now', onPress: () => navigation.navigate('Paywall' as never) }
+              ]
+            );
+            return;
           }
-          // Fall back to mock analysis silently
-          await performMockAnalysis();
+          Alert.alert('Connection Issue', 'Unable to connect to AI service. Please try again.');
+          setIsAnalyzing(false);
+          return;
         }
       } else {
         // Use mock analysis (educational demo)
@@ -167,6 +180,23 @@ export default function EyeAnalysisScreen() {
         ...result,
       };
       await AsyncStorage.setItem('eyeAnalysis', JSON.stringify(eyeAnalysisData));
+
+      // Save to daily ritual service for streak tracking
+      await saveScanResult({
+        type: 'eye',
+        summary: `${result.dominantDosha} dominant - Clarity ${result.metrics.clarity}%`,
+        dominantDosha: result.dominantDosha.toLowerCase() as 'vata' | 'pitta' | 'kapha',
+        metrics: {
+          clarity: result.metrics.clarity,
+          brightness: result.metrics.brightness,
+          moisture: result.metrics.moisture,
+        },
+      });
+
+      // Save Ojas contribution (based on eye clarity and brightness)
+      const healthScore = (result.metrics.clarity + result.metrics.brightness) / 2;
+      const ojasContribution = calculateScanOjasContribution('eye', healthScore);
+      await saveScanOjasContribution('eye', ojasContribution);
     } catch (error) {
       console.log('Auto-save failed:', error);
     }
@@ -565,19 +595,25 @@ export default function EyeAnalysisScreen() {
             </Text>
           </View>
 
-          {/* Recommendations */}
-          <View style={styles.recommendationsCard}>
-            <View style={styles.recommendationsTitleRow}>
-              <Feather name="check-circle" size={18} color="#6B8E23" />
-              <Text style={styles.recommendationsTitle}> Eye Care Recommendations</Text>
-            </View>
-            {analysisResult.recommendations.map((rec, idx) => (
-              <View key={idx} style={styles.recommendationRow}>
-                <Text style={styles.recommendationBullet}>•</Text>
-                <Text style={styles.recommendationText}>{rec}</Text>
+          {/* Recommendations - LOCKED for free users (Curiosity Gap) */}
+          <PremiumLock
+            contentType="recommendations"
+            itemCount={analysisResult.recommendations.length}
+            description="Get personalized Ayurvedic eye care protocols based on your analysis"
+          >
+            <View style={styles.recommendationsCard}>
+              <View style={styles.recommendationsTitleRow}>
+                <Feather name="check-circle" size={18} color="#6B8E23" />
+                <Text style={styles.recommendationsTitle}> Eye Care Recommendations</Text>
               </View>
-            ))}
-          </View>
+              {analysisResult.recommendations.map((rec, idx) => (
+                <View key={idx} style={styles.recommendationRow}>
+                  <Text style={styles.recommendationBullet}>•</Text>
+                  <Text style={styles.recommendationText}>{rec}</Text>
+                </View>
+              ))}
+            </View>
+          </PremiumLock>
 
           {/* Auto-saved indicator */}
           <View style={styles.autoSavedBadge}>
@@ -588,10 +624,10 @@ export default function EyeAnalysisScreen() {
           {/* Action Button */}
           <TouchableOpacity
             style={styles.continueButton}
-            onPress={() => navigation.navigate('Assessment' as never)}
+            onPress={() => navigation.navigate('Ojas' as never)}
           >
             <Text style={styles.continueButtonText}>
-              Continue to Assessment →
+              View Ojas Tracker →
             </Text>
           </TouchableOpacity>
         </View>
@@ -624,6 +660,28 @@ export default function EyeAnalysisScreen() {
         </Text>
         <Text style={styles.manuscriptSource}>- Charaka Samhita</Text>
       </View>
+
+      {/* Product Recommendations - shown after educational section */}
+      {analysisResult && (
+        <View style={styles.productRecommendationsSection}>
+          <View style={styles.productSectionTitleRow}>
+            <MaterialCommunityIcons name="leaf" size={22} color="#4CAF50" />
+            <Text style={styles.productSectionTitle}> Suggested Ayurvedic Products</Text>
+          </View>
+          <Text style={styles.productSectionSubtitle}>
+            These herbs can help balance your {analysisResult.dominantDosha} constitution
+          </Text>
+          {getRecommendedProducts(analysisResult.dominantDosha.toLowerCase() as 'vata' | 'pitta' | 'kapha', 3).map((product) => (
+            <ProductCard key={product.id} product={product} showFullDetails={false} />
+          ))}
+          <TouchableOpacity
+            style={styles.shopMoreButton}
+            onPress={() => navigation.navigate('Pharmacy' as never)}
+          >
+            <Text style={styles.shopMoreText}>View All Products →</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </ScrollView>
   );
 }
@@ -1027,5 +1085,41 @@ const styles = StyleSheet.create({
     color: '#B87333',
     fontStyle: 'italic',
     textAlign: 'right',
+  },
+  productRecommendationsSection: {
+    backgroundColor: '#FFFFFF',
+    padding: 16,
+    borderRadius: 12,
+    marginTop: 16,
+    borderWidth: 2,
+    borderColor: '#4CAF50',
+  },
+  productSectionTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  productSectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#2E7D32',
+  },
+  productSectionSubtitle: {
+    fontSize: 13,
+    color: '#5D4037',
+    marginBottom: 12,
+  },
+  shopMoreButton: {
+    backgroundColor: '#E8F5E9',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    alignItems: 'center',
+    marginTop: 12,
+  },
+  shopMoreText: {
+    color: '#2E7D32',
+    fontSize: 14,
+    fontWeight: '600',
   },
 });

@@ -39,6 +39,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialCommunityIcons, Ionicons, Feather } from '@expo/vector-icons';
 import { ManuscriptColors } from '../components/ManuscriptConstants';
 import { analyzeTongue as aiAnalyzeTongue, isApiConfigured, TongueAnalysisResult } from '../services/aiService';
+import { saveScanResult, saveScanOjasContribution, calculateScanOjasContribution } from '../services/dailyRitualService';
+import PremiumLock from '../components/PremiumLock';
+import { getRecommendedProducts } from '../data/products';
+import ProductCard from '../components/ProductCard';
 
 export default function TongueDiagnosisScreen() {
   const navigation = useNavigation();
@@ -126,6 +130,22 @@ export default function TongueDiagnosisScreen() {
           recommendations: result.recommendations,
         };
         await AsyncStorage.setItem('tongueAnalysis', JSON.stringify(tongueAnalysisData));
+
+        // Save to daily ritual service for streak tracking
+        await saveScanResult({
+          type: 'tongue',
+          summary: `${result.doshaIndication?.dominant || 'Unknown'} dominant - ${result.tongueColor || 'analyzed'}`,
+          dominantDosha: result.doshaIndication?.dominant?.toLowerCase() as 'vata' | 'pitta' | 'kapha',
+          metrics: {
+            coating: result.coating?.thickness === 'thick' ? 70 : result.coating?.thickness === 'thin' ? 30 : 50,
+            moisture: result.moisture === 'dry' ? 30 : result.moisture === 'wet' ? 70 : 50,
+          },
+        });
+
+        // Save Ojas contribution (healthier tongue = higher score)
+        const healthScore = result.moisture === 'normal' ? 80 : result.moisture === 'dry' ? 40 : 60;
+        const ojasContribution = calculateScanOjasContribution('tongue', healthScore);
+        await saveScanOjasContribution('tongue', ojasContribution);
       } else {
         // Use educational fallback
         setUseAI(false);
@@ -142,43 +162,42 @@ export default function TongueDiagnosisScreen() {
           ],
         };
         await AsyncStorage.setItem('tongueAnalysis', JSON.stringify(tongueAnalysisData));
+
+        // Save to daily ritual service for streak tracking (educational mode)
+        await saveScanResult({
+          type: 'tongue',
+          summary: 'Educational tongue analysis completed',
+        });
+
+        // Save Ojas contribution (base score for completing scan)
+        const ojasContribution = calculateScanOjasContribution('tongue', 50);
+        await saveScanOjasContribution('tongue', ojasContribution);
       }
 
       setShowAnalysis(true);
     } catch (error: any) {
       console.log('Tongue analysis error:', error.message);
 
-      // Check if it's a usage limit error - show specific message
+      // Check if it's a usage limit error - navigate to paywall
       if (error.code === 'USAGE_LIMIT') {
+        setIsAnalyzing(false);
         Alert.alert(
-          'Scan Limit Reached',
-          'You\'ve used your free scans. Upgrade to Premium for unlimited AI-powered diagnostics!',
-          [{ text: 'OK' }]
+          'Free Scans Used',
+          'Upgrade to Premium for unlimited AI-powered tongue analysis with personalized recommendations!',
+          [
+            { text: 'Maybe Later', style: 'cancel' },
+            { text: 'Upgrade Now', onPress: () => navigation.navigate('Paywall' as never) }
+          ]
         );
-      } else {
-        // For network/parsing errors, silently fall back to educational guide
-        // Don't alarm the user with technical errors
-        console.log('Falling back to educational guide');
+        return; // Don't show demo results - they're confusing
       }
 
-      setUseAI(false);
-
-      // Save educational fallback data even on error
-      const tongueAnalysisData = {
-        date: new Date().toISOString(),
-        type: 'tongue',
-        aiPowered: false,
-        analysis: getEducationalAnalysis(),
-        recommendations: [
-          'Monitor tongue daily in the morning',
-          'Scrape tongue with copper scraper',
-          'Observe changes after dietary modifications',
-          'Take Triphala for detoxification',
-        ],
-      };
-      await AsyncStorage.setItem('tongueAnalysis', JSON.stringify(tongueAnalysisData));
-
-      setShowAnalysis(true);
+      // For network errors, show a helpful message
+      Alert.alert(
+        'Connection Issue',
+        'Unable to connect to AI service. Please check your internet connection and try again.',
+        [{ text: 'OK' }]
+      );
     } finally {
       setIsAnalyzing(false);
     }
@@ -403,25 +422,34 @@ export default function TongueDiagnosisScreen() {
             </View>
           )}
 
-          {/* Recommendations */}
-          {aiResult.recommendations && aiResult.recommendations.length > 0 && (
-            <View style={styles.recommendationsCard}>
-              <Text style={styles.recommendationsTitle}>Recommendations</Text>
-              {aiResult.recommendations.map((rec, idx) => (
-                <View key={idx} style={styles.recommendationRow}>
-                  <Feather name="check" size={14} color="#4CAF50" />
-                  <Text style={styles.recommendationText}>{rec}</Text>
+          {/* Premium Content - LOCKED for free users (Curiosity Gap) */}
+          {(aiResult.recommendations?.length > 0 || aiResult.ayurvedicInterpretation) && (
+            <PremiumLock
+              contentType="protocols"
+              itemCount={aiResult.recommendations?.length || 0}
+              description="Get personalized recommendations and detailed Ayurvedic interpretation"
+            >
+              {/* Recommendations */}
+              {aiResult.recommendations && aiResult.recommendations.length > 0 && (
+                <View style={styles.recommendationsCard}>
+                  <Text style={styles.recommendationsTitle}>Recommendations</Text>
+                  {aiResult.recommendations.map((rec, idx) => (
+                    <View key={idx} style={styles.recommendationRow}>
+                      <Feather name="check" size={14} color="#4CAF50" />
+                      <Text style={styles.recommendationText}>{rec}</Text>
+                    </View>
+                  ))}
                 </View>
-              ))}
-            </View>
-          )}
+              )}
 
-          {/* Ayurvedic Interpretation */}
-          {aiResult.ayurvedicInterpretation && (
-            <View style={styles.interpretationCard}>
-              <Text style={styles.interpretationTitle}>Ayurvedic Interpretation</Text>
-              <Text style={styles.interpretationText}>{aiResult.ayurvedicInterpretation}</Text>
-            </View>
+              {/* Ayurvedic Interpretation */}
+              {aiResult.ayurvedicInterpretation && (
+                <View style={styles.interpretationCard}>
+                  <Text style={styles.interpretationTitle}>Ayurvedic Interpretation</Text>
+                  <Text style={styles.interpretationText}>{aiResult.ayurvedicInterpretation}</Text>
+                </View>
+              )}
+            </PremiumLock>
           )}
 
           {/* Auto-saved indicator */}
@@ -429,6 +457,16 @@ export default function TongueDiagnosisScreen() {
             <Feather name="check-circle" size={16} color="#6B8E23" />
             <Text style={styles.autoSavedText}>Saved to My Plan</Text>
           </View>
+
+          {/* Action Button */}
+          <TouchableOpacity
+            style={styles.ojasButton}
+            onPress={() => navigation.navigate('Ojas' as never)}
+          >
+            <Text style={styles.ojasButtonText}>
+              View Ojas Tracker →
+            </Text>
+          </TouchableOpacity>
         </View>
       )}
 
@@ -499,6 +537,28 @@ export default function TongueDiagnosisScreen() {
         </Text>
         <Text style={styles.manuscriptSource}>- Charaka Samhita</Text>
       </View>
+
+      {/* Product Recommendations - shown after educational section */}
+      {aiResult && aiResult.doshaIndication && (
+        <View style={styles.productRecommendationsSection}>
+          <View style={styles.productSectionTitleRow}>
+            <MaterialCommunityIcons name="leaf" size={22} color="#4CAF50" />
+            <Text style={styles.productSectionTitle}> Suggested Ayurvedic Products</Text>
+          </View>
+          <Text style={styles.productSectionSubtitle}>
+            These herbs can help balance your {aiResult.doshaIndication.dominant} constitution
+          </Text>
+          {getRecommendedProducts(aiResult.doshaIndication.dominant.toLowerCase() as 'vata' | 'pitta' | 'kapha', 3).map((product) => (
+            <ProductCard key={product.id} product={product} showFullDetails={false} />
+          ))}
+          <TouchableOpacity
+            style={styles.shopMoreButton}
+            onPress={() => navigation.navigate('Pharmacy' as never)}
+          >
+            <Text style={styles.shopMoreText}>View All Products →</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </ScrollView>
   );
 }
@@ -853,6 +913,21 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
   },
+  ojasButton: {
+    backgroundColor: '#FFF8E7',
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+    borderRadius: 25,
+    marginTop: 12,
+    borderWidth: 2,
+    borderColor: '#FFD700',
+    alignItems: 'center',
+  },
+  ojasButtonText: {
+    color: '#E65100',
+    fontSize: 16,
+    fontWeight: '600',
+  },
   educationCard: {
     backgroundColor: '#FFF9E6',
     padding: 16,
@@ -897,5 +972,41 @@ const styles = StyleSheet.create({
     color: '#B87333',
     fontStyle: 'italic',
     textAlign: 'right',
+  },
+  productRecommendationsSection: {
+    backgroundColor: '#FFFFFF',
+    padding: 16,
+    borderRadius: 12,
+    marginTop: 16,
+    borderWidth: 2,
+    borderColor: '#4CAF50',
+  },
+  productSectionTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  productSectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#2E7D32',
+  },
+  productSectionSubtitle: {
+    fontSize: 13,
+    color: '#5D4037',
+    marginBottom: 12,
+  },
+  shopMoreButton: {
+    backgroundColor: '#E8F5E9',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    alignItems: 'center',
+    marginTop: 12,
+  },
+  shopMoreText: {
+    color: '#2E7D32',
+    fontSize: 14,
+    fontWeight: '600',
   },
 });

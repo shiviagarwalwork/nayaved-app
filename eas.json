@@ -11,7 +11,17 @@
         "simulator": true
       }
     },
+    "development-device": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "ios": {
+        "simulator": false
+      }
+    },
     "preview": {
+      "env": {
+        "SENTRY_DISABLE_AUTO_UPLOAD": "true"
+      },
       "distribution": "internal",
       "android": {
         "buildType": "apk"
@@ -21,6 +31,9 @@
       }
     },
     "production": {
+      "env": {
+        "SENTRY_DISABLE_AUTO_UPLOAD": "true"
+      },
       "ios": {
         "autoIncrement": "buildNumber"
       },
@@ -38,9 +51,9 @@
   "submit": {
     "production": {
       "ios": {
-        "appleId": "YOUR_APPLE_ID@email.com",
-        "ascAppId": "YOUR_APP_STORE_CONNECT_APP_ID",
-        "appleTeamId": "YOUR_TEAM_ID"
+        "appleId": "shivagar@icloud.com",
+        "ascAppId": "6758218884",
+        "appleTeamId": "6P8TABRK2W"
       },
       "android": {
         "serviceAccountKeyPath": "./google-play-service-account.json",

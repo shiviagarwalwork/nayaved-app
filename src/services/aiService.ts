@@ -26,6 +26,7 @@
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { File } from 'expo-file-system';
+import * as Sentry from '@sentry/react-native';
 
 // ============================================================
 // API CONFIGURATION
@@ -36,8 +37,8 @@ import { File } from 'expo-file-system';
 // ============================================================
 
 const API_BASE_URL = __DEV__
-  ? 'http://10.0.0.218:4000'  // Replace with your local IP for physical device testing
-  : 'https://backend-8j5meijqw-shiviagarwalwork-6100s-projects.vercel.app';
+  ? 'http://10.0.0.83:4000'  // Replace with your local IP for physical device testing
+  : 'https://backend-nu-gold-17.vercel.app';
 
 // Storage keys
 const USER_ID_KEY = '@nayaved_user_id';
@@ -65,29 +66,50 @@ export const getUserId = async (): Promise<string> => {
 const apiCall = async (endpoint: string, body?: any) => {
   const userId = await getUserId();
 
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-    method: body ? 'POST' : 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-user-id': userId,
-    },
-    body: body ? JSON.stringify(body) : undefined,
+  Sentry.addBreadcrumb({
+    category: 'api',
+    message: `API call: ${endpoint}`,
+    level: 'info',
   });
 
-  const data = await response.json();
+  try {
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      method: body ? 'POST' : 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-user-id': userId,
+      },
+      body: body ? JSON.stringify(body) : undefined,
+    });
 
-  if (!response.ok) {
-    // Check if it's a usage limit error
-    if (data.error === 'usage_limit') {
-      const error: any = new Error(data.message || 'Usage limit reached');
-      error.code = 'USAGE_LIMIT';
-      error.data = data;
-      throw error;
+    const data = await response.json();
+
+    if (!response.ok) {
+      // Check if it's a usage limit error
+      if (data.error === 'usage_limit') {
+        const error: any = new Error(data.message || 'Usage limit reached');
+        error.code = 'USAGE_LIMIT';
+        error.data = data;
+        throw error;
+      }
+      throw new Error(data.error || `API error: ${response.status}`);
     }
-    throw new Error(data.error || `API error: ${response.status}`);
-  }
 
-  return data;
+    Sentry.addBreadcrumb({
+      category: 'api',
+      message: `API success: ${endpoint}`,
+      level: 'info',
+    });
+
+    return data;
+  } catch (error: any) {
+    Sentry.addBreadcrumb({
+      category: 'api',
+      message: `API failed: ${endpoint} - ${error.message}`,
+      level: 'error',
+    });
+    throw error;
+  }
 };
 
 // Convert image URI to base64

@@ -211,38 +211,36 @@ export default function PlanScreen() {
 
       {/* Tab Navigation */}
       <View style={styles.tabContainer}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {[
-            { key: 'morning', label: 'Morning', icon: 'sunrise' },
-            { key: 'midday', label: 'Midday', icon: 'sun' },
-            { key: 'evening', label: 'Evening', icon: 'sunset' },
-            { key: 'diet', label: 'Diet', icon: 'food-apple' },
-            { key: 'herbs', label: 'Herbs', icon: 'leaf' },
-          ].map((tab) => (
-            <TouchableOpacity
-              key={tab.key}
-              style={[styles.tab, activeTab === tab.key && styles.tabActive]}
-              onPress={() => setActiveTab(tab.key as any)}
-            >
-              {tab.icon === 'food-apple' || tab.icon === 'leaf' ? (
-                <MaterialCommunityIcons
-                  name={tab.icon as any}
-                  size={18}
-                  color={activeTab === tab.key ? '#FFFFFF' : ManuscriptColors.inkBrown}
-                />
-              ) : (
-                <Feather
-                  name={tab.icon as any}
-                  size={18}
-                  color={activeTab === tab.key ? '#FFFFFF' : ManuscriptColors.inkBrown}
-                />
-              )}
-              <Text style={[styles.tabText, activeTab === tab.key && styles.tabTextActive]}>
-                {tab.label}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
+        {[
+          { key: 'morning', label: 'Morning', icon: 'sunrise' },
+          { key: 'midday', label: 'Midday', icon: 'sun' },
+          { key: 'evening', label: 'Evening', icon: 'sunset' },
+          { key: 'diet', label: 'Diet', icon: 'food-apple' },
+          { key: 'herbs', label: 'Herbs', icon: 'leaf' },
+        ].map((tab) => (
+          <TouchableOpacity
+            key={tab.key}
+            style={[styles.tab, activeTab === tab.key && styles.tabActive]}
+            onPress={() => setActiveTab(tab.key as any)}
+          >
+            {tab.icon === 'food-apple' || tab.icon === 'leaf' ? (
+              <MaterialCommunityIcons
+                name={tab.icon as any}
+                size={16}
+                color={activeTab === tab.key ? '#FFFFFF' : ManuscriptColors.inkBrown}
+              />
+            ) : (
+              <Feather
+                name={tab.icon as any}
+                size={16}
+                color={activeTab === tab.key ? '#FFFFFF' : ManuscriptColors.inkBrown}
+              />
+            )}
+            <Text style={[styles.tabText, activeTab === tab.key && styles.tabTextActive]}>
+              {tab.label}
+            </Text>
+          </TouchableOpacity>
+        ))}
       </View>
 
       {/* Morning Routine */}
@@ -671,16 +669,19 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   tabContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
     marginBottom: 16,
   },
   tab: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 10,
-    paddingHorizontal: 16,
+    justifyContent: 'center',
+    paddingVertical: 9,
+    paddingHorizontal: 14,
     backgroundColor: ManuscriptColors.parchment,
     borderRadius: 20,
-    marginRight: 8,
     borderWidth: 1,
     borderColor: ManuscriptColors.copperBrown,
   },
@@ -689,8 +690,8 @@ const styles = StyleSheet.create({
     borderColor: ManuscriptColors.vermillion,
   },
   tabText: {
-    marginLeft: 6,
-    fontSize: 14,
+    marginLeft: 5,
+    fontSize: 13,
     fontWeight: '600',
     color: ManuscriptColors.inkBrown,
   },

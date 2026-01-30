@@ -50,6 +50,7 @@ export default function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [appleSignInAvailable, setAppleSignInAvailable] = useState(false);
+  const [activeButton, setActiveButton] = useState<'google' | 'apple' | 'guest' | null>(null);
 
   useEffect(() => {
     checkAppleSignIn();
@@ -75,19 +76,25 @@ export default function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
   const handleGoogleSignIn = async () => {
     clearError();
     setError('');
+    setActiveButton('google');
     await signInWithGoogle();
+    setActiveButton(null);
   };
 
   const handleAppleSignIn = async () => {
     clearError();
     setError('');
+    setActiveButton('apple');
     await signInWithApple();
+    setActiveButton(null);
   };
 
   const handleGuestLogin = async () => {
     clearError();
     setError('');
+    setActiveButton('guest');
     await continueAsGuest();
+    setActiveButton(null);
   };
 
   const handleInviteCodeLogin = async () => {
@@ -182,7 +189,7 @@ export default function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
                 disabled={isProcessing}
                 activeOpacity={0.8}
               >
-                {isProcessing ? (
+                {activeButton === 'google' && authLoading ? (
                   <ActivityIndicator color="#EA4335" />
                 ) : (
                   <>
@@ -200,7 +207,7 @@ export default function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
                   disabled={isProcessing}
                   activeOpacity={0.8}
                 >
-                  {isProcessing ? (
+                  {activeButton === 'apple' && authLoading ? (
                     <ActivityIndicator color="#000000" />
                   ) : (
                     <>
@@ -228,8 +235,14 @@ export default function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
               disabled={isProcessing}
               activeOpacity={0.8}
             >
-              <MaterialCommunityIcons name="account-outline" size={22} color={ManuscriptColors.inkBrown} />
-              <Text style={styles.guestButtonText}>Continue as Guest</Text>
+              {activeButton === 'guest' && authLoading ? (
+                <ActivityIndicator color={ManuscriptColors.inkBrown} />
+              ) : (
+                <>
+                  <MaterialCommunityIcons name="account-outline" size={22} color={ManuscriptColors.inkBrown} />
+                  <Text style={styles.guestButtonText}>Continue as Guest</Text>
+                </>
+              )}
             </TouchableOpacity>
 
             <TouchableOpacity

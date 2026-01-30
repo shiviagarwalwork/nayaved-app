@@ -15,6 +15,7 @@ import { DoshaResult } from '../types';
 import ManuscriptCard from '../components/ManuscriptCard';
 import ManuscriptQuote from '../components/ManuscriptQuote';
 import { ManuscriptColors, ManuscriptFonts } from '../components/ManuscriptConstants';
+import { saveScanResult } from '../services/dailyRitualService';
 
 const { width } = Dimensions.get('window');
 
@@ -73,6 +74,18 @@ export default function AssessmentScreen() {
 
     // Save dosha result to AsyncStorage so PlanScreen can access it
     await AsyncStorage.setItem('doshaResult', JSON.stringify(doshaResult));
+
+    // Save to daily ritual service for streak tracking
+    await saveScanResult({
+      type: 'dosha',
+      summary: `${dominant.charAt(0).toUpperCase() + dominant.slice(1)} dominant constitution`,
+      dominantDosha: dominant as 'vata' | 'pitta' | 'kapha',
+      metrics: {
+        vata: doshaResult.vata,
+        pitta: doshaResult.pitta,
+        kapha: doshaResult.kapha,
+      },
+    });
 
     setResult(doshaResult);
     setShowResults(true);

@@ -28,7 +28,7 @@ const BlogStack = createStackNavigator();
 function HomeStackNavigator() {
   return (
     <HomeStack.Navigator screenOptions={{ headerShown: false }}>
-      <HomeStack.Screen name="HomeMain" component={HomeScreen} />
+      <HomeStack.Screen name="HomeMain" component={HomeScreen} options={{ title: 'Home' }} />
       <HomeStack.Screen
         name="QuickFixDetail"
         component={QuickFixDetailScreen}
@@ -179,6 +179,11 @@ export default function AppNavigator() {
           name="Plan"
           component={PlanScreen}
           options={{ title: 'My Plan' }}
+        />
+        <Tab.Screen
+          name="Pharmacy"
+          component={PharmacyScreen}
+          options={{ title: 'Wellness' }}
         />
         <Tab.Screen
           name="Blog"

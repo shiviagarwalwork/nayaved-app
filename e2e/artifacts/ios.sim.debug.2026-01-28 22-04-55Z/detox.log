@@ -1,0 +1,1030 @@
+17:04:55.667 detox[82583] B node_modules/.bin/detox test --configuration ios.sim.debug
+  data: {
+    "id": "b54a66f6-71fa-1445-23a3-149c80d52c74",
+    "detoxConfig": {
+      "configurationName": "ios.sim.debug",
+      "apps": {
+        "default": {
+          "type": "ios.app",
+          "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/NayaVedAI.app",
+          "build": "xcodebuild -workspace ios/NayaVedAI.xcworkspace -scheme NayaVedAI -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build"
+        }
+      },
+      "artifacts": {
+        "rootDir": "e2e/artifacts/ios.sim.debug.2026-01-28 22-04-55Z",
+        "plugins": {
+          "log": {
+            "enabled": true,
+            "keepOnlyFailedTestsArtifacts": false
+          },
+          "screenshot": {
+            "shouldTakeAutomaticSnapshots": true,
+            "keepOnlyFailedTestsArtifacts": true,
+            "takeWhen": {
+              "testStart": false,
+              "testDone": true
+            },
+            "enabled": true
+          },
+          "video": {
+            "enabled": false,
+            "keepOnlyFailedTestsArtifacts": false
+          },
+          "instruments": {
+            "enabled": false,
+            "keepOnlyFailedTestsArtifacts": false
+          },
+          "uiHierarchy": {
+            "enabled": false,
+            "keepOnlyFailedTestsArtifacts": false
+          }
+        }
+      },
+      "behavior": {
+        "init": {
+          "keepLockFile": false,
+          "reinstallApp": true,
+          "exposeGlobals": true
+        },
+        "cleanup": {
+          "shutdownDevice": false
+        },
+        "launchApp": "auto"
+      },
+      "cli": {
+        "configuration": "ios.sim.debug",
+        "start": true
+      },
+      "commands": [
+        {
+          "appName": "default",
+          "build": "xcodebuild -workspace ios/NayaVedAI.xcworkspace -scheme NayaVedAI -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build"
+        }
+      ],
+      "device": {
+        "type": "ios.simulator",
+        "device": {
+          "type": "iPhone 17 Pro"
+        }
+      },
+      "logger": {
+        "level": "info",
+        "overrideConsole": true,
+        "options": {
+          "showLoggerName": true,
+          "showPid": true,
+          "showLevel": false,
+          "showMetadata": false,
+          "basepath": "/Users/shivi.agarwal/Desktop/GithubMatLeave/Nayaved App/nayaved-app/node_modules/detox/src",
+          "prefixers": {},
+          "stringifiers": {}
+        }
+      },
+      "testRunner": {
+        "retries": 0,
+        "forwardEnv": false,
+        "detached": false,
+        "bail": false,
+        "noRetryArgs": [
+          "shard"
+        ],
+        "jest": {
+          "setupTimeout": 120000,
+          "teardownTimeout": 30000,
+          "retryAfterCircusRetries": false,
+          "reportWorkerAssign": true
+        },
+        "args": {
+          "$0": "jest",
+          "_": [],
+          "config": "e2e/jest.config.js",
+          "--": []
+        }
+      },
+      "session": {
+        "autoStart": true,
+        "debugSynchronization": 10000
+      }
+    },
+    "detoxIPCServer": "primary-82583",
+    "testResults": [],
+    "testSessionIndex": 0,
+    "workersCount": 0
+  }
+17:04:55.671 detox[82583] i Server path not specified, so defaulting to ipc.config.socketRoot + ipc.config.appspace + ipc.config.id /tmp/detox.primary-82583
+17:04:55.673 detox[82583] i starting server on  /tmp/detox.primary-82583 
+17:04:55.673 detox[82583] i starting TLS server false
+17:04:55.673 detox[82583] i starting server as Unix || Windows Socket
+17:04:55.674 detox[82583] i Detox server listening on localhost:50855...
+17:04:55.676 detox[82583] i Serialized the session state at: /private/var/folders/xs/zdg5gfcx5ld11ybt7f14r4h40000gn/T/b54a66f6-71fa-1445-23a3-149c80d52c74.detox.json
+17:04:55.677 detox[82583] B jest --config e2e/jest.config.js
+17:04:56.344 detox[82584] i Service path not specified, so defaulting to ipc.config.socketRoot + ipc.config.appspace + id 
+17:04:56.346 detox[82584] i requested connection to  primary-82583 /tmp/detox.primary-82583
+17:04:56.346 detox[82584] i Connecting client on Unix Socket : /tmp/detox.primary-82583
+17:04:56.347 detox[82583] i ## socket connection to server detected ##
+17:04:56.347 detox[82584] i retrying reset
+17:04:56.347 detox[82584] i dispatching event to  primary-82583 /tmp/detox.primary-82583  :  registerContext , { id: 'secondary-82584' }
+17:04:56.348 detox[82583] i received event of :  registerContext { id: 'secondary-82584' }
+17:04:56.348 detox[82583] i dispatching event to socket  :  registerContextDone {
+  testResults: [],
+  testSessionIndex: 0,
+  unsafe_earlyTeardown: undefined
+}
+17:04:56.349 detox[82584] i ## received events ##
+17:04:56.349 detox[82584] i detected event registerContextDone { testResults: [], testSessionIndex: 0 }
+17:04:56.457 detox[82584] B e2e/starter.test.js
+17:04:56.477 detox[82584] B set up environment
+17:04:56.478 detox[82583] i received event of :  registerWorker { workerId: 'w1' }
+17:04:56.478 detox[82583] i dispatching event to socket  :  registerWorkerDone { workersCount: 1 }
+17:04:56.478 detox[82583] i broadcasting event to all known sockets listening to  /tmp/detox.primary-82583  :   sessionStateUpdate { workersCount: 1 }
+17:04:56.478 detox[82584] i dispatching event to  primary-82583 /tmp/detox.primary-82583  :  registerWorker , { workerId: 'w1' }
+17:04:56.478 detox[82584] i ## received events ##
+17:04:56.479 detox[82584] i detected event registerWorkerDone { workersCount: 1 }
+17:04:56.646 detox[82584] i ## received events ##
+17:04:56.646 detox[82584] i detected event sessionStateUpdate { workersCount: 1 }
+17:04:56.652 detox[82583] B connection :50855<->:50863
+17:04:56.653 detox[82584] i opened web socket to: ws://localhost:50855
+17:04:56.654 detox[82584] i send message
+  data: {"type":"login","params":{"sessionId":"80c3bf7e-3604-bb15-f6e0-23ab090eeb27","role":"tester"},"messageId":0}
+17:04:56.655 detox[82583] i get
+  data: {"type":"login","params":{"sessionId":"80c3bf7e-3604-bb15-f6e0-23ab090eeb27","role":"tester"},"messageId":0}
+17:04:56.655 detox[82583] i created session 80c3bf7e-3604-bb15-f6e0-23ab090eeb27
+17:04:56.655 detox[82583] i send
+  data: {
+    "type": "loginSuccess",
+    "params": {
+      "testerConnected": true,
+      "appConnected": false
+    },
+    "messageId": 0
+  }
+17:04:56.656 detox[82583] i tester joined session 80c3bf7e-3604-bb15-f6e0-23ab090eeb27
+17:04:56.657 detox[82584] i get message
+  data: {"type":"loginSuccess","params":{"testerConnected":true,"appConnected":false},"messageId":0}
+   
+17:04:56.942 detox[82584] i dispatching event to  primary-82583 /tmp/detox.primary-82583  :  allocateDevice , {
+  deviceConfig: { type: 'ios.simulator', device: { type: 'iPhone 17 Pro' } }
+}
+17:04:56.943 detox[82583] i received event of :  allocateDevice {
+  deviceConfig: { type: 'ios.simulator', device: { type: 'iPhone 17 Pro' } }
+}
+17:04:56.947 detox[82583] B init
+  args: ()
+17:04:56.949 detox[82583] E init
+17:04:56.949 detox[82583] B allocate
+  data: {
+    "type": "ios.simulator",
+    "device": {
+      "type": "iPhone 17 Pro"
+    }
+  }
+17:04:56.982 detox[82583] i applesimutils --list --byType "iPhone 17 Pro" --fields udid,name,deviceType,os,identifier
+17:04:56.982 detox[82583] i Searching for device by type = "iPhone 17 Pro" ...
+17:04:57.285 detox[82583] i [
+  {
+    "os" : {
+      "name" : "iOS 26.2",
+      "identifier" : "com.apple.CoreSimulator.SimRuntime.iOS-26-2"
+    },
+    "name" : "iPhone 17 Pro",
+    "udid" : "AC7E343F-585F-430E-B17D-BDD649803605",
+    "deviceType" : {
+      "name" : "iPhone 17 Pro",
+      "identifier" : "com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro"
+    }
+  }
+]
+
+17:04:57.286 detox[82583] i settled on AC7E343F-585F-430E-B17D-BDD649803605
+  data: {
+    "id": "AC7E343F-585F-430E-B17D-BDD649803605",
+    "udid": "AC7E343F-585F-430E-B17D-BDD649803605"
+  }
+17:04:57.286 detox[82583] E allocate
+17:04:57.286 detox[82583] B post-allocate: AC7E343F-585F-430E-B17D-BDD649803605
+  data: {
+    "id": "AC7E343F-585F-430E-B17D-BDD649803605",
+    "udid": "AC7E343F-585F-430E-B17D-BDD649803605"
+  }
+17:04:57.286 detox[82583] i applesimutils --list --byId AC7E343F-585F-430E-B17D-BDD649803605 --maxResults 1 --fields udid,os,version,state
+17:04:57.478 detox[82583] i [
+  {
+    "state" : "Booted",
+    "os" : {
+      "version" : "26.2"
+    },
+    "udid" : "AC7E343F-585F-430E-B17D-BDD649803605"
+  }
+]
+
+17:04:57.479 detox[82583] E post-allocate: AC7E343F-585F-430E-B17D-BDD649803605
+17:04:57.479 detox[82583] i dispatching event to socket  :  allocateDeviceDone {
+  deviceCookie: {
+    id: 'AC7E343F-585F-430E-B17D-BDD649803605',
+    udid: 'AC7E343F-585F-430E-B17D-BDD649803605',
+    type: 'ios.simulator',
+    bootArgs: undefined,
+    headless: undefined
+  }
+}
+17:04:57.479 detox[82584] i ## received events ##
+17:04:57.479 detox[82584] i detected event allocateDeviceDone {
+  deviceCookie: {
+    id: 'AC7E343F-585F-430E-B17D-BDD649803605',
+    udid: 'AC7E343F-585F-430E-B17D-BDD649803605',
+    type: 'ios.simulator'
+  }
+}
+17:04:57.493 detox[82584] B onBootDevice
+  args: ({"deviceId":"AC7E343F-585F-430E-B17D-BDD649803605"})
+17:04:57.493 detox[82584] E onBootDevice
+17:04:57.494 detox[82584] B installUtilBinaries
+  args: ()
+17:04:57.494 detox[82584] E installUtilBinaries
+17:04:57.494 detox[82584] B selectApp
+  args: ("default")
+17:04:57.520 detox[82584] E selectApp
+17:04:57.520 detox[82584] B uninstallApp
+  args: ()
+17:04:57.520 detox[82584] B onBeforeUninstallApp
+  args: ({"deviceId":"AC7E343F-585F-430E-B17D-BDD649803605","bundleId":"com.nayaved.app"})
+17:04:57.520 detox[82584] E onBeforeUninstallApp
+17:04:57.521 detox[82584] i /usr/bin/xcrun simctl uninstall AC7E343F-585F-430E-B17D-BDD649803605 com.nayaved.app
+17:04:57.521 detox[82584] i Uninstalling com.nayaved.app...
+17:04:57.851 detox[82584] i com.nayaved.app uninstalled
+17:04:57.852 detox[82584] E uninstallApp
+17:04:57.852 detox[82584] B selectApp
+  args: ("default")
+17:04:57.852 detox[82584] B terminateApp
+  args: ()
+17:04:57.852 detox[82584] B onBeforeTerminateApp
+  args: ({"deviceId":"AC7E343F-585F-430E-B17D-BDD649803605","bundleId":"com.nayaved.app"})
+17:04:57.853 detox[82584] E onBeforeTerminateApp
+17:04:57.853 detox[82584] i /usr/bin/xcrun simctl terminate AC7E343F-585F-430E-B17D-BDD649803605 com.nayaved.app
+17:04:57.853 detox[82584] i Terminating com.nayaved.app...
+17:04:59.047 detox[82584] i An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.nayaved.app.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.nayaved.app" failed. found nothing to terminate
+	found nothing to terminate
+
+17:04:59.047 detox[82584] i Terminating com.nayaved.app...
+17:04:59.296 detox[82584] i "/usr/bin/xcrun simctl terminate AC7E343F-585F-430E-B17D-BDD649803605 com.nayaved.app" failed with error = Error: Command failed: /usr/bin/xcrun simctl terminate AC7E343F-585F-430E-B17D-BDD649803605 com.nayaved.app
+An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.nayaved.app.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.nayaved.app" failed. found nothing to terminate
+	found nothing to terminate
+ (code=3), stdout and stderr:
+
+17:04:59.296 detox[82584] i 
+17:04:59.296 detox[82584] i An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.nayaved.app.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.nayaved.app" failed. found nothing to terminate
+	found nothing to terminate
+
+17:04:59.296 detox[82584] B onTerminateApp
+  args: ({"deviceId":"AC7E343F-585F-430E-B17D-BDD649803605","bundleId":"com.nayaved.app"})
+17:04:59.296 detox[82584] E onTerminateApp
+17:04:59.296 detox[82584] E terminateApp
+17:04:59.296 detox[82584] E selectApp
+17:04:59.296 detox[82584] B installApp
+  args: ()
+17:04:59.296 detox[82584] i /usr/bin/xcrun simctl install AC7E343F-585F-430E-B17D-BDD649803605 "/Users/shivi.agarwal/Desktop/GithubMatLeave/Nayaved App/nayaved-app/ios/build/Build/Products/Debug-iphonesimulator/NayaVedAI.app"
+17:04:59.296 detox[82584] i Installing /Users/shivi.agarwal/Desktop/GithubMatLeave/Nayaved App/nayaved-app/ios/build/Build/Products/Debug-iphonesimulator/NayaVedAI.app...
+17:04:59.935 detox[82584] i /Users/shivi.agarwal/Desktop/GithubMatLeave/Nayaved App/nayaved-app/ios/build/Build/Products/Debug-iphonesimulator/NayaVedAI.app installed
+17:04:59.935 detox[82584] E installApp
+17:04:59.936 detox[82584] B selectApp
+  args: ("default")
+17:04:59.936 detox[82584] B terminateApp
+  args: ()
+17:04:59.936 detox[82584] B onBeforeTerminateApp
+  args: ({"deviceId":"AC7E343F-585F-430E-B17D-BDD649803605","bundleId":"com.nayaved.app"})
+17:04:59.936 detox[82584] E onBeforeTerminateApp
+17:04:59.936 detox[82584] i /usr/bin/xcrun simctl terminate AC7E343F-585F-430E-B17D-BDD649803605 com.nayaved.app
+17:04:59.936 detox[82584] i Terminating com.nayaved.app...
+17:05:01.164 detox[82584] i An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.nayaved.app.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.nayaved.app" failed. found nothing to terminate
+	found nothing to terminate
+
+17:05:01.164 detox[82584] i Terminating com.nayaved.app...
+17:05:01.336 detox[82584] i "/usr/bin/xcrun simctl terminate AC7E343F-585F-430E-B17D-BDD649803605 com.nayaved.app" failed with error = Error: Command failed: /usr/bin/xcrun simctl terminate AC7E343F-585F-430E-B17D-BDD649803605 com.nayaved.app
+An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.nayaved.app.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.nayaved.app" failed. found nothing to terminate
+	found nothing to terminate
+ (code=3), stdout and stderr:
+
+17:05:01.336 detox[82584] i 
+17:05:01.336 detox[82584] i An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.nayaved.app.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.nayaved.app" failed. found nothing to terminate
+	found nothing to terminate
+
+17:05:01.336 detox[82584] B onTerminateApp
+  args: ({"deviceId":"AC7E343F-585F-430E-B17D-BDD649803605","bundleId":"com.nayaved.app"})
+17:05:01.336 detox[82584] E onTerminateApp
+17:05:01.336 detox[82584] E terminateApp
+17:05:01.336 detox[82584] E selectApp
+17:05:01.336 detox[82584] E set up environment
+17:05:01.569 detox[82584] i starter.test.js is assigned to AC7E343F-585F-430E-B17D-BDD649803605 (iPhone 17 Pro)
+17:05:01.570 detox[82584] B run the tests
+17:05:01.570 detox[82584] B onRunDescribeStart
+  args: ({"name":"ROOT_DESCRIBE_BLOCK"})
+17:05:01.570 detox[82584] E onRunDescribeStart
+17:05:01.570 detox[82584] B NayaVed App
+17:05:01.570 detox[82584] B onRunDescribeStart
+  args: ({"name":"NayaVed App"})
+17:05:01.570 detox[82584] E onRunDescribeStart
+17:05:01.571 detox[82584] B beforeAll
+17:05:01.572 detox[82584] B launchApp
+  args: ({"newInstance":true})
+17:05:01.572 detox[82584] B terminateApp
+  args: ("com.nayaved.app")
+17:05:01.572 detox[82584] B onBeforeTerminateApp
+  args: ({"deviceId":"AC7E343F-585F-430E-B17D-BDD649803605","bundleId":"com.nayaved.app"})
+17:05:01.572 detox[82584] E onBeforeTerminateApp
+17:05:01.572 detox[82584] i /usr/bin/xcrun simctl terminate AC7E343F-585F-430E-B17D-BDD649803605 com.nayaved.app
+17:05:01.572 detox[82584] i Terminating com.nayaved.app...
+17:05:02.741 detox[82584] i An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.nayaved.app.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.nayaved.app" failed. found nothing to terminate
+	found nothing to terminate
+
+17:05:02.741 detox[82584] i Terminating com.nayaved.app...
+17:05:02.923 detox[82584] i "/usr/bin/xcrun simctl terminate AC7E343F-585F-430E-B17D-BDD649803605 com.nayaved.app" failed with error = Error: Command failed: /usr/bin/xcrun simctl terminate AC7E343F-585F-430E-B17D-BDD649803605 com.nayaved.app
+An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.nayaved.app.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.nayaved.app" failed. found nothing to terminate
+	found nothing to terminate
+ (code=3), stdout and stderr:
+
+17:05:02.924 detox[82584] i 
+17:05:02.924 detox[82584] i An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.nayaved.app.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.nayaved.app" failed. found nothing to terminate
+	found nothing to terminate
+
+17:05:02.924 detox[82584] B onTerminateApp
+  args: ({"deviceId":"AC7E343F-585F-430E-B17D-BDD649803605","bundleId":"com.nayaved.app"})
+17:05:02.924 detox[82584] E onTerminateApp
+17:05:02.924 detox[82584] E terminateApp
+17:05:02.924 detox[82584] B onBeforeLaunchApp
+  args: ({"bundleId":"com.nayaved.app","deviceId":"AC7E343F-585F-430E-B17D-BDD649803605","launchArgs":{"detoxServer":"ws://localhost:50855","detoxSessionId":"80c3bf7e-3604-bb15-f6e0-23ab090eeb27"}})
+17:05:02.925 detox[82584] i starting SimulatorLogRecording {
+  udid: 'AC7E343F-585F-430E-B17D-BDD649803605',
+  bundleId: 'com.nayaved.app'
+}
+17:05:02.925 detox[82584] i /usr/bin/xcrun simctl get_app_container AC7E343F-585F-430E-B17D-BDD649803605 com.nayaved.app
+17:05:03.139 detox[82584] i /Users/shivi.agarwal/Library/Developer/CoreSimulator/Devices/AC7E343F-585F-430E-B17D-BDD649803605/data/Containers/Bundle/Application/7B6ADE3E-3E0A-46DC-87C4-9AADFEC62F3A/NayaVedAI.app
+
+17:05:03.140 detox[82584] i /usr/bin/xcrun simctl spawn AC7E343F-585F-430E-B17D-BDD649803605 log stream --level debug --style compact --predicate "processImagePath beginsWith \"/Users/shivi.agarwal/Library/Developer/CoreSimulator/Devices/AC7E343F-585F-430E-B17D-BDD649803605/data/Containers/Bundle/Application/7B6ADE3E-3E0A-46DC-87C4-9AADFEC62F3A/NayaVedAI.app\""
+17:05:03.192 detox[82584] E onBeforeLaunchApp
+17:05:03.192 detox[82584] i SIMCTL_CHILD_GULGeneratedClassDisposeDisabled=YES SIMCTL_CHILD_DYLD_INSERT_LIBRARIES="/Users/shivi.agarwal/Library/Detox/ios/framework/bcd48aa61ce5ad185eec04dfe15f0f51f382f687/Detox.framework/Detox" /usr/bin/xcrun simctl launch AC7E343F-585F-430E-B17D-BDD649803605 com.nayaved.app --args -detoxServer ws://localhost:50855 -detoxSessionId 80c3bf7e-3604-bb15-f6e0-23ab090eeb27 -detoxDebugVisibility YES -detoxDisableHierarchyDump YES
+17:05:03.192 detox[82584] i Launching com.nayaved.app...
+17:05:03.635 detox[82584] i com.nayaved.app: 82693
+
+17:05:03.636 detox[82584] i /usr/bin/xcrun simctl get_app_container AC7E343F-585F-430E-B17D-BDD649803605 com.nayaved.app
+17:05:03.929 detox[82584] i /Users/shivi.agarwal/Library/Developer/CoreSimulator/Devices/AC7E343F-585F-430E-B17D-BDD649803605/data/Containers/Bundle/Application/7B6ADE3E-3E0A-46DC-87C4-9AADFEC62F3A/NayaVedAI.app
+
+17:05:03.948 detox[82584] i com.nayaved.app launched. To watch simulator logs, run:
+        /usr/bin/xcrun simctl spawn AC7E343F-585F-430E-B17D-BDD649803605 log stream --level debug --style compact --predicate 'process == "NayaVedAI"'
+17:05:03.949 detox[82584] B onLaunchApp
+  args: ({"bundleId":"com.nayaved.app","deviceId":"AC7E343F-585F-430E-B17D-BDD649803605","launchArgs":{"detoxServer":"ws://localhost:50855","detoxSessionId":"80c3bf7e-3604-bb15-f6e0-23ab090eeb27","detoxDebugVisibility":"YES","detoxDisableHierarchyDump":"YES"},"pid":82693})
+17:05:03.949 detox[82584] E onLaunchApp
+17:05:04.335 detox[82583] B connection :50855<->:50919
+17:05:04.561 detox[82583] i get
+  data: {"type":"login","params":{"sessionId":"80c3bf7e-3604-bb15-f6e0-23ab090eeb27","role":"app"},"messageId":0}
+17:05:04.561 detox[82583] i send
+  data: {
+    "type": "loginSuccess",
+    "params": {
+      "testerConnected": true,
+      "appConnected": true
+    },
+    "messageId": 0
+  }
+17:05:04.561 detox[82583] i app joined session 80c3bf7e-3604-bb15-f6e0-23ab090eeb27
+17:05:04.562 detox[82583] i send
+  data: {
+    "type": "appConnected"
+  }
+17:05:04.562 detox[82584] i get message
+  data: {"type":"appConnected"}
+   
+17:05:04.563 detox[82584] i send message
+  data: {"type":"isReady","params":{},"messageId":-1000}
+17:05:04.565 detox[82583] i get
+  data: {"type":"isReady","params":{},"messageId":-1000}
+17:05:04.565 detox[82583] i send
+  data: {
+    "type": "isReady",
+    "params": {},
+    "messageId": -1000
+  }
+17:05:09.123 detox[82583] i get
+  data: {"params":{},"type":"ready","messageId":-1000}
+17:05:09.123 detox[82583] i send
+  data: {
+    "params": {},
+    "type": "ready",
+    "messageId": -1000
+  }
+17:05:09.125 detox[82584] i get message
+  data: {"params":{},"type":"ready","messageId":-1000}
+   
+17:05:09.126 detox[82583] i get
+  data: {"messageId":-1000,"type":"ready","params":{}}
+17:05:09.126 detox[82583] i send
+  data: {
+    "messageId": -1000,
+    "type": "ready",
+    "params": {}
+  }
+17:05:09.126 detox[82583] i get
+  data: {"messageId":-1000,"type":"ready","params":{}}
+17:05:09.126 detox[82583] i send
+  data: {
+    "messageId": -1000,
+    "type": "ready",
+    "params": {}
+  }
+17:05:09.126 detox[82583] i get
+  data: {"type":"waitForActive","params":{},"messageId":1}
+17:05:09.126 detox[82583] i send
+  data: {
+    "type": "waitForActive",
+    "params": {},
+    "messageId": 1
+  }
+17:05:09.126 detox[82584] i send message
+  data: {"type":"waitForActive","params":{},"messageId":1}
+17:05:09.126 detox[82584] i get message
+  data: {"messageId":-1000,"type":"ready","params":{}}
+   
+17:05:09.126 detox[82584] i get message
+  data: {"messageId":-1000,"type":"ready","params":{}}
+   
+17:05:09.133 detox[82583] i get
+  data: {"type":"waitForActiveDone","params":{},"messageId":1}
+17:05:09.133 detox[82583] i send
+  data: {
+    "type": "waitForActiveDone",
+    "params": {},
+    "messageId": 1
+  }
+17:05:09.134 detox[82584] i get message
+  data: {"type":"waitForActiveDone","params":{},"messageId":1}
+   
+17:05:09.134 detox[82584] B onAppReady
+  args: ({"deviceId":"AC7E343F-585F-430E-B17D-BDD649803605","bundleId":"com.nayaved.app","pid":82693})
+17:05:09.134 detox[82584] E onAppReady
+17:05:09.134 detox[82584] E launchApp
+17:05:09.134 detox[82584] B disableSynchronization
+  args: ()
+17:05:09.134 detox[82584] i send message
+  data: {"type":"setSyncSettings","params":{"enabled":false},"messageId":2}
+17:05:09.135 detox[82583] i get
+  data: {"type":"setSyncSettings","params":{"enabled":false},"messageId":2}
+17:05:09.135 detox[82583] i send
+  data: {
+    "type": "setSyncSettings",
+    "params": {
+      "enabled": false
+    },
+    "messageId": 2
+  }
+17:05:09.135 detox[82583] i get
+  data: {"messageId":2,"params":{},"type":"setSyncSettingsDone"}
+17:05:09.135 detox[82583] i send
+  data: {
+    "messageId": 2,
+    "params": {},
+    "type": "setSyncSettingsDone"
+  }
+17:05:09.136 detox[82584] i get message
+  data: {"messageId":2,"params":{},"type":"setSyncSettingsDone"}
+   
+17:05:09.136 detox[82584] E disableSynchronization
+17:05:09.137 detox[82583] i get
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"text","value":"Continue as Guest","isRegex":false},"expectation":"toBeVisible","timeout":8000},"messageId":3}
+17:05:09.137 detox[82583] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "expectation",
+      "predicate": {
+        "type": "text",
+        "value": "Continue as Guest",
+        "isRegex": false
+      },
+      "expectation": "toBeVisible",
+      "timeout": 8000
+    },
+    "messageId": 3
+  }
+17:05:09.137 detox[82584] i send message
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"text","value":"Continue as Guest","isRegex":false},"expectation":"toBeVisible","timeout":8000},"messageId":3}
+17:05:09.137 detox[82584] B wait until timeout (8000 ms) with timeout (8000 ms)
+  data: {
+    "type": "expectation",
+    "predicate": {
+      "type": "text",
+      "value": "Continue as Guest",
+      "isRegex": false
+    },
+    "expectation": "toBeVisible",
+    "timeout": 8000
+  }
+17:05:17.257 detox[82583] i get
+  data: {"params":{"viewHierarchy":"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<ViewHierarchy>\n    <UIWindow alpha=\"1.0\" class=\"UIWindow\" focused=\"false\" height=\"874\" ptr=\"0x108e14440\" visibility=\"visible\" width=\"402\">\n        <UITransitionView alpha=\"1.0\" class=\"UITransitionView\" focused=\"false\" height=\"874\" ptr=\"0x108f04ec0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n            <UIDropShadowView alpha=\"1.0\" class=\"UIDropShadowView\" focused=\"false\" height=\"874\" ptr=\"0x108f07dc0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                <RCTSurfaceHostingProxyRootView alpha=\"1.0\" class=\"RCTSurfaceHostingProxyRootView\" focused=\"false\" height=\"874\" ptr=\"0x108d516f0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                    <RCTSurfaceView alpha=\"1.0\" class=\"RCTSurfaceView\" focused=\"false\" height=\"874\" ptr=\"0x10a02a250\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                        <RCTRootComponentView alpha=\"1.0\" class=\"RCTRootComponentView\" focused=\"false\" height=\"874\" ptr=\"0x10a058350\" tag=\"11\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                            <RNCSafeAreaProviderComponentView alpha=\"1.0\" class=\"RNCSafeAreaProviderComponentView\" focused=\"false\" height=\"874\" ptr=\"0x108f5c9c0\" tag=\"2\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                <RNCSafeAreaViewComponentView alpha=\"1.0\" class=\"RNCSafeAreaViewComponentView\" focused=\"false\" height=\"874\" ptr=\"0x164121ce0\" tag=\"94\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                    <RCTUnimplementedViewComponentView alpha=\"1.0\" class=\"RCTUnimplementedViewComponentView\" focused=\"false\" height=\"778\" label=\"AlphaMa, You're juggling a career, a family,\nand a million invisible tasks., Finally, someone who gets it., , Continue with Google, , Continue with Apple, Unimplemented component: &lt;ViewManagerAdapter_ExpoLinearGradient_7671457332239917058&gt;\" ptr=\"0x164129fb0\" tag=\"92\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"62\">\n                                        <RCTImageComponentView alpha=\"1.0\" class=\"RCTImageComponentView\" focused=\"false\" height=\"110\" ptr=\"0x1275678f0\" tag=\"60\" visibility=\"visible\" width=\"110\" x=\"146\" y=\"64\">\n                                            <RCTUIImageViewAnimated alpha=\"1.0\" class=\"RCTUIImageViewAnimated\" focused=\"false\" height=\"110\" ptr=\"0x127566a20\" visibility=\"visible\" width=\"110\" x=\"0\" y=\"0\" \/>\n                                        <\/RCTImageComponentView>\n                                        <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"43\" label=\"AlphaMa\" ptr=\"0x127568520\" tag=\"64\" text=\"AlphaMa\" visibility=\"visible\" width=\"148\" x=\"126\" y=\"198\">\n                                            <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"43\" ptr=\"0x127568880\" visibility=\"visible\" width=\"148\" x=\"0\" y=\"0\" \/>\n                                        <\/RCTParagraphComponentView>\n                                        <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"56\" label=\"You're juggling a career, a family,\nand a million invisible tasks.\" ptr=\"0x127566c90\" tag=\"74\" text=\"You're juggling a career, a family,\nand a million invisible tasks.\" visibility=\"visible\" width=\"262\" x=\"70\" y=\"313\">\n                                            <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"56\" ptr=\"0x127568290\" visibility=\"visible\" width=\"262\" x=\"0\" y=\"0\" \/>\n                                        <\/RCTParagraphComponentView>\n                                        <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"24\" label=\"Finally, someone who gets it.\" ptr=\"0x16412af60\" tag=\"78\" text=\"Finally, someone who gets it.\" visibility=\"visible\" width=\"270\" x=\"66\" y=\"385\">\n                                            <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"24\" ptr=\"0x16412b2c0\" visibility=\"visible\" width=\"270\" x=\"0\" y=\"0\" \/>\n                                        <\/RCTParagraphComponentView>\n                                        <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"60\" label=\", Continue with Google\" ptr=\"0x127477bb0\" tag=\"88\" visibility=\"visible\" width=\"354\" x=\"24\" y=\"465\">\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"20\" label=\"\" ptr=\"0x16412b8e0\" tag=\"106\" text=\"\" visibility=\"visible\" width=\"20\" x=\"77\" y=\"20\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"20\" ptr=\"0x16412bc40\" visibility=\"visible\" width=\"20\" x=\"0\" y=\"0\" \/>\n                                            <\/RCTParagraphComponentView>\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"19\" label=\"Continue with Google\" ptr=\"0x16412c000\" tag=\"86\" text=\"Continue with Google\" visibility=\"visible\" width=\"162\" x=\"113\" y=\"20\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"19\" ptr=\"0x16412c360\" visibility=\"visible\" width=\"162\" x=\"0\" y=\"0\" \/>\n                                            <\/RCTParagraphComponentView>\n                                        <\/RCTViewComponentView>\n                                        <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"62\" label=\", Continue with Apple\" ptr=\"0x124bb6da0\" tag=\"102\" visibility=\"visible\" width=\"354\" x=\"24\" y=\"541\">\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"22\" label=\"\" ptr=\"0x124bb71e0\" tag=\"110\" text=\"\" visibility=\"visible\" width=\"22\" x=\"81\" y=\"20\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"22\" ptr=\"0x124bb9f20\" visibility=\"visible\" width=\"22\" x=\"0\" y=\"0\" \/>\n                                            <\/RCTParagraphComponentView>\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"19\" label=\"Continue with Apple\" ptr=\"0x124bba1b0\" tag=\"100\" text=\"Continue with Apple\" visibility=\"visible\" width=\"153\" x=\"119\" y=\"21\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"19\" ptr=\"0x124bba510\" visibility=\"visible\" width=\"153\" x=\"0\" y=\"0\" \/>\n                                            <\/RCTParagraphComponentView>\n                                        <\/RCTViewComponentView>\n                                        <UILabel alpha=\"1.0\" class=\"UILabel\" focused=\"false\" height=\"778\" label=\"Unimplemented component: &lt;ViewManagerAdapter_ExpoLinearGradient_7671457332239917058&gt;\" ptr=\"0x164129640\" text=\"Unimplemented component: &lt;ViewManagerAdapter_ExpoLinearGradient_7671457332239917058&gt;\" visibility=\"visible\" width=\"354\" x=\"24\" y=\"0\" \/>\n                                    <\/RCTUnimplementedViewComponentView>\n                                <\/RNCSafeAreaViewComponentView>\n                            <\/RNCSafeAreaProviderComponentView>\n                            <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"874\" ptr=\"0x12631f230\" tag=\"8\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                <RCTDebuggingOverlayComponentView alpha=\"1.0\" class=\"RCTDebuggingOverlayComponentView\" focused=\"false\" height=\"874\" ptr=\"0x12631fc40\" tag=\"6\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                    <RCTDebuggingOverlay alpha=\"1.0\" class=\"RCTDebuggingOverlay\" focused=\"false\" height=\"874\" ptr=\"0x1276bdc90\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" \/>\n                                <\/RCTDebuggingOverlayComponentView>\n                            <\/RCTViewComponentView>\n                            <RCTSafeAreaViewComponentView alpha=\"1.0\" class=\"RCTSafeAreaViewComponentView\" focused=\"false\" height=\"67\" ptr=\"0x12631f730\" tag=\"42\" visibility=\"visible\" width=\"382\" x=\"10\" y=\"786\">\n                                <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"48\" ptr=\"0x127699870\" tag=\"40\" visibility=\"visible\" width=\"382\" x=\"0\" y=\"0\">\n                                    <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"48\" ptr=\"0x1276993e0\" tag=\"38\" visibility=\"visible\" width=\"382\" x=\"0\" y=\"0\">\n                                        <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"48\" label=\"!, Open debugger to view warnings.\" ptr=\"0x108c34fb0\" tag=\"36\" visibility=\"visible\" width=\"382\" x=\"0\" y=\"0\">\n                                            <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"22\" ptr=\"0x1276adec0\" tag=\"18\" visibility=\"visible\" width=\"22\" x=\"12\" y=\"13\" \/>\n                                            <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"18\" ptr=\"0x1276ae1c0\" tag=\"16\" visibility=\"visible\" width=\"18\" x=\"14\" y=\"15\" \/>\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"18\" label=\"!\" ptr=\"0x1276ae4c0\" tag=\"14\" text=\"!\" visibility=\"visible\" width=\"10\" x=\"18\" y=\"15\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"18\" ptr=\"0x10a1a7b60\" visibility=\"visible\" width=\"10\" x=\"0\" y=\"0\" \/>\n                                            <\/RCTParagraphComponentView>\n                                            <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"22\" ptr=\"0x10a1832d0\" tag=\"26\" visibility=\"visible\" width=\"303\" x=\"42\" y=\"13\" \/>\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"22\" label=\"Open debugger to view warnings.\" ptr=\"0x10a1bd2e0\" tag=\"24\" text=\"Open debugger to view warnings.\" visibility=\"visible\" width=\"294\" x=\"51\" y=\"13\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"22\" ptr=\"0x10a1bc570\" visibility=\"visible\" width=\"294\" x=\"0\" y=\"0\" \/>\n                                            <\/RCTParagraphComponentView>\n                                            <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"20\" ptr=\"0x10a1a9180\" tag=\"30\" visibility=\"visible\" width=\"20\" x=\"350\" y=\"14\">\n                                                <RCTImageComponentView alpha=\"1.0\" class=\"RCTImageComponentView\" focused=\"false\" height=\"8\" ptr=\"0x10a1bdf70\" tag=\"28\" visibility=\"visible\" width=\"8\" x=\"6\" y=\"6\">\n                                                    <RCTUIImageViewAnimated alpha=\"1.0\" class=\"RCTUIImageViewAnimated\" focused=\"false\" height=\"8\" ptr=\"0x12753c690\" visibility=\"visible\" width=\"8\" x=\"0\" y=\"0\" \/>\n                                                <\/RCTImageComponentView>\n                                            <\/RCTViewComponentView>\n                                        <\/RCTViewComponentView>\n                                    <\/RCTViewComponentView>\n                                <\/RCTViewComponentView>\n                            <\/RCTSafeAreaViewComponentView>\n                        <\/RCTRootComponentView>\n                    <\/RCTSurfaceView>\n                <\/RCTSurfaceHostingProxyRootView>\n            <\/UIDropShadowView>\n        <\/UITransitionView>\n    <\/UIWindow>\n<\/ViewHierarchy>","details":"Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(text == “Continue as Guest”) TIMEOUT(8s)","NSLocalizedDescription":"Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(text == “Continue as Guest”) TIMEOUT(8s)","visibilityFailingScreenshotsURL":"\/Users\/shivi.agarwal\/Library\/Developer\/CoreSimulator\/Devices\/AC7E343F-585F-430E-B17D-BDD649803605\/data\/Containers\/Data\/Application\/0105B366-5548-4349-9E68-400EC4FB5981\/tmp\/visibilityFailingScreenshots","windows":["<UIWindow: 0x108e14440; frame = (0 0; 402 874);>","<DTXTouchVisualizerWindow: 0x10e832a00; frame = (0 0; 402 874);>"],"visibilityFailingRectsURL":"\/Users\/shivi.agarwal\/Library\/Developer\/CoreSimulator\/Devices\/AC7E343F-585F-430E-B17D-BDD649803605\/data\/Containers\/Data\/Application\/0105B366-5548-4349-9E68-400EC4FB5981\/tmp\/visibilityFailingRects","DetoxFailureInformation":{"lineNumber":154,"file":"\/Users\/builder\/uibuilder\/work\/detox\/ios\/Detox\/Invocation\/Expectation.swift","functionName":"evaluate_after(startDate:completionHandler:)"}},"type":"testFailed","messageId":3}
+17:05:17.257 detox[82583] i send
+  data: {
+    "params": {
+      "viewHierarchy": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<ViewHierarchy>\n    <UIWindow alpha=\"1.0\" class=\"UIWindow\" focused=\"false\" height=\"874\" ptr=\"0x108e14440\" visibility=\"visible\" width=\"402\">\n        <UITransitionView alpha=\"1.0\" class=\"UITransitionView\" focused=\"false\" height=\"874\" ptr=\"0x108f04ec0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n            <UIDropShadowView alpha=\"1.0\" class=\"UIDropShadowView\" focused=\"false\" height=\"874\" ptr=\"0x108f07dc0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                <RCTSurfaceHostingProxyRootView alpha=\"1.0\" class=\"RCTSurfaceHostingProxyRootView\" focused=\"false\" height=\"874\" ptr=\"0x108d516f0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                    <RCTSurfaceView alpha=\"1.0\" class=\"RCTSurfaceView\" focused=\"false\" height=\"874\" ptr=\"0x10a02a250\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                        <RCTRootComponentView alpha=\"1.0\" class=\"RCTRootComponentView\" focused=\"false\" height=\"874\" ptr=\"0x10a058350\" tag=\"11\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                            <RNCSafeAreaProviderComponentView alpha=\"1.0\" class=\"RNCSafeAreaProviderComponentView\" focused=\"false\" height=\"874\" ptr=\"0x108f5c9c0\" tag=\"2\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                <RNCSafeAreaViewComponentView alpha=\"1.0\" class=\"RNCSafeAreaViewComponentView\" focused=\"false\" height=\"874\" ptr=\"0x164121ce0\" tag=\"94\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                    <RCTUnimplementedViewComponentView alpha=\"1.0\" class=\"RCTUnimplementedViewComponentView\" focused=\"false\" height=\"778\" label=\"AlphaMa, You're juggling a career, a family,\nand a million invisible tasks., Finally, someone who gets it., , Continue with Google, , Continue with Apple, Unimplemented component: &lt;ViewManagerAdapter_ExpoLinearGradient_7671457332239917058&gt;\" ptr=\"0x164129fb0\" tag=\"92\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"62\">\n                                        <RCTImageComponentView alpha=\"1.0\" class=\"RCTImageComponentView\" focused=\"false\" height=\"110\" ptr=\"0x1275678f0\" tag=\"60\" visibility=\"visible\" width=\"110\" x=\"146\" y=\"64\">\n                                            <RCTUIImageViewAnimated alpha=\"1.0\" class=\"RCTUIImageViewAnimated\" focused=\"false\" height=\"110\" ptr=\"0x127566a20\" visibility=\"visible\" width=\"110\" x=\"0\" y=\"0\" />\n                                        </RCTImageComponentView>\n                                        <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"43\" label=\"AlphaMa\" ptr=\"0x127568520\" tag=\"64\" text=\"AlphaMa\" visibility=\"visible\" width=\"148\" x=\"126\" y=\"198\">\n                                            <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"43\" ptr=\"0x127568880\" visibility=\"visible\" width=\"148\" x=\"0\" y=\"0\" />\n                                        </RCTParagraphComponentView>\n                                        <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"56\" label=\"You're juggling a career, a family,\nand a million invisible tasks.\" ptr=\"0x127566c90\" tag=\"74\" text=\"You're juggling a career, a family,\nand a million invisible tasks.\" visibility=\"visible\" width=\"262\" x=\"70\" y=\"313\">\n                                            <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"56\" ptr=\"0x127568290\" visibility=\"visible\" width=\"262\" x=\"0\" y=\"0\" />\n                                        </RCTParagraphComponentView>\n                                        <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"24\" label=\"Finally, someone who gets it.\" ptr=\"0x16412af60\" tag=\"78\" text=\"Finally, someone who gets it.\" visibility=\"visible\" width=\"270\" x=\"66\" y=\"385\">\n                                            <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"24\" ptr=\"0x16412b2c0\" visibility=\"visible\" width=\"270\" x=\"0\" y=\"0\" />\n                                        </RCTParagraphComponentView>\n                                        <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"60\" label=\", Continue with Google\" ptr=\"0x127477bb0\" tag=\"88\" visibility=\"visible\" width=\"354\" x=\"24\" y=\"465\">\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"20\" label=\"\" ptr=\"0x16412b8e0\" tag=\"106\" text=\"\" visibility=\"visible\" width=\"20\" x=\"77\" y=\"20\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"20\" ptr=\"0x16412bc40\" visibility=\"visible\" width=\"20\" x=\"0\" y=\"0\" />\n                                            </RCTParagraphComponentView>\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"19\" label=\"Continue with Google\" ptr=\"0x16412c000\" tag=\"86\" text=\"Continue with Google\" visibility=\"visible\" width=\"162\" x=\"113\" y=\"20\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"19\" ptr=\"0x16412c360\" visibility=\"visible\" width=\"162\" x=\"0\" y=\"0\" />\n                                            </RCTParagraphComponentView>\n                                        </RCTViewComponentView>\n                                        <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"62\" label=\", Continue with Apple\" ptr=\"0x124bb6da0\" tag=\"102\" visibility=\"visible\" width=\"354\" x=\"24\" y=\"541\">\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"22\" label=\"\" ptr=\"0x124bb71e0\" tag=\"110\" text=\"\" visibility=\"visible\" width=\"22\" x=\"81\" y=\"20\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"22\" ptr=\"0x124bb9f20\" visibility=\"visible\" width=\"22\" x=\"0\" y=\"0\" />\n                                            </RCTParagraphComponentView>\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"19\" label=\"Continue with Apple\" ptr=\"0x124bba1b0\" tag=\"100\" text=\"Continue with Apple\" visibility=\"visible\" width=\"153\" x=\"119\" y=\"21\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"19\" ptr=\"0x124bba510\" visibility=\"visible\" width=\"153\" x=\"0\" y=\"0\" />\n                                            </RCTParagraphComponentView>\n                                        </RCTViewComponentView>\n                                        <UILabel alpha=\"1.0\" class=\"UILabel\" focused=\"false\" height=\"778\" label=\"Unimplemented component: &lt;ViewManagerAdapter_ExpoLinearGradient_7671457332239917058&gt;\" ptr=\"0x164129640\" text=\"Unimplemented component: &lt;ViewManagerAdapter_ExpoLinearGradient_7671457332239917058&gt;\" visibility=\"visible\" width=\"354\" x=\"24\" y=\"0\" />\n                                    </RCTUnimplementedViewComponentView>\n                                </RNCSafeAreaViewComponentView>\n                            </RNCSafeAreaProviderComponentView>\n                            <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"874\" ptr=\"0x12631f230\" tag=\"8\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                <RCTDebuggingOverlayComponentView alpha=\"1.0\" class=\"RCTDebuggingOverlayComponentView\" focused=\"false\" height=\"874\" ptr=\"0x12631fc40\" tag=\"6\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                    <RCTDebuggingOverlay alpha=\"1.0\" class=\"RCTDebuggingOverlay\" focused=\"false\" height=\"874\" ptr=\"0x1276bdc90\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" />\n                                </RCTDebuggingOverlayComponentView>\n                            </RCTViewComponentView>\n                            <RCTSafeAreaViewComponentView alpha=\"1.0\" class=\"RCTSafeAreaViewComponentView\" focused=\"false\" height=\"67\" ptr=\"0x12631f730\" tag=\"42\" visibility=\"visible\" width=\"382\" x=\"10\" y=\"786\">\n                                <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"48\" ptr=\"0x127699870\" tag=\"40\" visibility=\"visible\" width=\"382\" x=\"0\" y=\"0\">\n                                    <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"48\" ptr=\"0x1276993e0\" tag=\"38\" visibility=\"visible\" width=\"382\" x=\"0\" y=\"0\">\n                                        <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"48\" label=\"!, Open debugger to view warnings.\" ptr=\"0x108c34fb0\" tag=\"36\" visibility=\"visible\" width=\"382\" x=\"0\" y=\"0\">\n                                            <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"22\" ptr=\"0x1276adec0\" tag=\"18\" visibility=\"visible\" width=\"22\" x=\"12\" y=\"13\" />\n                                            <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"18\" ptr=\"0x1276ae1c0\" tag=\"16\" visibility=\"visible\" width=\"18\" x=\"14\" y=\"15\" />\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"18\" label=\"!\" ptr=\"0x1276ae4c0\" tag=\"14\" text=\"!\" visibility=\"visible\" width=\"10\" x=\"18\" y=\"15\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"18\" ptr=\"0x10a1a7b60\" visibility=\"visible\" width=\"10\" x=\"0\" y=\"0\" />\n                                            </RCTParagraphComponentView>\n                                            <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"22\" ptr=\"0x10a1832d0\" tag=\"26\" visibility=\"visible\" width=\"303\" x=\"42\" y=\"13\" />\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"22\" label=\"Open debugger to view warnings.\" ptr=\"0x10a1bd2e0\" tag=\"24\" text=\"Open debugger to view warnings.\" visibility=\"visible\" width=\"294\" x=\"51\" y=\"13\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"22\" ptr=\"0x10a1bc570\" visibility=\"visible\" width=\"294\" x=\"0\" y=\"0\" />\n                                            </RCTParagraphComponentView>\n                                            <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"20\" ptr=\"0x10a1a9180\" tag=\"30\" visibility=\"visible\" width=\"20\" x=\"350\" y=\"14\">\n                                                <RCTImageComponentView alpha=\"1.0\" class=\"RCTImageComponentView\" focused=\"false\" height=\"8\" ptr=\"0x10a1bdf70\" tag=\"28\" visibility=\"visible\" width=\"8\" x=\"6\" y=\"6\">\n                                                    <RCTUIImageViewAnimated alpha=\"1.0\" class=\"RCTUIImageViewAnimated\" focused=\"false\" height=\"8\" ptr=\"0x12753c690\" visibility=\"visible\" width=\"8\" x=\"0\" y=\"0\" />\n                                                </RCTImageComponentView>\n                                            </RCTViewComponentView>\n                                        </RCTViewComponentView>\n                                    </RCTViewComponentView>\n                                </RCTViewComponentView>\n                            </RCTSafeAreaViewComponentView>\n                        </RCTRootComponentView>\n                    </RCTSurfaceView>\n                </RCTSurfaceHostingProxyRootView>\n            </UIDropShadowView>\n        </UITransitionView>\n    </UIWindow>\n</ViewHierarchy>",
+      "details": "Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(text == “Continue as Guest”) TIMEOUT(8s)",
+      "NSLocalizedDescription": "Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(text == “Continue as Guest”) TIMEOUT(8s)",
+      "visibilityFailingScreenshotsURL": "/Users/shivi.agarwal/Library/Developer/CoreSimulator/Devices/AC7E343F-585F-430E-B17D-BDD649803605/data/Containers/Data/Application/0105B366-5548-4349-9E68-400EC4FB5981/tmp/visibilityFailingScreenshots",
+      "windows": [
+        "<UIWindow: 0x108e14440; frame = (0 0; 402 874);>",
+        "<DTXTouchVisualizerWindow: 0x10e832a00; frame = (0 0; 402 874);>"
+      ],
+      "visibilityFailingRectsURL": "/Users/shivi.agarwal/Library/Developer/CoreSimulator/Devices/AC7E343F-585F-430E-B17D-BDD649803605/data/Containers/Data/Application/0105B366-5548-4349-9E68-400EC4FB5981/tmp/visibilityFailingRects",
+      "DetoxFailureInformation": {
+        "lineNumber": 154,
+        "file": "/Users/builder/uibuilder/work/detox/ios/Detox/Invocation/Expectation.swift",
+        "functionName": "evaluate_after(startDate:completionHandler:)"
+      }
+    },
+    "type": "testFailed",
+    "messageId": 3
+  }
+17:05:17.259 detox[82584] i get message
+  data: {"params":{"viewHierarchy":"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<ViewHierarchy>\n    <UIWindow alpha=\"1.0\" class=\"UIWindow\" focused=\"false\" height=\"874\" ptr=\"0x108e14440\" visibility=\"visible\" width=\"402\">\n        <UITransitionView alpha=\"1.0\" class=\"UITransitionView\" focused=\"false\" height=\"874\" ptr=\"0x108f04ec0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n            <UIDropShadowView alpha=\"1.0\" class=\"UIDropShadowView\" focused=\"false\" height=\"874\" ptr=\"0x108f07dc0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                <RCTSurfaceHostingProxyRootView alpha=\"1.0\" class=\"RCTSurfaceHostingProxyRootView\" focused=\"false\" height=\"874\" ptr=\"0x108d516f0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                    <RCTSurfaceView alpha=\"1.0\" class=\"RCTSurfaceView\" focused=\"false\" height=\"874\" ptr=\"0x10a02a250\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                        <RCTRootComponentView alpha=\"1.0\" class=\"RCTRootComponentView\" focused=\"false\" height=\"874\" ptr=\"0x10a058350\" tag=\"11\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                            <RNCSafeAreaProviderComponentView alpha=\"1.0\" class=\"RNCSafeAreaProviderComponentView\" focused=\"false\" height=\"874\" ptr=\"0x108f5c9c0\" tag=\"2\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                <RNCSafeAreaViewComponentView alpha=\"1.0\" class=\"RNCSafeAreaViewComponentView\" focused=\"false\" height=\"874\" ptr=\"0x164121ce0\" tag=\"94\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                    <RCTUnimplementedViewComponentView alpha=\"1.0\" class=\"RCTUnimplementedViewComponentView\" focused=\"false\" height=\"778\" label=\"AlphaMa, You're juggling a career, a family,\nand a million invisible tasks., Finally, someone who gets it., , Continue with Google, , Continue with Apple, Unimplemented component: &lt;ViewManagerAdapter_ExpoLinearGradient_7671457332239917058&gt;\" ptr=\"0x164129fb0\" tag=\"92\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"62\">\n                                        <RCTImageComponentView alpha=\"1.0\" class=\"RCTImageComponentView\" focused=\"false\" height=\"110\" ptr=\"0x1275678f0\" tag=\"60\" visibility=\"visible\" width=\"110\" x=\"146\" y=\"64\">\n                                            <RCTUIImageViewAnimated alpha=\"1.0\" class=\"RCTUIImageViewAnimated\" focused=\"false\" height=\"110\" ptr=\"0x127566a20\" visibility=\"visible\" width=\"110\" x=\"0\" y=\"0\" />\n                                        </RCTImageComponentView>\n                                        <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"43\" label=\"AlphaMa\" ptr=\"0x127568520\" tag=\"64\" text=\"AlphaMa\" visibility=\"visible\" width=\"148\" x=\"126\" y=\"198\">\n                                            <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"43\" ptr=\"0x127568880\" visibility=\"visible\" width=\"148\" x=\"0\" y=\"0\" />\n                                        </RCTParagraphComponentView>\n                                        <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"56\" label=\"You're juggling a career, a family,\nand a million invisible tasks.\" ptr=\"0x127566c90\" tag=\"74\" text=\"You're juggling a career, a family,\nand a million invisible tasks.\" visibility=\"visible\" width=\"262\" x=\"70\" y=\"313\">\n                                            <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"56\" ptr=\"0x127568290\" visibility=\"visible\" width=\"262\" x=\"0\" y=\"0\" />\n                                        </RCTParagraphComponentView>\n                                        <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"24\" label=\"Finally, someone who gets it.\" ptr=\"0x16412af60\" tag=\"78\" text=\"Finally, someone who gets it.\" visibility=\"visible\" width=\"270\" x=\"66\" y=\"385\">\n                                            <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"24\" ptr=\"0x16412b2c0\" visibility=\"visible\" width=\"270\" x=\"0\" y=\"0\" />\n                                        </RCTParagraphComponentView>\n                                        <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"60\" label=\", Continue with Google\" ptr=\"0x127477bb0\" tag=\"88\" visibility=\"visible\" width=\"354\" x=\"24\" y=\"465\">\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"20\" label=\"\" ptr=\"0x16412b8e0\" tag=\"106\" text=\"\" visibility=\"visible\" width=\"20\" x=\"77\" y=\"20\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"20\" ptr=\"0x16412bc40\" visibility=\"visible\" width=\"20\" x=\"0\" y=\"0\" />\n                                            </RCTParagraphComponentView>\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"19\" label=\"Continue with Google\" ptr=\"0x16412c000\" tag=\"86\" text=\"Continue with Google\" visibility=\"visible\" width=\"162\" x=\"113\" y=\"20\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"19\" ptr=\"0x16412c360\" visibility=\"visible\" width=\"162\" x=\"0\" y=\"0\" />\n                                            </RCTParagraphComponentView>\n                                        </RCTViewComponentView>\n                                        <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"62\" label=\", Continue with Apple\" ptr=\"0x124bb6da0\" tag=\"102\" visibility=\"visible\" width=\"354\" x=\"24\" y=\"541\">\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"22\" label=\"\" ptr=\"0x124bb71e0\" tag=\"110\" text=\"\" visibility=\"visible\" width=\"22\" x=\"81\" y=\"20\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"22\" ptr=\"0x124bb9f20\" visibility=\"visible\" width=\"22\" x=\"0\" y=\"0\" />\n                                            </RCTParagraphComponentView>\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"19\" label=\"Continue with Apple\" ptr=\"0x124bba1b0\" tag=\"100\" text=\"Continue with Apple\" visibility=\"visible\" width=\"153\" x=\"119\" y=\"21\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"19\" ptr=\"0x124bba510\" visibility=\"visible\" width=\"153\" x=\"0\" y=\"0\" />\n                                            </RCTParagraphComponentView>\n                                        </RCTViewComponentView>\n                                        <UILabel alpha=\"1.0\" class=\"UILabel\" focused=\"false\" height=\"778\" label=\"Unimplemented component: &lt;ViewManagerAdapter_ExpoLinearGradient_7671457332239917058&gt;\" ptr=\"0x164129640\" text=\"Unimplemented component: &lt;ViewManagerAdapter_ExpoLinearGradient_7671457332239917058&gt;\" visibility=\"visible\" width=\"354\" x=\"24\" y=\"0\" />\n                                    </RCTUnimplementedViewComponentView>\n                                </RNCSafeAreaViewComponentView>\n                            </RNCSafeAreaProviderComponentView>\n                            <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"874\" ptr=\"0x12631f230\" tag=\"8\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                <RCTDebuggingOverlayComponentView alpha=\"1.0\" class=\"RCTDebuggingOverlayComponentView\" focused=\"false\" height=\"874\" ptr=\"0x12631fc40\" tag=\"6\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                    <RCTDebuggingOverlay alpha=\"1.0\" class=\"RCTDebuggingOverlay\" focused=\"false\" height=\"874\" ptr=\"0x1276bdc90\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" />\n                                </RCTDebuggingOverlayComponentView>\n                            </RCTViewComponentView>\n                            <RCTSafeAreaViewComponentView alpha=\"1.0\" class=\"RCTSafeAreaViewComponentView\" focused=\"false\" height=\"67\" ptr=\"0x12631f730\" tag=\"42\" visibility=\"visible\" width=\"382\" x=\"10\" y=\"786\">\n                                <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"48\" ptr=\"0x127699870\" tag=\"40\" visibility=\"visible\" width=\"382\" x=\"0\" y=\"0\">\n                                    <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"48\" ptr=\"0x1276993e0\" tag=\"38\" visibility=\"visible\" width=\"382\" x=\"0\" y=\"0\">\n                                        <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"48\" label=\"!, Open debugger to view warnings.\" ptr=\"0x108c34fb0\" tag=\"36\" visibility=\"visible\" width=\"382\" x=\"0\" y=\"0\">\n                                            <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"22\" ptr=\"0x1276adec0\" tag=\"18\" visibility=\"visible\" width=\"22\" x=\"12\" y=\"13\" />\n                                            <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"18\" ptr=\"0x1276ae1c0\" tag=\"16\" visibility=\"visible\" width=\"18\" x=\"14\" y=\"15\" />\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"18\" label=\"!\" ptr=\"0x1276ae4c0\" tag=\"14\" text=\"!\" visibility=\"visible\" width=\"10\" x=\"18\" y=\"15\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"18\" ptr=\"0x10a1a7b60\" visibility=\"visible\" width=\"10\" x=\"0\" y=\"0\" />\n                                            </RCTParagraphComponentView>\n                                            <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"22\" ptr=\"0x10a1832d0\" tag=\"26\" visibility=\"visible\" width=\"303\" x=\"42\" y=\"13\" />\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"22\" label=\"Open debugger to view warnings.\" ptr=\"0x10a1bd2e0\" tag=\"24\" text=\"Open debugger to view warnings.\" visibility=\"visible\" width=\"294\" x=\"51\" y=\"13\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"22\" ptr=\"0x10a1bc570\" visibility=\"visible\" width=\"294\" x=\"0\" y=\"0\" />\n                                            </RCTParagraphComponentView>\n                                            <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"20\" ptr=\"0x10a1a9180\" tag=\"30\" visibility=\"visible\" width=\"20\" x=\"350\" y=\"14\">\n                                                <RCTImageComponentView alpha=\"1.0\" class=\"RCTImageComponentView\" focused=\"false\" height=\"8\" ptr=\"0x10a1bdf70\" tag=\"28\" visibility=\"visible\" width=\"8\" x=\"6\" y=\"6\">\n                                                    <RCTUIImageViewAnimated alpha=\"1.0\" class=\"RCTUIImageViewAnimated\" focused=\"false\" height=\"8\" ptr=\"0x12753c690\" visibility=\"visible\" width=\"8\" x=\"0\" y=\"0\" />\n                                                </RCTImageComponentView>\n                                            </RCTViewComponentView>\n                                        </RCTViewComponentView>\n                                    </RCTViewComponentView>\n                                </RCTViewComponentView>\n                            </RCTSafeAreaViewComponentView>\n                        </RCTRootComponentView>\n                    </RCTSurfaceView>\n                </RCTSurfaceHostingProxyRootView>\n            </UIDropShadowView>\n        </UITransitionView>\n    </UIWindow>\n</ViewHierarchy>","details":"Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(text == “Continue as Guest”) TIMEOUT(8s)","NSLocalizedDescription":"Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(text == “Continue as Guest”) TIMEOUT(8s)","visibilityFailingScreenshotsURL":"/Users/shivi.agarwal/Library/Developer/CoreSimulator/Devices/AC7E343F-585F-430E-B17D-BDD649803605/data/Containers/Data/Application/0105B366-5548-4349-9E68-400EC4FB5981/tmp/visibilityFailingScreenshots","windows":["<UIWindow: 0x108e14440; frame = (0 0; 402 874);>","<DTXTouchVisualizerWindow: 0x10e832a00; frame = (0 0; 402 874);>"],"visibilityFailingRectsURL":"/Users/shivi.agarwal/Library/Developer/CoreSimulator/Devices/AC7E343F-585F-430E-B17D-BDD649803605/data/Containers/Data/Application/0105B366-5548-4349-9E68-400EC4FB5981/tmp/visibilityFailingRects","DetoxFailureInformation":{"lineNumber":154,"file":"/Users/builder/uibuilder/work/detox/ios/Detox/Invocation/Expectation.swift","functionName":"evaluate_after(startDate:completionHandler:)"}},"type":"testFailed","messageId":3}
+   
+17:05:17.260 detox[82584] E wait until timeout (8000 ms) with timeout (8000 ms)
+  error: Test Failed: Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(text == “Continue as Guest”) TIMEOUT(8s)
+  
+  HINT: To print view hierarchy on failed actions/matches, use log-level verbose or higher.
+17:05:17.260 detox[82584] i send message
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"text","value":"Quick Fixes","isRegex":false},"expectation":"toBeVisible","timeout":12000},"messageId":4}
+17:05:17.261 detox[82583] i get
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"text","value":"Quick Fixes","isRegex":false},"expectation":"toBeVisible","timeout":12000},"messageId":4}
+17:05:17.261 detox[82583] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "expectation",
+      "predicate": {
+        "type": "text",
+        "value": "Quick Fixes",
+        "isRegex": false
+      },
+      "expectation": "toBeVisible",
+      "timeout": 12000
+    },
+    "messageId": 4
+  }
+17:05:17.261 detox[82584] B wait until timeout (12000 ms) with timeout (12000 ms)
+  data: {
+    "type": "expectation",
+    "predicate": {
+      "type": "text",
+      "value": "Quick Fixes",
+      "isRegex": false
+    },
+    "expectation": "toBeVisible",
+    "timeout": 12000
+  }
+17:05:27.261 detox[82583] i get
+  data: {"type":"currentStatus","params":{},"messageId":5}
+17:05:27.261 detox[82583] i send
+  data: {
+    "type": "currentStatus",
+    "params": {},
+    "messageId": 5
+  }
+17:05:27.261 detox[82584] i send message
+  data: {"type":"currentStatus","params":{},"messageId":5}
+17:05:27.265 detox[82583] i get
+  data: {"params":{"messageId":5,"status":{"busy_resources":[{"name":"dispatch_queue","description":{"queue":"Main Queue (<OS_dispatch_queue_main: com.apple.main-thread>)","works_count":2}},{"name":"run_loop","description":{"name":"Main Run Loop"}}],"app_status":"busy"}},"messageId":5,"type":"currentStatusResult"}
+17:05:27.265 detox[82583] i send
+  data: {
+    "params": {
+      "messageId": 5,
+      "status": {
+        "busy_resources": [
+          {
+            "name": "dispatch_queue",
+            "description": {
+              "queue": "Main Queue (<OS_dispatch_queue_main: com.apple.main-thread>)",
+              "works_count": 2
+            }
+          },
+          {
+            "name": "run_loop",
+            "description": {
+              "name": "Main Run Loop"
+            }
+          }
+        ],
+        "app_status": "busy"
+      }
+    },
+    "messageId": 5,
+    "type": "currentStatusResult"
+  }
+17:05:27.265 detox[82584] i get message
+  data: {"params":{"messageId":5,"status":{"busy_resources":[{"name":"dispatch_queue","description":{"queue":"Main Queue (<OS_dispatch_queue_main: com.apple.main-thread>)","works_count":2}},{"name":"run_loop","description":{"name":"Main Run Loop"}}],"app_status":"busy"}},"messageId":5,"type":"currentStatusResult"}
+   
+17:05:27.267 detox[82584] i The app is busy with the following tasks:
+• There are 2 work items pending on the dispatch queue: "Main Queue (<OS_dispatch_queue_main: com.apple.main-thread>)".
+• Run loop "Main Run Loop" is awake.
+17:05:29.295 detox[82583] i get
+  data: {"type":"testFailed","messageId":4,"params":{"viewHierarchy":"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<ViewHierarchy>\n    <UIWindow alpha=\"1.0\" class=\"UIWindow\" focused=\"false\" height=\"874\" ptr=\"0x108e14440\" visibility=\"visible\" width=\"402\">\n        <UITransitionView alpha=\"1.0\" class=\"UITransitionView\" focused=\"false\" height=\"874\" ptr=\"0x108f04ec0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n            <UIDropShadowView alpha=\"1.0\" class=\"UIDropShadowView\" focused=\"false\" height=\"874\" ptr=\"0x108f07dc0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                <RCTSurfaceHostingProxyRootView alpha=\"1.0\" class=\"RCTSurfaceHostingProxyRootView\" focused=\"false\" height=\"874\" ptr=\"0x108d516f0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                    <RCTSurfaceView alpha=\"1.0\" class=\"RCTSurfaceView\" focused=\"false\" height=\"874\" ptr=\"0x10a02a250\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                        <RCTRootComponentView alpha=\"1.0\" class=\"RCTRootComponentView\" focused=\"false\" height=\"874\" ptr=\"0x10a058350\" tag=\"11\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                            <RNCSafeAreaProviderComponentView alpha=\"1.0\" class=\"RNCSafeAreaProviderComponentView\" focused=\"false\" height=\"874\" ptr=\"0x108f5c9c0\" tag=\"2\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                <RNCSafeAreaViewComponentView alpha=\"1.0\" class=\"RNCSafeAreaViewComponentView\" focused=\"false\" height=\"874\" ptr=\"0x164121ce0\" tag=\"94\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                    <RCTUnimplementedViewComponentView alpha=\"1.0\" class=\"RCTUnimplementedViewComponentView\" focused=\"false\" height=\"778\" label=\"AlphaMa, You're juggling a career, a family,\nand a million invisible tasks., Finally, someone who gets it., , Continue with Google, , Continue with Apple, Unimplemented component: &lt;ViewManagerAdapter_ExpoLinearGradient_7671457332239917058&gt;\" ptr=\"0x164129fb0\" tag=\"92\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"62\">\n                                        <RCTImageComponentView alpha=\"1.0\" class=\"RCTImageComponentView\" focused=\"false\" height=\"110\" ptr=\"0x1275678f0\" tag=\"60\" visibility=\"visible\" width=\"110\" x=\"146\" y=\"64\">\n                                            <RCTUIImageViewAnimated alpha=\"1.0\" class=\"RCTUIImageViewAnimated\" focused=\"false\" height=\"110\" ptr=\"0x127566a20\" visibility=\"visible\" width=\"110\" x=\"0\" y=\"0\" \/>\n                                        <\/RCTImageComponentView>\n                                        <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"43\" label=\"AlphaMa\" ptr=\"0x127568520\" tag=\"64\" text=\"AlphaMa\" visibility=\"visible\" width=\"148\" x=\"126\" y=\"198\">\n                                            <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"43\" ptr=\"0x127568880\" visibility=\"visible\" width=\"148\" x=\"0\" y=\"0\" \/>\n                                        <\/RCTParagraphComponentView>\n                                        <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"56\" label=\"You're juggling a career, a family,\nand a million invisible tasks.\" ptr=\"0x127566c90\" tag=\"74\" text=\"You're juggling a career, a family,\nand a million invisible tasks.\" visibility=\"visible\" width=\"262\" x=\"70\" y=\"313\">\n                                            <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"56\" ptr=\"0x127568290\" visibility=\"visible\" width=\"262\" x=\"0\" y=\"0\" \/>\n                                        <\/RCTParagraphComponentView>\n                                        <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"24\" label=\"Finally, someone who gets it.\" ptr=\"0x16412af60\" tag=\"78\" text=\"Finally, someone who gets it.\" visibility=\"visible\" width=\"270\" x=\"66\" y=\"385\">\n                                            <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"24\" ptr=\"0x16412b2c0\" visibility=\"visible\" width=\"270\" x=\"0\" y=\"0\" \/>\n                                        <\/RCTParagraphComponentView>\n                                        <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"60\" label=\", Continue with Google\" ptr=\"0x127477bb0\" tag=\"88\" visibility=\"visible\" width=\"354\" x=\"24\" y=\"465\">\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"20\" label=\"\" ptr=\"0x16412b8e0\" tag=\"106\" text=\"\" visibility=\"visible\" width=\"20\" x=\"77\" y=\"20\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"20\" ptr=\"0x16412bc40\" visibility=\"visible\" width=\"20\" x=\"0\" y=\"0\" \/>\n                                            <\/RCTParagraphComponentView>\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"19\" label=\"Continue with Google\" ptr=\"0x16412c000\" tag=\"86\" text=\"Continue with Google\" visibility=\"visible\" width=\"162\" x=\"113\" y=\"20\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"19\" ptr=\"0x16412c360\" visibility=\"visible\" width=\"162\" x=\"0\" y=\"0\" \/>\n                                            <\/RCTParagraphComponentView>\n                                        <\/RCTViewComponentView>\n                                        <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"62\" label=\", Continue with Apple\" ptr=\"0x124bb6da0\" tag=\"102\" visibility=\"visible\" width=\"354\" x=\"24\" y=\"541\">\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"22\" label=\"\" ptr=\"0x124bb71e0\" tag=\"110\" text=\"\" visibility=\"visible\" width=\"22\" x=\"81\" y=\"20\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"22\" ptr=\"0x124bb9f20\" visibility=\"visible\" width=\"22\" x=\"0\" y=\"0\" \/>\n                                            <\/RCTParagraphComponentView>\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"19\" label=\"Continue with Apple\" ptr=\"0x124bba1b0\" tag=\"100\" text=\"Continue with Apple\" visibility=\"visible\" width=\"153\" x=\"119\" y=\"21\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"19\" ptr=\"0x124bba510\" visibility=\"visible\" width=\"153\" x=\"0\" y=\"0\" \/>\n                                            <\/RCTParagraphComponentView>\n                                        <\/RCTViewComponentView>\n                                        <UILabel alpha=\"1.0\" class=\"UILabel\" focused=\"false\" height=\"778\" label=\"Unimplemented component: &lt;ViewManagerAdapter_ExpoLinearGradient_7671457332239917058&gt;\" ptr=\"0x164129640\" text=\"Unimplemented component: &lt;ViewManagerAdapter_ExpoLinearGradient_7671457332239917058&gt;\" visibility=\"visible\" width=\"354\" x=\"24\" y=\"0\" \/>\n                                    <\/RCTUnimplementedViewComponentView>\n                                <\/RNCSafeAreaViewComponentView>\n                            <\/RNCSafeAreaProviderComponentView>\n                            <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"874\" ptr=\"0x12631f230\" tag=\"8\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                <RCTDebuggingOverlayComponentView alpha=\"1.0\" class=\"RCTDebuggingOverlayComponentView\" focused=\"false\" height=\"874\" ptr=\"0x12631fc40\" tag=\"6\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                    <RCTDebuggingOverlay alpha=\"1.0\" class=\"RCTDebuggingOverlay\" focused=\"false\" height=\"874\" ptr=\"0x1276bdc90\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" \/>\n                                <\/RCTDebuggingOverlayComponentView>\n                            <\/RCTViewComponentView>\n                            <RCTSafeAreaViewComponentView alpha=\"1.0\" class=\"RCTSafeAreaViewComponentView\" focused=\"false\" height=\"67\" ptr=\"0x12631f730\" tag=\"42\" visibility=\"visible\" width=\"382\" x=\"10\" y=\"786\">\n                                <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"48\" ptr=\"0x127699870\" tag=\"40\" visibility=\"visible\" width=\"382\" x=\"0\" y=\"0\">\n                                    <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"48\" ptr=\"0x1276993e0\" tag=\"38\" visibility=\"visible\" width=\"382\" x=\"0\" y=\"0\">\n                                        <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"48\" label=\"!, Open debugger to view warnings.\" ptr=\"0x108c34fb0\" tag=\"36\" visibility=\"visible\" width=\"382\" x=\"0\" y=\"0\">\n                                            <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"22\" ptr=\"0x1276adec0\" tag=\"18\" visibility=\"visible\" width=\"22\" x=\"12\" y=\"13\" \/>\n                                            <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"18\" ptr=\"0x1276ae1c0\" tag=\"16\" visibility=\"visible\" width=\"18\" x=\"14\" y=\"15\" \/>\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"18\" label=\"!\" ptr=\"0x1276ae4c0\" tag=\"14\" text=\"!\" visibility=\"visible\" width=\"10\" x=\"18\" y=\"15\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"18\" ptr=\"0x10a1a7b60\" visibility=\"visible\" width=\"10\" x=\"0\" y=\"0\" \/>\n                                            <\/RCTParagraphComponentView>\n                                            <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"22\" ptr=\"0x10a1832d0\" tag=\"26\" visibility=\"visible\" width=\"303\" x=\"42\" y=\"13\" \/>\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"22\" label=\"Open debugger to view warnings.\" ptr=\"0x10a1bd2e0\" tag=\"24\" text=\"Open debugger to view warnings.\" visibility=\"visible\" width=\"294\" x=\"51\" y=\"13\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"22\" ptr=\"0x10a1bc570\" visibility=\"visible\" width=\"294\" x=\"0\" y=\"0\" \/>\n                                            <\/RCTParagraphComponentView>\n                                            <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"20\" ptr=\"0x10a1a9180\" tag=\"30\" visibility=\"visible\" width=\"20\" x=\"350\" y=\"14\">\n                                                <RCTImageComponentView alpha=\"1.0\" class=\"RCTImageComponentView\" focused=\"false\" height=\"8\" ptr=\"0x10a1bdf70\" tag=\"28\" visibility=\"visible\" width=\"8\" x=\"6\" y=\"6\">\n                                                    <RCTUIImageViewAnimated alpha=\"1.0\" class=\"RCTUIImageViewAnimated\" focused=\"false\" height=\"8\" ptr=\"0x12753c690\" visibility=\"visible\" width=\"8\" x=\"0\" y=\"0\" \/>\n                                                <\/RCTImageComponentView>\n                                            <\/RCTViewComponentView>\n                                        <\/RCTViewComponentView>\n                                    <\/RCTViewComponentView>\n                                <\/RCTViewComponentView>\n                            <\/RCTSafeAreaViewComponentView>\n                        <\/RCTRootComponentView>\n                    <\/RCTSurfaceView>\n                <\/RCTSurfaceHostingProxyRootView>\n            <\/UIDropShadowView>\n        <\/UITransitionView>\n    <\/UIWindow>\n<\/ViewHierarchy>","windows":["<UIWindow: 0x108e14440; frame = (0 0; 402 874);>","<DTXTouchVisualizerWindow: 0x10e832a00; frame = (0 0; 402 874);>"],"visibilityFailingRectsURL":"\/Users\/shivi.agarwal\/Library\/Developer\/CoreSimulator\/Devices\/AC7E343F-585F-430E-B17D-BDD649803605\/data\/Containers\/Data\/Application\/0105B366-5548-4349-9E68-400EC4FB5981\/tmp\/visibilityFailingRects","DetoxFailureInformation":{"lineNumber":154,"file":"\/Users\/builder\/uibuilder\/work\/detox\/ios\/Detox\/Invocation\/Expectation.swift","functionName":"evaluate_after(startDate:completionHandler:)"},"NSLocalizedDescription":"Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(text == “Quick Fixes”) TIMEOUT(12s)","details":"Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(text == “Quick Fixes”) TIMEOUT(12s)","visibilityFailingScreenshotsURL":"\/Users\/shivi.agarwal\/Library\/Developer\/CoreSimulator\/Devices\/AC7E343F-585F-430E-B17D-BDD649803605\/data\/Containers\/Data\/Application\/0105B366-5548-4349-9E68-400EC4FB5981\/tmp\/visibilityFailingScreenshots"}}
+17:05:29.296 detox[82583] i send
+  data: {
+    "type": "testFailed",
+    "messageId": 4,
+    "params": {
+      "viewHierarchy": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<ViewHierarchy>\n    <UIWindow alpha=\"1.0\" class=\"UIWindow\" focused=\"false\" height=\"874\" ptr=\"0x108e14440\" visibility=\"visible\" width=\"402\">\n        <UITransitionView alpha=\"1.0\" class=\"UITransitionView\" focused=\"false\" height=\"874\" ptr=\"0x108f04ec0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n            <UIDropShadowView alpha=\"1.0\" class=\"UIDropShadowView\" focused=\"false\" height=\"874\" ptr=\"0x108f07dc0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                <RCTSurfaceHostingProxyRootView alpha=\"1.0\" class=\"RCTSurfaceHostingProxyRootView\" focused=\"false\" height=\"874\" ptr=\"0x108d516f0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                    <RCTSurfaceView alpha=\"1.0\" class=\"RCTSurfaceView\" focused=\"false\" height=\"874\" ptr=\"0x10a02a250\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                        <RCTRootComponentView alpha=\"1.0\" class=\"RCTRootComponentView\" focused=\"false\" height=\"874\" ptr=\"0x10a058350\" tag=\"11\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                            <RNCSafeAreaProviderComponentView alpha=\"1.0\" class=\"RNCSafeAreaProviderComponentView\" focused=\"false\" height=\"874\" ptr=\"0x108f5c9c0\" tag=\"2\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                <RNCSafeAreaViewComponentView alpha=\"1.0\" class=\"RNCSafeAreaViewComponentView\" focused=\"false\" height=\"874\" ptr=\"0x164121ce0\" tag=\"94\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                    <RCTUnimplementedViewComponentView alpha=\"1.0\" class=\"RCTUnimplementedViewComponentView\" focused=\"false\" height=\"778\" label=\"AlphaMa, You're juggling a career, a family,\nand a million invisible tasks., Finally, someone who gets it., , Continue with Google, , Continue with Apple, Unimplemented component: &lt;ViewManagerAdapter_ExpoLinearGradient_7671457332239917058&gt;\" ptr=\"0x164129fb0\" tag=\"92\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"62\">\n                                        <RCTImageComponentView alpha=\"1.0\" class=\"RCTImageComponentView\" focused=\"false\" height=\"110\" ptr=\"0x1275678f0\" tag=\"60\" visibility=\"visible\" width=\"110\" x=\"146\" y=\"64\">\n                                            <RCTUIImageViewAnimated alpha=\"1.0\" class=\"RCTUIImageViewAnimated\" focused=\"false\" height=\"110\" ptr=\"0x127566a20\" visibility=\"visible\" width=\"110\" x=\"0\" y=\"0\" />\n                                        </RCTImageComponentView>\n                                        <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"43\" label=\"AlphaMa\" ptr=\"0x127568520\" tag=\"64\" text=\"AlphaMa\" visibility=\"visible\" width=\"148\" x=\"126\" y=\"198\">\n                                            <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"43\" ptr=\"0x127568880\" visibility=\"visible\" width=\"148\" x=\"0\" y=\"0\" />\n                                        </RCTParagraphComponentView>\n                                        <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"56\" label=\"You're juggling a career, a family,\nand a million invisible tasks.\" ptr=\"0x127566c90\" tag=\"74\" text=\"You're juggling a career, a family,\nand a million invisible tasks.\" visibility=\"visible\" width=\"262\" x=\"70\" y=\"313\">\n                                            <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"56\" ptr=\"0x127568290\" visibility=\"visible\" width=\"262\" x=\"0\" y=\"0\" />\n                                        </RCTParagraphComponentView>\n                                        <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"24\" label=\"Finally, someone who gets it.\" ptr=\"0x16412af60\" tag=\"78\" text=\"Finally, someone who gets it.\" visibility=\"visible\" width=\"270\" x=\"66\" y=\"385\">\n                                            <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"24\" ptr=\"0x16412b2c0\" visibility=\"visible\" width=\"270\" x=\"0\" y=\"0\" />\n                                        </RCTParagraphComponentView>\n                                        <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"60\" label=\", Continue with Google\" ptr=\"0x127477bb0\" tag=\"88\" visibility=\"visible\" width=\"354\" x=\"24\" y=\"465\">\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"20\" label=\"\" ptr=\"0x16412b8e0\" tag=\"106\" text=\"\" visibility=\"visible\" width=\"20\" x=\"77\" y=\"20\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"20\" ptr=\"0x16412bc40\" visibility=\"visible\" width=\"20\" x=\"0\" y=\"0\" />\n                                            </RCTParagraphComponentView>\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"19\" label=\"Continue with Google\" ptr=\"0x16412c000\" tag=\"86\" text=\"Continue with Google\" visibility=\"visible\" width=\"162\" x=\"113\" y=\"20\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"19\" ptr=\"0x16412c360\" visibility=\"visible\" width=\"162\" x=\"0\" y=\"0\" />\n                                            </RCTParagraphComponentView>\n                                        </RCTViewComponentView>\n                                        <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"62\" label=\", Continue with Apple\" ptr=\"0x124bb6da0\" tag=\"102\" visibility=\"visible\" width=\"354\" x=\"24\" y=\"541\">\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"22\" label=\"\" ptr=\"0x124bb71e0\" tag=\"110\" text=\"\" visibility=\"visible\" width=\"22\" x=\"81\" y=\"20\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"22\" ptr=\"0x124bb9f20\" visibility=\"visible\" width=\"22\" x=\"0\" y=\"0\" />\n                                            </RCTParagraphComponentView>\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"19\" label=\"Continue with Apple\" ptr=\"0x124bba1b0\" tag=\"100\" text=\"Continue with Apple\" visibility=\"visible\" width=\"153\" x=\"119\" y=\"21\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"19\" ptr=\"0x124bba510\" visibility=\"visible\" width=\"153\" x=\"0\" y=\"0\" />\n                                            </RCTParagraphComponentView>\n                                        </RCTViewComponentView>\n                                        <UILabel alpha=\"1.0\" class=\"UILabel\" focused=\"false\" height=\"778\" label=\"Unimplemented component: &lt;ViewManagerAdapter_ExpoLinearGradient_7671457332239917058&gt;\" ptr=\"0x164129640\" text=\"Unimplemented component: &lt;ViewManagerAdapter_ExpoLinearGradient_7671457332239917058&gt;\" visibility=\"visible\" width=\"354\" x=\"24\" y=\"0\" />\n                                    </RCTUnimplementedViewComponentView>\n                                </RNCSafeAreaViewComponentView>\n                            </RNCSafeAreaProviderComponentView>\n                            <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"874\" ptr=\"0x12631f230\" tag=\"8\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                <RCTDebuggingOverlayComponentView alpha=\"1.0\" class=\"RCTDebuggingOverlayComponentView\" focused=\"false\" height=\"874\" ptr=\"0x12631fc40\" tag=\"6\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                    <RCTDebuggingOverlay alpha=\"1.0\" class=\"RCTDebuggingOverlay\" focused=\"false\" height=\"874\" ptr=\"0x1276bdc90\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" />\n                                </RCTDebuggingOverlayComponentView>\n                            </RCTViewComponentView>\n                            <RCTSafeAreaViewComponentView alpha=\"1.0\" class=\"RCTSafeAreaViewComponentView\" focused=\"false\" height=\"67\" ptr=\"0x12631f730\" tag=\"42\" visibility=\"visible\" width=\"382\" x=\"10\" y=\"786\">\n                                <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"48\" ptr=\"0x127699870\" tag=\"40\" visibility=\"visible\" width=\"382\" x=\"0\" y=\"0\">\n                                    <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"48\" ptr=\"0x1276993e0\" tag=\"38\" visibility=\"visible\" width=\"382\" x=\"0\" y=\"0\">\n                                        <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"48\" label=\"!, Open debugger to view warnings.\" ptr=\"0x108c34fb0\" tag=\"36\" visibility=\"visible\" width=\"382\" x=\"0\" y=\"0\">\n                                            <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"22\" ptr=\"0x1276adec0\" tag=\"18\" visibility=\"visible\" width=\"22\" x=\"12\" y=\"13\" />\n                                            <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"18\" ptr=\"0x1276ae1c0\" tag=\"16\" visibility=\"visible\" width=\"18\" x=\"14\" y=\"15\" />\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"18\" label=\"!\" ptr=\"0x1276ae4c0\" tag=\"14\" text=\"!\" visibility=\"visible\" width=\"10\" x=\"18\" y=\"15\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"18\" ptr=\"0x10a1a7b60\" visibility=\"visible\" width=\"10\" x=\"0\" y=\"0\" />\n                                            </RCTParagraphComponentView>\n                                            <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"22\" ptr=\"0x10a1832d0\" tag=\"26\" visibility=\"visible\" width=\"303\" x=\"42\" y=\"13\" />\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"22\" label=\"Open debugger to view warnings.\" ptr=\"0x10a1bd2e0\" tag=\"24\" text=\"Open debugger to view warnings.\" visibility=\"visible\" width=\"294\" x=\"51\" y=\"13\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"22\" ptr=\"0x10a1bc570\" visibility=\"visible\" width=\"294\" x=\"0\" y=\"0\" />\n                                            </RCTParagraphComponentView>\n                                            <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"20\" ptr=\"0x10a1a9180\" tag=\"30\" visibility=\"visible\" width=\"20\" x=\"350\" y=\"14\">\n                                                <RCTImageComponentView alpha=\"1.0\" class=\"RCTImageComponentView\" focused=\"false\" height=\"8\" ptr=\"0x10a1bdf70\" tag=\"28\" visibility=\"visible\" width=\"8\" x=\"6\" y=\"6\">\n                                                    <RCTUIImageViewAnimated alpha=\"1.0\" class=\"RCTUIImageViewAnimated\" focused=\"false\" height=\"8\" ptr=\"0x12753c690\" visibility=\"visible\" width=\"8\" x=\"0\" y=\"0\" />\n                                                </RCTImageComponentView>\n                                            </RCTViewComponentView>\n                                        </RCTViewComponentView>\n                                    </RCTViewComponentView>\n                                </RCTViewComponentView>\n                            </RCTSafeAreaViewComponentView>\n                        </RCTRootComponentView>\n                    </RCTSurfaceView>\n                </RCTSurfaceHostingProxyRootView>\n            </UIDropShadowView>\n        </UITransitionView>\n    </UIWindow>\n</ViewHierarchy>",
+      "windows": [
+        "<UIWindow: 0x108e14440; frame = (0 0; 402 874);>",
+        "<DTXTouchVisualizerWindow: 0x10e832a00; frame = (0 0; 402 874);>"
+      ],
+      "visibilityFailingRectsURL": "/Users/shivi.agarwal/Library/Developer/CoreSimulator/Devices/AC7E343F-585F-430E-B17D-BDD649803605/data/Containers/Data/Application/0105B366-5548-4349-9E68-400EC4FB5981/tmp/visibilityFailingRects",
+      "DetoxFailureInformation": {
+        "lineNumber": 154,
+        "file": "/Users/builder/uibuilder/work/detox/ios/Detox/Invocation/Expectation.swift",
+        "functionName": "evaluate_after(startDate:completionHandler:)"
+      },
+      "NSLocalizedDescription": "Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(text == “Quick Fixes”) TIMEOUT(12s)",
+      "details": "Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(text == “Quick Fixes”) TIMEOUT(12s)",
+      "visibilityFailingScreenshotsURL": "/Users/shivi.agarwal/Library/Developer/CoreSimulator/Devices/AC7E343F-585F-430E-B17D-BDD649803605/data/Containers/Data/Application/0105B366-5548-4349-9E68-400EC4FB5981/tmp/visibilityFailingScreenshots"
+    }
+  }
+17:05:29.296 detox[82584] i get message
+  data: {"type":"testFailed","messageId":4,"params":{"viewHierarchy":"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<ViewHierarchy>\n    <UIWindow alpha=\"1.0\" class=\"UIWindow\" focused=\"false\" height=\"874\" ptr=\"0x108e14440\" visibility=\"visible\" width=\"402\">\n        <UITransitionView alpha=\"1.0\" class=\"UITransitionView\" focused=\"false\" height=\"874\" ptr=\"0x108f04ec0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n            <UIDropShadowView alpha=\"1.0\" class=\"UIDropShadowView\" focused=\"false\" height=\"874\" ptr=\"0x108f07dc0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                <RCTSurfaceHostingProxyRootView alpha=\"1.0\" class=\"RCTSurfaceHostingProxyRootView\" focused=\"false\" height=\"874\" ptr=\"0x108d516f0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                    <RCTSurfaceView alpha=\"1.0\" class=\"RCTSurfaceView\" focused=\"false\" height=\"874\" ptr=\"0x10a02a250\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                        <RCTRootComponentView alpha=\"1.0\" class=\"RCTRootComponentView\" focused=\"false\" height=\"874\" ptr=\"0x10a058350\" tag=\"11\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                            <RNCSafeAreaProviderComponentView alpha=\"1.0\" class=\"RNCSafeAreaProviderComponentView\" focused=\"false\" height=\"874\" ptr=\"0x108f5c9c0\" tag=\"2\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                <RNCSafeAreaViewComponentView alpha=\"1.0\" class=\"RNCSafeAreaViewComponentView\" focused=\"false\" height=\"874\" ptr=\"0x164121ce0\" tag=\"94\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                    <RCTUnimplementedViewComponentView alpha=\"1.0\" class=\"RCTUnimplementedViewComponentView\" focused=\"false\" height=\"778\" label=\"AlphaMa, You're juggling a career, a family,\nand a million invisible tasks., Finally, someone who gets it., , Continue with Google, , Continue with Apple, Unimplemented component: &lt;ViewManagerAdapter_ExpoLinearGradient_7671457332239917058&gt;\" ptr=\"0x164129fb0\" tag=\"92\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"62\">\n                                        <RCTImageComponentView alpha=\"1.0\" class=\"RCTImageComponentView\" focused=\"false\" height=\"110\" ptr=\"0x1275678f0\" tag=\"60\" visibility=\"visible\" width=\"110\" x=\"146\" y=\"64\">\n                                            <RCTUIImageViewAnimated alpha=\"1.0\" class=\"RCTUIImageViewAnimated\" focused=\"false\" height=\"110\" ptr=\"0x127566a20\" visibility=\"visible\" width=\"110\" x=\"0\" y=\"0\" />\n                                        </RCTImageComponentView>\n                                        <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"43\" label=\"AlphaMa\" ptr=\"0x127568520\" tag=\"64\" text=\"AlphaMa\" visibility=\"visible\" width=\"148\" x=\"126\" y=\"198\">\n                                            <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"43\" ptr=\"0x127568880\" visibility=\"visible\" width=\"148\" x=\"0\" y=\"0\" />\n                                        </RCTParagraphComponentView>\n                                        <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"56\" label=\"You're juggling a career, a family,\nand a million invisible tasks.\" ptr=\"0x127566c90\" tag=\"74\" text=\"You're juggling a career, a family,\nand a million invisible tasks.\" visibility=\"visible\" width=\"262\" x=\"70\" y=\"313\">\n                                            <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"56\" ptr=\"0x127568290\" visibility=\"visible\" width=\"262\" x=\"0\" y=\"0\" />\n                                        </RCTParagraphComponentView>\n                                        <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"24\" label=\"Finally, someone who gets it.\" ptr=\"0x16412af60\" tag=\"78\" text=\"Finally, someone who gets it.\" visibility=\"visible\" width=\"270\" x=\"66\" y=\"385\">\n                                            <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"24\" ptr=\"0x16412b2c0\" visibility=\"visible\" width=\"270\" x=\"0\" y=\"0\" />\n                                        </RCTParagraphComponentView>\n                                        <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"60\" label=\", Continue with Google\" ptr=\"0x127477bb0\" tag=\"88\" visibility=\"visible\" width=\"354\" x=\"24\" y=\"465\">\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"20\" label=\"\" ptr=\"0x16412b8e0\" tag=\"106\" text=\"\" visibility=\"visible\" width=\"20\" x=\"77\" y=\"20\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"20\" ptr=\"0x16412bc40\" visibility=\"visible\" width=\"20\" x=\"0\" y=\"0\" />\n                                            </RCTParagraphComponentView>\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"19\" label=\"Continue with Google\" ptr=\"0x16412c000\" tag=\"86\" text=\"Continue with Google\" visibility=\"visible\" width=\"162\" x=\"113\" y=\"20\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"19\" ptr=\"0x16412c360\" visibility=\"visible\" width=\"162\" x=\"0\" y=\"0\" />\n                                            </RCTParagraphComponentView>\n                                        </RCTViewComponentView>\n                                        <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"62\" label=\", Continue with Apple\" ptr=\"0x124bb6da0\" tag=\"102\" visibility=\"visible\" width=\"354\" x=\"24\" y=\"541\">\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"22\" label=\"\" ptr=\"0x124bb71e0\" tag=\"110\" text=\"\" visibility=\"visible\" width=\"22\" x=\"81\" y=\"20\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"22\" ptr=\"0x124bb9f20\" visibility=\"visible\" width=\"22\" x=\"0\" y=\"0\" />\n                                            </RCTParagraphComponentView>\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"19\" label=\"Continue with Apple\" ptr=\"0x124bba1b0\" tag=\"100\" text=\"Continue with Apple\" visibility=\"visible\" width=\"153\" x=\"119\" y=\"21\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"19\" ptr=\"0x124bba510\" visibility=\"visible\" width=\"153\" x=\"0\" y=\"0\" />\n                                            </RCTParagraphComponentView>\n                                        </RCTViewComponentView>\n                                        <UILabel alpha=\"1.0\" class=\"UILabel\" focused=\"false\" height=\"778\" label=\"Unimplemented component: &lt;ViewManagerAdapter_ExpoLinearGradient_7671457332239917058&gt;\" ptr=\"0x164129640\" text=\"Unimplemented component: &lt;ViewManagerAdapter_ExpoLinearGradient_7671457332239917058&gt;\" visibility=\"visible\" width=\"354\" x=\"24\" y=\"0\" />\n                                    </RCTUnimplementedViewComponentView>\n                                </RNCSafeAreaViewComponentView>\n                            </RNCSafeAreaProviderComponentView>\n                            <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"874\" ptr=\"0x12631f230\" tag=\"8\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                <RCTDebuggingOverlayComponentView alpha=\"1.0\" class=\"RCTDebuggingOverlayComponentView\" focused=\"false\" height=\"874\" ptr=\"0x12631fc40\" tag=\"6\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                    <RCTDebuggingOverlay alpha=\"1.0\" class=\"RCTDebuggingOverlay\" focused=\"false\" height=\"874\" ptr=\"0x1276bdc90\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" />\n                                </RCTDebuggingOverlayComponentView>\n                            </RCTViewComponentView>\n                            <RCTSafeAreaViewComponentView alpha=\"1.0\" class=\"RCTSafeAreaViewComponentView\" focused=\"false\" height=\"67\" ptr=\"0x12631f730\" tag=\"42\" visibility=\"visible\" width=\"382\" x=\"10\" y=\"786\">\n                                <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"48\" ptr=\"0x127699870\" tag=\"40\" visibility=\"visible\" width=\"382\" x=\"0\" y=\"0\">\n                                    <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"48\" ptr=\"0x1276993e0\" tag=\"38\" visibility=\"visible\" width=\"382\" x=\"0\" y=\"0\">\n                                        <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"48\" label=\"!, Open debugger to view warnings.\" ptr=\"0x108c34fb0\" tag=\"36\" visibility=\"visible\" width=\"382\" x=\"0\" y=\"0\">\n                                            <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"22\" ptr=\"0x1276adec0\" tag=\"18\" visibility=\"visible\" width=\"22\" x=\"12\" y=\"13\" />\n                                            <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"18\" ptr=\"0x1276ae1c0\" tag=\"16\" visibility=\"visible\" width=\"18\" x=\"14\" y=\"15\" />\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"18\" label=\"!\" ptr=\"0x1276ae4c0\" tag=\"14\" text=\"!\" visibility=\"visible\" width=\"10\" x=\"18\" y=\"15\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"18\" ptr=\"0x10a1a7b60\" visibility=\"visible\" width=\"10\" x=\"0\" y=\"0\" />\n                                            </RCTParagraphComponentView>\n                                            <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"22\" ptr=\"0x10a1832d0\" tag=\"26\" visibility=\"visible\" width=\"303\" x=\"42\" y=\"13\" />\n                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"22\" label=\"Open debugger to view warnings.\" ptr=\"0x10a1bd2e0\" tag=\"24\" text=\"Open debugger to view warnings.\" visibility=\"visible\" width=\"294\" x=\"51\" y=\"13\">\n                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"22\" ptr=\"0x10a1bc570\" visibility=\"visible\" width=\"294\" x=\"0\" y=\"0\" />\n                                            </RCTParagraphComponentView>\n                                            <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"20\" ptr=\"0x10a1a9180\" tag=\"30\" visibility=\"visible\" width=\"20\" x=\"350\" y=\"14\">\n                                                <RCTImageComponentView alpha=\"1.0\" class=\"RCTImageComponentView\" focused=\"false\" height=\"8\" ptr=\"0x10a1bdf70\" tag=\"28\" visibility=\"visible\" width=\"8\" x=\"6\" y=\"6\">\n                                                    <RCTUIImageViewAnimated alpha=\"1.0\" class=\"RCTUIImageViewAnimated\" focused=\"false\" height=\"8\" ptr=\"0x12753c690\" visibility=\"visible\" width=\"8\" x=\"0\" y=\"0\" />\n                                                </RCTImageComponentView>\n                                            </RCTViewComponentView>\n                                        </RCTViewComponentView>\n                                    </RCTViewComponentView>\n                                </RCTViewComponentView>\n                            </RCTSafeAreaViewComponentView>\n                        </RCTRootComponentView>\n                    </RCTSurfaceView>\n                </RCTSurfaceHostingProxyRootView>\n            </UIDropShadowView>\n        </UITransitionView>\n    </UIWindow>\n</ViewHierarchy>","windows":["<UIWindow: 0x108e14440; frame = (0 0; 402 874);>","<DTXTouchVisualizerWindow: 0x10e832a00; frame = (0 0; 402 874);>"],"visibilityFailingRectsURL":"/Users/shivi.agarwal/Library/Developer/CoreSimulator/Devices/AC7E343F-585F-430E-B17D-BDD649803605/data/Containers/Data/Application/0105B366-5548-4349-9E68-400EC4FB5981/tmp/visibilityFailingRects","DetoxFailureInformation":{"lineNumber":154,"file":"/Users/builder/uibuilder/work/detox/ios/Detox/Invocation/Expectation.swift","functionName":"evaluate_after(startDate:completionHandler:)"},"NSLocalizedDescription":"Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(text == “Quick Fixes”) TIMEOUT(12s)","details":"Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(text == “Quick Fixes”) TIMEOUT(12s)","visibilityFailingScreenshotsURL":"/Users/shivi.agarwal/Library/Developer/CoreSimulator/Devices/AC7E343F-585F-430E-B17D-BDD649803605/data/Containers/Data/Application/0105B366-5548-4349-9E68-400EC4FB5981/tmp/visibilityFailingScreenshots"}}
+   
+17:05:29.297 detox[82584] E wait until timeout (12000 ms) with timeout (12000 ms)
+  error: Test Failed: Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(text == “Quick Fixes”) TIMEOUT(12s)
+  
+  HINT: To print view hierarchy on failed actions/matches, use log-level verbose or higher.
+17:05:29.297 detox[82584] B onHookFailure
+  args: ({"error":{"name":"DetoxRuntimeError"},"hook":"beforeAll"})
+17:05:29.298 detox[82584] i starting SimulatorScreenshot
+17:05:29.298 detox[82584] i /usr/bin/xcrun simctl io AC7E343F-585F-430E-B17D-BDD649803605 screenshot "/private/var/folders/xs/zdg5gfcx5ld11ybt7f14r4h40000gn/T/detox-82584-IdCju2.detox.png"
+17:05:29.569 detox[82584] i Detected file type 'PNG' from extension
+Wrote screenshot to: /private/var/folders/xs/zdg5gfcx5ld11ybt7f14r4h40000gn/T/detox-82584-IdCju2.detox.png
+
+17:05:29.570 detox[82584] i stopping SimulatorScreenshot
+17:05:29.570 detox[82584] E onHookFailure
+17:05:29.570 detox[82584] E beforeAll
+  error: Test Failed: Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(text == “Quick Fixes”) TIMEOUT(12s)
+  
+  HINT: To print view hierarchy on failed actions/matches, use log-level verbose or higher.
+17:05:29.570 detox[82584] B Home Screen
+17:05:29.570 detox[82584] B onRunDescribeStart
+  args: ({"name":"Home Screen"})
+17:05:29.570 detox[82584] E onRunDescribeStart
+17:05:29.571 detox[82584] B should show Quick Fixes section
+17:05:29.571 detox[82584] i NayaVed App > Home Screen: should show Quick Fixes section
+17:05:29.572 detox[82584] E should show Quick Fixes section
+17:05:29.572 detox[82584] i NayaVed App > Home Screen: should show Quick Fixes section [FAIL]
+17:05:29.573 detox[82584] B should show Ojas card
+17:05:29.573 detox[82584] i NayaVed App > Home Screen: should show Ojas card
+17:05:29.574 detox[82584] E should show Ojas card
+17:05:29.574 detox[82584] i NayaVed App > Home Screen: should show Ojas card [FAIL]
+17:05:29.574 detox[82584] B should show Dosha card
+17:05:29.574 detox[82584] i NayaVed App > Home Screen: should show Dosha card
+17:05:29.575 detox[82584] E should show Dosha card
+17:05:29.575 detox[82584] i NayaVed App > Home Screen: should show Dosha card [FAIL]
+17:05:29.575 detox[82584] B onRunDescribeFinish
+  args: ({"name":"Home Screen"})
+17:05:29.576 detox[82584] E onRunDescribeFinish
+17:05:29.576 detox[82584] E Home Screen
+17:05:29.576 detox[82584] B Tab Navigation
+17:05:29.576 detox[82584] B onRunDescribeStart
+  args: ({"name":"Tab Navigation"})
+17:05:29.576 detox[82584] E onRunDescribeStart
+17:05:29.576 detox[82584] B should navigate to Ask Vaidya tab
+17:05:29.576 detox[82584] i NayaVed App > Tab Navigation: should navigate to Ask Vaidya tab
+17:05:29.576 detox[82584] E should navigate to Ask Vaidya tab
+17:05:29.576 detox[82584] i NayaVed App > Tab Navigation: should navigate to Ask Vaidya tab [FAIL]
+17:05:29.577 detox[82584] B should navigate to Ojas Glow tab
+17:05:29.577 detox[82584] i NayaVed App > Tab Navigation: should navigate to Ojas Glow tab
+17:05:29.577 detox[82584] E should navigate to Ojas Glow tab
+17:05:29.577 detox[82584] i NayaVed App > Tab Navigation: should navigate to Ojas Glow tab [FAIL]
+17:05:29.577 detox[82584] B should navigate to My Plan tab
+17:05:29.577 detox[82584] i NayaVed App > Tab Navigation: should navigate to My Plan tab
+17:05:29.577 detox[82584] E should navigate to My Plan tab
+17:05:29.577 detox[82584] i NayaVed App > Tab Navigation: should navigate to My Plan tab [FAIL]
+17:05:29.578 detox[82584] B should navigate to Wellness tab
+17:05:29.578 detox[82584] i NayaVed App > Tab Navigation: should navigate to Wellness tab
+17:05:29.579 detox[82584] E should navigate to Wellness tab
+17:05:29.579 detox[82584] i NayaVed App > Tab Navigation: should navigate to Wellness tab [FAIL]
+17:05:29.579 detox[82584] B should navigate to Learn tab
+17:05:29.579 detox[82584] i NayaVed App > Tab Navigation: should navigate to Learn tab
+17:05:29.579 detox[82584] E should navigate to Learn tab
+17:05:29.579 detox[82584] i NayaVed App > Tab Navigation: should navigate to Learn tab [FAIL]
+17:05:29.579 detox[82584] B should navigate to Settings tab
+17:05:29.579 detox[82584] i NayaVed App > Tab Navigation: should navigate to Settings tab
+17:05:29.580 detox[82584] E should navigate to Settings tab
+17:05:29.580 detox[82584] i NayaVed App > Tab Navigation: should navigate to Settings tab [FAIL]
+17:05:29.580 detox[82584] B should navigate back to Home tab
+17:05:29.580 detox[82584] i NayaVed App > Tab Navigation: should navigate back to Home tab
+17:05:29.581 detox[82584] E should navigate back to Home tab
+17:05:29.581 detox[82584] i NayaVed App > Tab Navigation: should navigate back to Home tab [FAIL]
+17:05:29.581 detox[82584] B onRunDescribeFinish
+  args: ({"name":"Tab Navigation"})
+17:05:29.581 detox[82584] E onRunDescribeFinish
+17:05:29.581 detox[82584] E Tab Navigation
+17:05:29.581 detox[82584] B Ojas Tracker
+17:05:29.582 detox[82584] B onRunDescribeStart
+  args: ({"name":"Ojas Tracker"})
+17:05:29.582 detox[82584] E onRunDescribeStart
+17:05:29.582 detox[82584] B should show Ojas Glow Tracker title
+17:05:29.582 detox[82584] i NayaVed App > Ojas Tracker: should show Ojas Glow Tracker title
+17:05:29.582 detox[82584] E should show Ojas Glow Tracker title
+17:05:29.582 detox[82584] i NayaVed App > Ojas Tracker: should show Ojas Glow Tracker title [FAIL]
+17:05:29.582 detox[82584] B should show score breakdown section
+17:05:29.583 detox[82584] i NayaVed App > Ojas Tracker: should show score breakdown section
+17:05:29.583 detox[82584] E should show score breakdown section
+17:05:29.583 detox[82584] i NayaVed App > Ojas Tracker: should show score breakdown section [FAIL]
+17:05:29.583 detox[82584] B should show share button
+17:05:29.583 detox[82584] i NayaVed App > Ojas Tracker: should show share button
+17:05:29.583 detox[82584] E should show share button
+17:05:29.583 detox[82584] i NayaVed App > Ojas Tracker: should show share button [FAIL]
+17:05:29.583 detox[82584] B should show habits section
+17:05:29.583 detox[82584] i NayaVed App > Ojas Tracker: should show habits section
+17:05:29.584 detox[82584] E should show habits section
+17:05:29.584 detox[82584] i NayaVed App > Ojas Tracker: should show habits section [FAIL]
+17:05:29.584 detox[82584] B onRunDescribeFinish
+  args: ({"name":"Ojas Tracker"})
+17:05:29.584 detox[82584] E onRunDescribeFinish
+17:05:29.584 detox[82584] E Ojas Tracker
+17:05:29.585 detox[82584] B My Plan
+17:05:29.585 detox[82584] B onRunDescribeStart
+  args: ({"name":"My Plan"})
+17:05:29.585 detox[82584] E onRunDescribeStart
+17:05:29.585 detox[82584] B should show all 5 tab buttons
+17:05:29.585 detox[82584] i NayaVed App > My Plan: should show all 5 tab buttons
+17:05:29.586 detox[82584] E should show all 5 tab buttons
+17:05:29.586 detox[82584] i NayaVed App > My Plan: should show all 5 tab buttons [FAIL]
+17:05:29.586 detox[82584] B onRunDescribeFinish
+  args: ({"name":"My Plan"})
+17:05:29.586 detox[82584] E onRunDescribeFinish
+17:05:29.586 detox[82584] E My Plan
+17:05:29.586 detox[82584] B Wellness / Pharmacy
+17:05:29.586 detox[82584] B onRunDescribeStart
+  args: ({"name":"Wellness / Pharmacy"})
+17:05:29.586 detox[82584] E onRunDescribeStart
+17:05:29.586 detox[82584] B should show Ayurvedic Pharmacy title
+17:05:29.586 detox[82584] i NayaVed App > Wellness / Pharmacy: should show Ayurvedic Pharmacy title
+17:05:29.586 detox[82584] E should show Ayurvedic Pharmacy title
+17:05:29.586 detox[82584] i NayaVed App > Wellness / Pharmacy: should show Ayurvedic Pharmacy title [FAIL]
+17:05:29.587 detox[82584] B should show product category tabs
+17:05:29.587 detox[82584] i NayaVed App > Wellness / Pharmacy: should show product category tabs
+17:05:29.587 detox[82584] E should show product category tabs
+17:05:29.587 detox[82584] i NayaVed App > Wellness / Pharmacy: should show product category tabs [FAIL]
+17:05:29.587 detox[82584] B onRunDescribeFinish
+  args: ({"name":"Wellness / Pharmacy"})
+17:05:29.587 detox[82584] E onRunDescribeFinish
+17:05:29.587 detox[82584] E Wellness / Pharmacy
+17:05:29.587 detox[82584] B Learn / Blog
+17:05:29.587 detox[82584] B onRunDescribeStart
+  args: ({"name":"Learn / Blog"})
+17:05:29.587 detox[82584] E onRunDescribeStart
+17:05:29.588 detox[82584] B should show Learn Ayurveda title
+17:05:29.588 detox[82584] i NayaVed App > Learn / Blog: should show Learn Ayurveda title
+17:05:29.588 detox[82584] E should show Learn Ayurveda title
+17:05:29.588 detox[82584] i NayaVed App > Learn / Blog: should show Learn Ayurveda title [FAIL]
+17:05:29.588 detox[82584] B should show Interactive Body Map
+17:05:29.588 detox[82584] i NayaVed App > Learn / Blog: should show Interactive Body Map
+17:05:29.588 detox[82584] E should show Interactive Body Map
+17:05:29.588 detox[82584] i NayaVed App > Learn / Blog: should show Interactive Body Map [FAIL]
+17:05:29.589 detox[82584] B should show category filters
+17:05:29.589 detox[82584] i NayaVed App > Learn / Blog: should show category filters
+17:05:29.589 detox[82584] E should show category filters
+17:05:29.589 detox[82584] i NayaVed App > Learn / Blog: should show category filters [FAIL]
+17:05:29.589 detox[82584] B onRunDescribeFinish
+  args: ({"name":"Learn / Blog"})
+17:05:29.589 detox[82584] E onRunDescribeFinish
+17:05:29.589 detox[82584] E Learn / Blog
+17:05:29.589 detox[82584] B Settings
+17:05:29.589 detox[82584] B onRunDescribeStart
+  args: ({"name":"Settings"})
+17:05:29.589 detox[82584] E onRunDescribeStart
+17:05:29.590 detox[82584] B should show Subscription section
+17:05:29.590 detox[82584] i NayaVed App > Settings: should show Subscription section
+17:05:29.590 detox[82584] E should show Subscription section
+17:05:29.590 detox[82584] i NayaVed App > Settings: should show Subscription section [FAIL]
+17:05:29.590 detox[82584] B should show AI Service Status
+17:05:29.590 detox[82584] i NayaVed App > Settings: should show AI Service Status
+17:05:29.590 detox[82584] E should show AI Service Status
+17:05:29.590 detox[82584] i NayaVed App > Settings: should show AI Service Status [FAIL]
+17:05:29.591 detox[82584] B should show Data Management section
+17:05:29.591 detox[82584] i NayaVed App > Settings: should show Data Management section
+17:05:29.591 detox[82584] E should show Data Management section
+17:05:29.591 detox[82584] i NayaVed App > Settings: should show Data Management section [FAIL]
+17:05:29.591 detox[82584] B should show Legal section
+17:05:29.591 detox[82584] i NayaVed App > Settings: should show Legal section
+17:05:29.591 detox[82584] E should show Legal section
+17:05:29.591 detox[82584] i NayaVed App > Settings: should show Legal section [FAIL]
+17:05:29.592 detox[82584] B onRunDescribeFinish
+  args: ({"name":"Settings"})
+17:05:29.592 detox[82584] E onRunDescribeFinish
+17:05:29.592 detox[82584] E Settings
+17:05:29.592 detox[82584] B AI Consultation
+17:05:29.592 detox[82584] B onRunDescribeStart
+  args: ({"name":"AI Consultation"})
+17:05:29.592 detox[82584] E onRunDescribeStart
+17:05:29.592 detox[82584] B should show suggestion prompts
+17:05:29.592 detox[82584] i NayaVed App > AI Consultation: should show suggestion prompts
+17:05:29.592 detox[82584] E should show suggestion prompts
+17:05:29.592 detox[82584] i NayaVed App > AI Consultation: should show suggestion prompts [FAIL]
+17:05:29.593 detox[82584] B should show suggested queries
+17:05:29.593 detox[82584] i NayaVed App > AI Consultation: should show suggested queries
+17:05:29.593 detox[82584] E should show suggested queries
+17:05:29.593 detox[82584] i NayaVed App > AI Consultation: should show suggested queries [FAIL]
+17:05:29.593 detox[82584] B onRunDescribeFinish
+  args: ({"name":"AI Consultation"})
+17:05:29.593 detox[82584] E onRunDescribeFinish
+17:05:29.593 detox[82584] E AI Consultation
+17:05:29.593 detox[82584] B afterAll
+17:05:29.593 detox[82584] B enableSynchronization
+  args: ()
+17:05:29.594 detox[82583] i get
+  data: {"type":"setSyncSettings","params":{"enabled":true},"messageId":6}
+17:05:29.594 detox[82583] i send
+  data: {
+    "type": "setSyncSettings",
+    "params": {
+      "enabled": true
+    },
+    "messageId": 6
+  }
+17:05:29.594 detox[82584] i send message
+  data: {"type":"setSyncSettings","params":{"enabled":true},"messageId":6}
+17:05:29.596 detox[82583] i get
+  data: {"type":"setSyncSettingsDone","messageId":6,"params":{}}
+17:05:29.596 detox[82583] i send
+  data: {
+    "type": "setSyncSettingsDone",
+    "messageId": 6,
+    "params": {}
+  }
+17:05:29.596 detox[82584] i get message
+  data: {"type":"setSyncSettingsDone","messageId":6,"params":{}}
+   
+17:05:29.596 detox[82584] E enableSynchronization
+17:05:29.596 detox[82584] E afterAll
+17:05:29.596 detox[82584] B onRunDescribeFinish
+  args: ({"name":"NayaVed App"})
+17:05:29.596 detox[82584] E onRunDescribeFinish
+17:05:29.596 detox[82584] E NayaVed App
+17:05:29.596 detox[82584] B onRunDescribeFinish
+  args: ({"name":"ROOT_DESCRIBE_BLOCK"})
+17:05:29.596 detox[82584] E onRunDescribeFinish
+17:05:29.596 detox[82584] E run the tests
+17:05:29.613 detox[82584] B tear down environment
+17:05:29.613 detox[82584] B onBeforeCleanup
+  args: ()
+17:05:29.614 detox[82584] i saving SimulatorScreenshot to: e2e/artifacts/ios.sim.debug.2026-01-28 22-04-55Z/beforeAllFailure.png
+17:05:29.614 detox[82584] i moving "/private/var/folders/xs/zdg5gfcx5ld11ybt7f14r4h40000gn/T/detox-82584-IdCju2.detox.png" to e2e/artifacts/ios.sim.debug.2026-01-28 22-04-55Z/beforeAllFailure.png
+17:05:29.616 detox[82584] i saving SimulatorLogRecording to: e2e/artifacts/ios.sim.debug.2026-01-28 22-04-55Z/AC7E343F-585F-430E-B17D-BDD649803605 2026-01-28 22-05-29Z.startup.log
+17:05:29.616 detox[82584] i stopping SimulatorLogRecording
+17:05:29.668 detox[82584] i sending SIGINT to: /usr/bin/xcrun simctl spawn AC7E343F-585F-430E-B17D-BDD649803605 log stream --level debug --style compact --predicate processImagePath beginsWith "/Users/shivi.agarwal/Library/Developer/CoreSimulator/Devices/AC7E343F-585F-430E-B17D-BDD649803605/data/Containers/Bundle/Application/7B6ADE3E-3E0A-46DC-87C4-9AADFEC62F3A/NayaVedAI.app"
+17:05:29.677 detox[82584] i /usr/bin/xcrun simctl spawn AC7E343F-585F-430E-B17D-BDD649803605 log stream --level debug --style compact --predicate "processImagePath beginsWith \"/Users/shivi.agarwal/Library/Developer/CoreSimulator/Devices/AC7E343F-585F-430E-B17D-BDD649803605/data/Containers/Bundle/Application/7B6ADE3E-3E0A-46DC-87C4-9AADFEC62F3A/NayaVedAI.app\"" exited with code #0
+17:05:29.677 detox[82584] i moving "/private/var/folders/xs/zdg5gfcx5ld11ybt7f14r4h40000gn/T/detox-82584-VEMdGf.detox.log" to e2e/artifacts/ios.sim.debug.2026-01-28 22-04-55Z/AC7E343F-585F-430E-B17D-BDD649803605 2026-01-28 22-05-29Z.startup.log
+17:05:29.678 detox[82584] i saving FileArtifact to: e2e/artifacts/ios.sim.debug.2026-01-28 22-04-55Z/detox_pid_82584.json.log { append: true }
+17:05:29.678 detox[82584] i saving FileArtifact to: e2e/artifacts/ios.sim.debug.2026-01-28 22-04-55Z/detox_pid_82584.log { append: true }
+17:05:29.678 detox[82584] E onBeforeCleanup
+17:05:29.679 detox[82583] i get
+  data: {"type":"cleanup","params":{"stopRunner":false},"messageId":-49642}
+17:05:29.679 detox[82583] i send
+  data: {
+    "type": "cleanup",
+    "params": {
+      "stopRunner": false
+    },
+    "messageId": -49642
+  }
+17:05:29.679 detox[82584] i send message
+  data: {"type":"cleanup","params":{"stopRunner":false},"messageId":-49642}
+17:05:29.683 detox[82583] i get
+  data: {"type":"cleanupDone","messageId":-49642,"params":{}}
+17:05:29.683 detox[82583] i send
+  data: {
+    "type": "cleanupDone",
+    "messageId": -49642,
+    "params": {}
+  }
+17:05:29.683 detox[82584] i get message
+  data: {"type":"cleanupDone","messageId":-49642,"params":{}}
+   
+17:05:29.685 detox[82583] i tester exited session 80c3bf7e-3604-bb15-f6e0-23ab090eeb27
+17:05:29.685 detox[82583] i send
+  data: {
+    "type": "testerDisconnected",
+    "messageId": -1
+  }
+17:05:29.685 detox[82583] E connection :50855<->:50863
+17:05:29.685 detox[82583] i received event of :  deallocateDevice {
+  deviceCookie: {
+    id: 'AC7E343F-585F-430E-B17D-BDD649803605',
+    udid: 'AC7E343F-585F-430E-B17D-BDD649803605',
+    type: 'ios.simulator'
+  }
+}
+17:05:29.685 detox[82583] B free: AC7E343F-585F-430E-B17D-BDD649803605
+  data: {}
+17:05:29.685 detox[82584] i dispatching event to  primary-82583 /tmp/detox.primary-82583  :  deallocateDevice , {
+  deviceCookie: {
+    id: 'AC7E343F-585F-430E-B17D-BDD649803605',
+    udid: 'AC7E343F-585F-430E-B17D-BDD649803605',
+    type: 'ios.simulator'
+  }
+}
+17:05:29.686 detox[82583] E free: AC7E343F-585F-430E-B17D-BDD649803605
+17:05:29.686 detox[82583] i dispatching event to socket  :  deallocateDeviceDone {}
+17:05:29.686 detox[82584] i ## received events ##
+17:05:29.686 detox[82584] i detected event deallocateDeviceDone {}
+17:05:29.686 detox[82584] E tear down environment
+17:05:29.686 detox[82584] E e2e/starter.test.js
+17:05:29.690 detox[82583] i received event of :  reportTestResults {
+  testResults: [
+    {
+      success: false,
+      testFilePath: '/Users/shivi.agarwal/Desktop/GithubMatLeave/Nayaved App/nayaved-app/e2e/starter.test.js',
+      isPermanentFailure: false
+    }
+  ]
+}
+17:05:29.690 detox[82583] i dispatching event to socket  :  reportTestResultsDone {
+  testResults: [
+    {
+      success: false,
+      testFilePath: '/Users/shivi.agarwal/Desktop/GithubMatLeave/Nayaved App/nayaved-app/e2e/starter.test.js',
+      isPermanentFailure: false
+    }
+  ]
+}
+17:05:29.690 detox[82584] i dispatching event to  primary-82583 /tmp/detox.primary-82583  :  reportTestResults , {
+  testResults: [
+    {
+      success: false,
+      testFilePath: '/Users/shivi.agarwal/Desktop/GithubMatLeave/Nayaved App/nayaved-app/e2e/starter.test.js',
+      testExecError: undefined,
+      isPermanentFailure: false
+    }
+  ]
+}
+17:05:29.691 detox[82583] i broadcasting event to all known sockets listening to  /tmp/detox.primary-82583  :   sessionStateUpdate {
+  testResults: [
+    {
+      success: false,
+      testFilePath: '/Users/shivi.agarwal/Desktop/GithubMatLeave/Nayaved App/nayaved-app/e2e/starter.test.js',
+      isPermanentFailure: false
+    }
+  ]
+}
+17:05:29.691 detox[82584] i ## received events ##
+17:05:29.691 detox[82584] i detected event reportTestResultsDone {
+  testResults: [
+    {
+      success: false,
+      testFilePath: '/Users/shivi.agarwal/Desktop/GithubMatLeave/Nayaved App/nayaved-app/e2e/starter.test.js',
+      isPermanentFailure: false
+    }
+  ]
+}
+17:05:29.692 detox[82583] i socket disconnected secondary-82584
+17:05:29.692 detox[82584] i connection closed primary-82583 /tmp/detox.primary-82583 0 tries remaining of 0
+17:05:29.692 detox[82584] i secondary-82584 exceeded connection rety amount of  or stopRetrying flag set.
+17:05:29.721 detox[82583] E Command failed with exit code = 1:
+jest --config e2e/jest.config.js
+17:05:29.722 detox[82583] B cleanup
+  args: ()
+17:05:29.723 detox[82583] E cleanup
+17:05:29.723 detox[82583] i Detox server has been closed gracefully
+17:05:29.724 detox[82583] i app exited session 80c3bf7e-3604-bb15-f6e0-23ab090eeb27
+17:05:29.724 detox[82583] E connection :50855<->:50919
+17:05:29.724 detox[82583] E node_modules/.bin/detox test --configuration ios.sim.debug

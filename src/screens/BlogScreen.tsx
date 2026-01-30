@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -7,16 +7,35 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute, RouteProp, useFocusEffect } from '@react-navigation/native';
 import { MaterialCommunityIcons, Feather } from '@expo/vector-icons';
-import { blogPosts } from '../data/blogs';
+import { blogPosts, getPostById } from '../data/blogs';
 import ManuscriptCard from '../components/ManuscriptCard';
 import { ManuscriptColors, ManuscriptFonts, BorderPatterns } from '../components/ManuscriptConstants';
 
+type BlogScreenParams = {
+  BlogMain: {
+    blogId?: string;
+  };
+};
+
 export default function BlogScreen() {
   const navigation = useNavigation<any>();
+  const route = useRoute<RouteProp<BlogScreenParams, 'BlogMain'>>();
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedBlog, setSelectedBlog] = useState<any>(null);
+
+  // Check if navigated with a specific blog ID
+  useFocusEffect(
+    useCallback(() => {
+      if (route.params?.blogId) {
+        const blog = getPostById(route.params.blogId);
+        if (blog) {
+          setSelectedBlog(blog);
+        }
+      }
+    }, [route.params?.blogId])
+  );
 
   const categories = ['All', 'Herbs & Spices', 'Daily Routine', 'Mental Health', 'Basics'];
 
@@ -29,7 +48,11 @@ export default function BlogScreen() {
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
         <TouchableOpacity
           style={styles.backButton}
-          onPress={() => setSelectedBlog(null)}
+          onPress={() => {
+            setSelectedBlog(null);
+            // Clear the blogId param to prevent reopening
+            navigation.setParams({ blogId: undefined });
+          }}
         >
           <Text style={styles.backButtonText}>← Back to Articles</Text>
         </TouchableOpacity>

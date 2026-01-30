@@ -17,6 +17,8 @@ import { getRecommendedProducts } from '../data/products';
 import ProductCard from '../components/ProductCard';
 import { ManuscriptColors } from '../components/ManuscriptConstants';
 import { analyzeSkin as aiAnalyzeSkin, isApiConfigured, SkinAnalysisResult as AISkinResult } from '../services/aiService';
+import { saveScanResult, saveScanOjasContribution } from '../services/dailyRitualService';
+import PremiumLock from '../components/PremiumLock';
 
 interface SkinMetrics {
   luminosity: number; // 0-100 (glow/radiance)
@@ -133,9 +135,13 @@ export default function SkinAnalysisScreen() {
             inflammation: aiAnalysis.inflammation,
           };
 
+          // Calculate ojas from metrics if AI doesn't return it
+          const ojasFromAI = aiAnalysis.ojasContribution;
+          const calculatedOjas = calculateOjasFromSkin(metrics);
+
           const result: SkinAnalysisResult = {
             metrics,
-            ojasContribution: aiAnalysis.ojasContribution,
+            ojasContribution: ojasFromAI || calculatedOjas,
             dominantDosha: aiAnalysis.doshaIndication.dominant,
             recommendations: aiAnalysis.recommendations,
             date: new Date().toISOString(),
@@ -146,12 +152,21 @@ export default function SkinAnalysisScreen() {
           await saveAnalysis(result);
         } catch (aiError: any) {
           console.log('Skin analysis error:', aiError.message);
-          // Only show alert for usage limit errors
           if (aiError.code === 'USAGE_LIMIT') {
-            Alert.alert('Scan Limit Reached', 'Upgrade to Premium for unlimited AI-powered diagnostics!');
+            setIsAnalyzing(false);
+            Alert.alert(
+              'Free Scans Used',
+              'Upgrade to Premium for unlimited AI-powered skin analysis!',
+              [
+                { text: 'Maybe Later', style: 'cancel' },
+                { text: 'Upgrade Now', onPress: () => navigation.navigate('Paywall' as never) }
+              ]
+            );
+            return;
           }
-          // Fall back to mock analysis silently
-          await performMockAnalysis();
+          Alert.alert('Connection Issue', 'Unable to connect to AI service. Please try again.');
+          setIsAnalyzing(false);
+          return;
         }
       } else {
         // Use mock analysis (educational demo)
@@ -287,29 +302,25 @@ export default function SkinAnalysisScreen() {
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 
       // Also update Ojas tracker with skin contribution
-      await updateOjasTracker(result.ojasContribution);
+      await saveScanOjasContribution('skin', result.ojasContribution);
+
+      // Save to daily ritual service for streak tracking
+      await saveScanResult({
+        type: 'skin',
+        summary: `${result.dominantDosha} dominant - Ojas contribution ${result.ojasContribution}`,
+        dominantDosha: result.dominantDosha.toLowerCase() as 'vata' | 'pitta' | 'kapha',
+        metrics: {
+          luminosity: result.metrics.luminosity,
+          texture: result.metrics.texture,
+          moisture: result.metrics.moisture,
+        },
+        ojasContribution: result.ojasContribution,
+      });
     } catch (error) {
       console.log('Error saving analysis:', error);
     }
   };
 
-  const updateOjasTracker = async (skinOjas: number) => {
-    try {
-      const today = new Date().toISOString().split('T')[0];
-      const ojasKey = `@nayaved_ojas_data_${today}`;
-      const stored = await AsyncStorage.getItem(ojasKey);
-
-      if (stored) {
-        const ojasData = JSON.parse(stored);
-        // Add skin Ojas to existing habit score
-        ojasData.score = Math.min(100, ojasData.score + skinOjas);
-        ojasData.skinOjasContribution = skinOjas;
-        await AsyncStorage.setItem(ojasKey, JSON.stringify(ojasData));
-      }
-    } catch (error) {
-      console.log('Error updating Ojas tracker:', error);
-    }
-  };
 
   const getMetricColor = (value: number, inverted = false): string => {
     if (inverted) value = 100 - value;
@@ -375,7 +386,7 @@ export default function SkinAnalysisScreen() {
         <View style={styles.instruction}>
           <Text style={styles.bulletPoint}>5.</Text>
           <Text style={styles.instructionText}>
-            Take weekly selfies to track Ojas glow changes
+            Take daily selfies to track Ojas glow changes
           </Text>
         </View>
       </View>
@@ -579,39 +590,25 @@ export default function SkinAnalysisScreen() {
             </Text>
           </View>
 
-          {/* Recommendations */}
-          <View style={styles.recommendationsCard}>
-            <View style={styles.recommendationsTitleRow}>
-              <Feather name="check-circle" size={18} color="#6B8E23" />
-              <Text style={styles.recommendationsTitle}> Recommendations for Your Skin</Text>
-            </View>
-            {analysisResult.recommendations.map((rec, idx) => (
-              <View key={idx} style={styles.recommendationRow}>
-                <Text style={styles.recommendationBullet}>•</Text>
-                <Text style={styles.recommendationText}>{rec}</Text>
+          {/* Recommendations - LOCKED for free users (Curiosity Gap) */}
+          <PremiumLock
+            contentType="recommendations"
+            itemCount={analysisResult.recommendations.length}
+            description="Get personalized skin care protocols based on your dosha and Ojas analysis"
+          >
+            <View style={styles.recommendationsCard}>
+              <View style={styles.recommendationsTitleRow}>
+                <Feather name="check-circle" size={18} color="#6B8E23" />
+                <Text style={styles.recommendationsTitle}> Recommendations for Your Skin</Text>
               </View>
-            ))}
-          </View>
-
-          {/* Product Recommendations */}
-          <View style={styles.productRecommendationsSection}>
-            <View style={styles.productSectionTitleRow}>
-              <MaterialCommunityIcons name="leaf" size={22} color="#4CAF50" />
-              <Text style={styles.productSectionTitle}> Suggested Ayurvedic Products</Text>
+              {analysisResult.recommendations.map((rec, idx) => (
+                <View key={idx} style={styles.recommendationRow}>
+                  <Text style={styles.recommendationBullet}>•</Text>
+                  <Text style={styles.recommendationText}>{rec}</Text>
+                </View>
+              ))}
             </View>
-            <Text style={styles.productSectionSubtitle}>
-              These herbs & oils can help balance your {analysisResult.dominantDosha} skin type
-            </Text>
-            {getRecommendedProducts(analysisResult.dominantDosha.toLowerCase() as 'vata' | 'pitta' | 'kapha', 2).map((product) => (
-              <ProductCard key={product.id} product={product} showFullDetails={false} />
-            ))}
-            <TouchableOpacity
-              style={styles.shopMoreButton}
-              onPress={() => navigation.navigate('Pharmacy')}
-            >
-              <Text style={styles.shopMoreText}>View All Products →</Text>
-            </TouchableOpacity>
-          </View>
+          </PremiumLock>
 
           {/* Before/After Comparison */}
           {previousImage && (
@@ -632,7 +629,7 @@ export default function SkinAnalysisScreen() {
                 </View>
               </View>
               <Text style={styles.comparisonNote}>
-                Take weekly selfies to see your Ojas glow increase!
+                Take daily selfies to see your Ojas glow increase!
               </Text>
             </View>
           )}
@@ -677,6 +674,28 @@ export default function SkinAnalysisScreen() {
         </Text>
         <Text style={styles.manuscriptSource}>- Charaka Samhita</Text>
       </View>
+
+      {/* Product Recommendations - shown after educational section */}
+      {analysisResult && (
+        <View style={styles.productRecommendationsSection}>
+          <View style={styles.productSectionTitleRow}>
+            <MaterialCommunityIcons name="leaf" size={22} color="#4CAF50" />
+            <Text style={styles.productSectionTitle}> Suggested Ayurvedic Products</Text>
+          </View>
+          <Text style={styles.productSectionSubtitle}>
+            These herbs & oils can help balance your {analysisResult.dominantDosha} skin type
+          </Text>
+          {getRecommendedProducts(analysisResult.dominantDosha.toLowerCase() as 'vata' | 'pitta' | 'kapha', 3).map((product) => (
+            <ProductCard key={product.id} product={product} showFullDetails={false} />
+          ))}
+          <TouchableOpacity
+            style={styles.shopMoreButton}
+            onPress={() => navigation.navigate('Pharmacy')}
+          >
+            <Text style={styles.shopMoreText}>View All Products →</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </ScrollView>
   );
 }

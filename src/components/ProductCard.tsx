@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Linking, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Product } from '../data/products';
+import * as Localization from 'expo-localization';
+import { Product, UserRegion, getAffiliateLink, getDisplayPrice } from '../data/products';
 import ManuscriptCard from './ManuscriptCard';
 import { ManuscriptColors, ManuscriptFonts } from './ManuscriptConstants';
 
@@ -10,17 +11,60 @@ interface ProductCardProps {
   showFullDetails?: boolean;
 }
 
+// Detect user's region for correct Amazon store
+function getUserRegion(): UserRegion {
+  try {
+    const locales = Localization.getLocales();
+    const calendars = Localization.getCalendars();
+
+    // Check locale region code
+    if (locales && locales.length > 0) {
+      const primaryLocale = locales[0];
+      if (primaryLocale.regionCode === 'IN') return 'IN';
+      if (primaryLocale.regionCode === 'CA') return 'CA';
+      if (primaryLocale.regionCode === 'US') return 'US';
+      // Check language tag
+      if (primaryLocale.languageTag?.includes('-IN')) return 'IN';
+      if (primaryLocale.languageTag?.includes('-CA')) return 'CA';
+    }
+
+    // Check timezone as fallback
+    if (calendars && calendars.length > 0) {
+      const timezone = calendars[0].timeZone || '';
+      if (timezone.includes('Kolkata') || timezone.includes('India') || timezone.includes('Calcutta')) return 'IN';
+      if (timezone.includes('Toronto') || timezone.includes('Vancouver') || timezone.includes('Montreal') ||
+          timezone.includes('Edmonton') || timezone.includes('Winnipeg') || timezone.includes('Halifax') ||
+          timezone.includes('St_Johns') || timezone.includes('Regina')) return 'CA';
+    }
+
+    return 'US'; // Default
+  } catch {
+    return 'US';
+  }
+}
+
 export default function ProductCard({ product, showFullDetails = false }: ProductCardProps) {
+  const [region, setRegion] = useState<UserRegion>('US');
+
+  useEffect(() => {
+    setRegion(getUserRegion());
+  }, []);
+
+  const affiliateLink = getAffiliateLink(product, region);
+  const displayPrice = getDisplayPrice(product, region);
+
   const handleBuyNow = () => {
+    const storeNames: Record<UserRegion, string> = { US: 'Amazon', IN: 'Amazon India', CA: 'Amazon Canada', other: 'Amazon' };
+    const storeName = storeNames[region];
     Alert.alert(
       'Open Affiliate Store?',
-      `This will open ${product.brand}'s website where you can purchase ${product.name}.`,
+      `This will open ${storeName} where you can purchase ${product.name}.`,
       [
         { text: 'Cancel', style: 'cancel' },
         {
           text: 'Continue',
           onPress: () => {
-            Linking.openURL(product.affiliateLink).catch(() => {
+            Linking.openURL(affiliateLink).catch(() => {
               Alert.alert('Error', 'Could not open the link');
             });
           },
@@ -51,7 +95,7 @@ export default function ProductCard({ product, showFullDetails = false }: Produc
             <Text style={styles.brandName}>{product.brand}</Text>
           </View>
         </View>
-        <Text style={styles.price}>{product.price}</Text>
+        <Text style={styles.price}>{displayPrice}</Text>
       </View>
 
       <Text style={styles.description}>{product.description}</Text>

@@ -37,6 +37,21 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 const USER_STORAGE_KEY = '@nayaved_user';
 const USER_DATA_PREFIX = '@nayaved_data_';
 
+// Keys that hold user-specific data
+const USER_DATA_KEYS = [
+  'doshaResult',
+  'userSymptoms',
+  'ojasData',
+  'pulseAnalysis',
+  'skinAnalysis',
+  'eyeAnalysis',
+  'nailAnalysis',
+  'tongueAnalysis',
+  'dailyRitualData',
+  'streakData',
+  'scanHistory',
+];
+
 interface AuthProviderProps {
   children: ReactNode;
   googleClientId?: string;
@@ -76,7 +91,10 @@ export function AuthProvider({
     try {
       const storedUser = await AsyncStorage.getItem(USER_STORAGE_KEY);
       if (storedUser) {
-        setUser(JSON.parse(storedUser));
+        const parsedUser = JSON.parse(storedUser);
+        setUser(parsedUser);
+        // Load this user's data into the common keys
+        await loadUserData(parsedUser.id);
       }
     } catch (e) {
       console.error('Error loading user:', e);
@@ -94,25 +112,35 @@ export function AuthProvider({
     }
   };
 
+  // Save current session data to user-specific storage
+  const saveCurrentSessionData = async (userId: string) => {
+    try {
+      for (const key of USER_DATA_KEYS) {
+        const data = await AsyncStorage.getItem(key);
+        if (data) {
+          await AsyncStorage.setItem(`${USER_DATA_PREFIX}${userId}_${key}`, data);
+        }
+      }
+    } catch (e) {
+      console.error('Error saving session data:', e);
+    }
+  };
+
+  // Clear common data keys (for switching users)
+  const clearCommonDataKeys = async () => {
+    try {
+      for (const key of USER_DATA_KEYS) {
+        await AsyncStorage.removeItem(key);
+      }
+    } catch (e) {
+      console.error('Error clearing common data:', e);
+    }
+  };
+
   // Migrate guest data to authenticated user
   const migrateGuestData = async (newUserId: string) => {
     try {
-      // Get all keys
-      const allKeys = await AsyncStorage.getAllKeys();
-
-      // Keys to migrate (user-specific data)
-      const keysToMigrate = [
-        'doshaResult',
-        'userSymptoms',
-        'ojasData',
-        'pulseAnalysis',
-        'skinAnalysis',
-        'eyeAnalysis',
-        'nailAnalysis',
-        'tongueAnalysis',
-      ];
-
-      for (const key of keysToMigrate) {
+      for (const key of USER_DATA_KEYS) {
         const data = await AsyncStorage.getItem(key);
         if (data) {
           // Save with user-specific prefix
@@ -124,21 +152,14 @@ export function AuthProvider({
     }
   };
 
-  // Load user-specific data
+  // Load user-specific data into common keys
   const loadUserData = async (userId: string) => {
     try {
-      const keysToLoad = [
-        'doshaResult',
-        'userSymptoms',
-        'ojasData',
-        'pulseAnalysis',
-        'skinAnalysis',
-        'eyeAnalysis',
-        'nailAnalysis',
-        'tongueAnalysis',
-      ];
+      // First clear any existing data in common keys
+      await clearCommonDataKeys();
 
-      for (const key of keysToLoad) {
+      // Then load this user's data
+      for (const key of USER_DATA_KEYS) {
         const userData = await AsyncStorage.getItem(`${USER_DATA_PREFIX}${userId}_${key}`);
         if (userData) {
           // Restore to main key for app to use
@@ -179,12 +200,15 @@ export function AuthProvider({
         createdAt: new Date().toISOString(),
       };
 
-      // If coming from guest, migrate data
+      // If coming from guest, migrate their data to the new account
       if (user?.provider === 'guest') {
         await migrateGuestData(googleUser.id);
+      } else if (user) {
+        // Save current user's data before switching
+        await saveCurrentSessionData(user.id);
       }
 
-      // Load any existing data for this user
+      // Load any existing data for this user (clears common keys first)
       await loadUserData(googleUser.id);
 
       await saveUser(googleUser);
@@ -200,14 +224,21 @@ export function AuthProvider({
   const signInWithGoogle = async () => {
     try {
       setError(null);
+      setIsLoading(true);
       if (!request) {
-        setError('Google Sign-In is not configured');
+        setError('Google Sign-In is not available. Please use Apple Sign-In or continue as Guest.');
+        setIsLoading(false);
         return;
       }
       await promptAsync();
     } catch (e) {
       console.error('Google sign-in error:', e);
-      setError('Failed to start Google sign-in');
+      setError('Failed to start Google sign-in. Please try again or use another method.');
+    } finally {
+      // Note: isLoading will be set to false in handleGoogleSuccess or on error
+      if (!request) {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -234,12 +265,15 @@ export function AuthProvider({
         createdAt: new Date().toISOString(),
       };
 
-      // If coming from guest, migrate data
+      // If coming from guest, migrate their data to the new account
       if (user?.provider === 'guest') {
         await migrateGuestData(appleUser.id);
+      } else if (user) {
+        // Save current user's data before switching
+        await saveCurrentSessionData(user.id);
       }
 
-      // Load any existing data for this user
+      // Load any existing data for this user (clears common keys first)
       await loadUserData(appleUser.id);
 
       await saveUser(appleUser);
@@ -260,6 +294,14 @@ export function AuthProvider({
   const continueAsGuest = async () => {
     try {
       setIsLoading(true);
+
+      // If there was a previous user, save their data
+      if (user && user.provider !== 'guest') {
+        await saveCurrentSessionData(user.id);
+      }
+
+      // Clear common data for fresh guest experience
+      await clearCommonDataKeys();
 
       const guestUser: User = {
         id: `guest_${Date.now()}`,
@@ -284,45 +326,16 @@ export function AuthProvider({
     try {
       setIsLoading(true);
 
-      // Save current user's data before signing out
+      // Save current user's data before signing out (not for guests)
       if (user && user.provider !== 'guest') {
-        const keysToSave = [
-          'doshaResult',
-          'userSymptoms',
-          'ojasData',
-          'pulseAnalysis',
-          'skinAnalysis',
-          'eyeAnalysis',
-          'nailAnalysis',
-          'tongueAnalysis',
-        ];
-
-        for (const key of keysToSave) {
-          const data = await AsyncStorage.getItem(key);
-          if (data) {
-            await AsyncStorage.setItem(`${USER_DATA_PREFIX}${user.id}_${key}`, data);
-          }
-        }
+        await saveCurrentSessionData(user.id);
       }
 
       // Clear current session data
       await AsyncStorage.removeItem(USER_STORAGE_KEY);
 
-      // Clear session-specific keys (but keep user-prefixed data)
-      const sessionKeys = [
-        'doshaResult',
-        'userSymptoms',
-        'ojasData',
-        'pulseAnalysis',
-        'skinAnalysis',
-        'eyeAnalysis',
-        'nailAnalysis',
-        'tongueAnalysis',
-      ];
-
-      for (const key of sessionKeys) {
-        await AsyncStorage.removeItem(key);
-      }
+      // Clear common data keys (but keep user-prefixed data)
+      await clearCommonDataKeys();
 
       setUser(null);
       setError(null);

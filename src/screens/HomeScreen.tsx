@@ -14,6 +14,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialCommunityIcons, Ionicons, FontAwesome5, Feather } from '@expo/vector-icons';
 import { ManuscriptColors, ManuscriptFonts, BorderPatterns } from '../components/ManuscriptConstants';
 import ManuscriptCard from '../components/ManuscriptCard';
+import StreakBanner from '../components/StreakBanner';
+import DailyInsight from '../components/DailyInsight';
 
 const { width } = Dimensions.get('window');
 
@@ -44,18 +46,6 @@ interface DiagnosticItem {
 }
 
 const diagnostics: DiagnosticItem[] = [
-  {
-    id: 'dosha',
-    name: 'Dosha',
-    title: 'Dosha Assessment',
-    subtitle: 'Discover your Ayurvedic constitution',
-    icon: 'clipboard-check-outline',
-    iconFamily: 'MaterialCommunityIcons',
-    color: '#7E57C2',
-    borderColor: '#512DA8',
-    ctaText: 'Take Quiz',
-    screen: 'Assessment',
-  },
   {
     id: 'pulse',
     name: 'Pulse',
@@ -521,36 +511,9 @@ export default function HomeScreen() {
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       {/* Personalized Hero Section */}
       {userData.hasAnyData ? (
-        // RETURNING USER - Personalized greeting with summary
+        // RETURNING USER - Personalized greeting
         <View style={styles.hero}>
           <Text style={styles.greeting}>{getGreeting()}, {userData.name || 'Seeker'}</Text>
-
-          {/* Health Summary Card */}
-          <View style={styles.healthSummary}>
-            {dominantDosha && (
-              <View style={styles.summaryItem}>
-                <MaterialCommunityIcons
-                  name={dominantDosha === 'Vata' ? 'weather-windy' : dominantDosha === 'Pitta' ? 'fire' : 'leaf'}
-                  size={24}
-                  color={dominantDosha === 'Vata' ? '#60A5FA' : dominantDosha === 'Pitta' ? '#EF4444' : '#10B981'}
-                />
-                <Text style={styles.summaryLabel}>Dosha</Text>
-                <Text style={styles.summaryValue}>{dominantDosha}</Text>
-              </View>
-            )}
-            <View style={styles.summaryItem}>
-              <MaterialCommunityIcons name="clipboard-check-outline" size={24} color="#6B8E23" />
-              <Text style={styles.summaryLabel}>Analyses</Text>
-              <Text style={styles.summaryValue}>{completedAnalyses}/6</Text>
-            </View>
-            {userData.ojasScore !== null && (
-              <View style={styles.summaryItem}>
-                <MaterialCommunityIcons name="shimmer" size={24} color="#E65100" />
-                <Text style={styles.summaryLabel}>Ojas</Text>
-                <Text style={styles.summaryValue}>{userData.ojasScore}</Text>
-              </View>
-            )}
-          </View>
         </View>
       ) : (
         // NEW USER - Welcome message
@@ -569,79 +532,50 @@ export default function HomeScreen() {
         </View>
       )}
 
-      {/* PENDING DIAGNOSTICS - Show prominently at top until completed or skipped */}
-      {pendingDiagnostics.length > 0 && (
-        <View style={styles.diagnosticsSection}>
-          <View style={styles.sectionHeaderRow}>
-            <Feather name="activity" size={22} color={ManuscriptColors.inkBlack} />
-            <Text style={styles.diagnosticsSectionTitle}>
-              {userData.hasAnyData ? 'Continue Your Journey' : 'Start Your Journey'}
-            </Text>
+      {/* Ojas & Dosha Cards at the top */}
+      <View style={styles.topCardsRow}>
+        {/* Ojas Glow Card - LEFT */}
+        <TouchableOpacity
+          style={[styles.topCard, { backgroundColor: '#FFCC00', borderColor: '#FF9500' }]}
+          onPress={() => navigation.navigate('Ojas')}
+        >
+          <View style={styles.topCardIconContainer}>
+            <MaterialCommunityIcons name="shimmer" size={32} color="#000000" />
           </View>
-          <Text style={styles.diagnosticsProgress}>
-            {completedAnalyses} of 6 completed
+          <Text style={styles.topCardTitle}>
+            {userData.ojasScore !== null ? `${userData.ojasScore}` : 'Ojas'}
           </Text>
+          <Text style={styles.topCardSubtitle}>
+            {userData.ojasScore !== null ? 'Glow Score' : 'Track Glow'}
+          </Text>
+        </TouchableOpacity>
 
-          {pendingDiagnostics.map((diagnostic) => (
-            <View key={diagnostic.id} style={[styles.diagnosticCard, { backgroundColor: diagnostic.color, borderColor: diagnostic.borderColor }]}>
-              <TouchableOpacity
-                style={styles.diagnosticCardContent}
-                onPress={() => navigation.navigate(diagnostic.screen)}
-              >
-                <View style={styles.diagnosticHeader}>
-                  <View style={styles.diagnosticIconContainer}>
-                    {diagnostic.iconFamily === 'Ionicons' ? (
-                      <Ionicons name={diagnostic.icon as any} size={36} color="#FFFFFF" />
-                    ) : (
-                      <MaterialCommunityIcons name={diagnostic.icon as any} size={36} color="#FFFFFF" />
-                    )}
-                  </View>
-                  <View style={styles.diagnosticText}>
-                    <Text style={styles.diagnosticTitle}>{diagnostic.title}</Text>
-                    <Text style={styles.diagnosticSubtitle}>{diagnostic.subtitle}</Text>
-                  </View>
-                </View>
-                <View style={styles.diagnosticActions}>
-                  <View style={[styles.diagnosticCTA, { borderColor: diagnostic.borderColor }]}>
-                    <Text style={[styles.diagnosticCTAText, { color: diagnostic.borderColor }]}>{diagnostic.ctaText}</Text>
-                    <Feather name="arrow-right" size={16} color={diagnostic.borderColor} style={{ marginLeft: 6 }} />
-                  </View>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.skipButton}
-                onPress={() => skipDiagnostic(diagnostic.id)}
-              >
-                <Text style={styles.skipButtonText}>Skip for now</Text>
-              </TouchableOpacity>
-            </View>
-          ))}
-        </View>
-      )}
+        {/* Dosha Assessment Card - RIGHT */}
+        <TouchableOpacity
+          style={[styles.topCard, { backgroundColor: '#AF52DE', borderColor: '#8B44AC' }]}
+          onPress={() => navigation.navigate('Assessment')}
+        >
+          <View style={styles.topCardIconContainer}>
+            <MaterialCommunityIcons name="clipboard-check-outline" size={32} color="#000000" />
+          </View>
+          <Text style={styles.topCardTitle}>
+            {userData.doshaResult ? userData.doshaResult.dominant : 'Dosha'}
+          </Text>
+          <Text style={styles.topCardSubtitle}>
+            {userData.doshaResult ? 'Retake Quiz' : 'Take Quiz'}
+          </Text>
+        </TouchableOpacity>
+      </View>
 
-      {/* Ojas Glow Tracker */}
-      <TouchableOpacity
-        style={styles.ojasCard}
-        onPress={() => navigation.navigate('Ojas')}
-      >
-        <View style={styles.ojasHeader}>
-          <View style={styles.ojasIconContainer}>
-            <MaterialCommunityIcons name="shimmer" size={40} color={ManuscriptColors.inkBlack} />
-          </View>
-          <View style={styles.ojasTextContainer}>
-            <Text style={styles.ojasTitle}>Track Your Ojas Glow</Text>
-            <Text style={styles.ojasSubtitle}>
-              {userData.ojasScore !== null
-                ? `Current score: ${userData.ojasScore} - Keep building your vitality!`
-                : 'Start tracking your daily vitality habits'}
-            </Text>
-          </View>
-        </View>
-        <View style={styles.ojasCTA}>
-          <Text style={styles.ojasCTAText}>{userData.ojasScore !== null ? 'Continue Tracking' : 'Start Tracking'}</Text>
-          <Feather name="arrow-right" size={16} color={ManuscriptColors.copperBrown} style={{ marginLeft: 6 }} />
-        </View>
-      </TouchableOpacity>
+      {/* Daily Ritual / Streak Banner */}
+      <StreakBanner
+        onStartRitual={(screen) => {
+          navigation.navigate(screen as never);
+        }}
+      />
+
+      {/* Daily Insight - Rotating blog teaser */}
+      <DailyInsight />
 
       {/* Quick Fixes */}
       <View style={styles.section}>
@@ -687,75 +621,6 @@ export default function HomeScreen() {
         )}
       </View>
 
-      {/* COMPLETED DIAGNOSTICS - Show as smaller cards */}
-      {completedDiagnostics.length > 0 && (
-        <View style={styles.completedSection}>
-          <View style={styles.completedHeader}>
-            <Feather name="check-circle" size={18} color={ManuscriptColors.indigo} />
-            <Text style={styles.completedTitle}>Completed Analyses</Text>
-          </View>
-          <Text style={styles.completedSubtitle}>Tap to run again</Text>
-
-          {completedDiagnostics.map((diagnostic) => (
-            <TouchableOpacity
-              key={diagnostic.id}
-              style={[styles.miniDiagnosticCard, { borderLeftColor: diagnostic.borderColor }]}
-              onPress={() => navigation.navigate(diagnostic.screen)}
-            >
-              <View style={[styles.miniIconContainer, { backgroundColor: diagnostic.color }]}>
-                {diagnostic.iconFamily === 'Ionicons' ? (
-                  <Ionicons name={diagnostic.icon as any} size={24} color="#FFFFFF" />
-                ) : (
-                  <MaterialCommunityIcons name={diagnostic.icon as any} size={24} color="#FFFFFF" />
-                )}
-              </View>
-              <View style={styles.miniTextContainer}>
-                <Text style={styles.miniTitle}>{diagnostic.title}</Text>
-                <Text style={styles.miniSubtitle}>{diagnostic.name} analysis completed</Text>
-              </View>
-              <Feather name="refresh-cw" size={18} color={ManuscriptColors.fadedInk} />
-            </TouchableOpacity>
-          ))}
-        </View>
-      )}
-
-      {/* SKIPPED DIAGNOSTICS - Show as smaller cards with undo option */}
-      {skippedDiagnosticItems.length > 0 && (
-        <View style={styles.skippedSection}>
-          <View style={styles.skippedHeader}>
-            <Feather name="pause-circle" size={18} color={ManuscriptColors.fadedInk} />
-            <Text style={styles.skippedTitle}>Skipped for Now</Text>
-          </View>
-          <Text style={styles.skippedSubtitle}>Tap to try or undo</Text>
-
-          {skippedDiagnosticItems.map((diagnostic) => (
-            <View key={diagnostic.id} style={[styles.miniDiagnosticCard, { borderLeftColor: ManuscriptColors.copperBrown, opacity: 0.8 }]}>
-              <TouchableOpacity
-                style={styles.miniCardTouchable}
-                onPress={() => navigation.navigate(diagnostic.screen)}
-              >
-                <View style={[styles.miniIconContainer, { backgroundColor: ManuscriptColors.fadedInk }]}>
-                  {diagnostic.iconFamily === 'Ionicons' ? (
-                    <Ionicons name={diagnostic.icon as any} size={24} color="#FFFFFF" />
-                  ) : (
-                    <MaterialCommunityIcons name={diagnostic.icon as any} size={24} color="#FFFFFF" />
-                  )}
-                </View>
-                <View style={styles.miniTextContainer}>
-                  <Text style={styles.miniTitle}>{diagnostic.title}</Text>
-                  <Text style={styles.miniSubtitle}>Tap to try this analysis</Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.undoButton}
-                onPress={() => undoSkip(diagnostic.id)}
-              >
-                <Text style={styles.undoButtonText}>Undo</Text>
-              </TouchableOpacity>
-            </View>
-          ))}
-        </View>
-      )}
 
     </ScrollView>
   );
@@ -771,16 +636,14 @@ const styles = StyleSheet.create({
   },
   hero: {
     alignItems: 'center',
-    marginBottom: 24,
-    paddingVertical: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: ManuscriptColors.goldLeaf,
+    marginBottom: 12,
+    paddingVertical: 8,
   },
   greeting: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: 'bold',
     color: ManuscriptColors.inkBlack,
-    marginBottom: 16,
+    marginBottom: 0,
     textAlign: 'center',
   },
   welcomeTitle: {
@@ -1092,6 +955,44 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontFamily: ManuscriptFonts.body,
     fontSize: ManuscriptFonts.captionSize,
+  },
+  // Top cards row (Dosha & Ojas)
+  topCardsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+    gap: 12,
+  },
+  topCard: {
+    flex: 1,
+    borderRadius: 12,
+    padding: 20,
+    alignItems: 'center',
+    borderWidth: 3,
+    shadowColor: ManuscriptColors.scrollShadow,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  topCardIconContainer: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: 'rgba(255,255,255,0.6)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  topCardTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#000000',
+    marginBottom: 4,
+  },
+  topCardSubtitle: {
+    fontSize: 13,
+    color: '#000000',
   },
   section: {
     marginBottom: 24,

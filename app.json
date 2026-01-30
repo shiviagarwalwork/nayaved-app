@@ -2,6 +2,7 @@
   "expo": {
     "name": "NayaVed AI",
     "slug": "nayaved",
+    "scheme": "nayaved",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,14 +15,20 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.nayaved.app",
-      "buildNumber": "1",
+      "buildNumber": "10",
       "infoPlist": {
         "NSCameraUsageDescription": "NayaVed AI uses your camera for tongue diagnosis and pulse analysis to provide personalized Ayurvedic health insights.",
         "NSPhotoLibraryUsageDescription": "NayaVed AI needs access to your photo library to save and analyze diagnostic images.",
+        "NSLocationWhenInUseUsageDescription": "NayaVed AI may use your location to provide region-specific Ayurvedic recommendations and seasonal wellness tips.",
         "NSAppTransportSecurity": {
-          "NSAllowsArbitraryLoads": true,
-          "NSAllowsLocalNetworking": true
-        }
+          "NSAllowsArbitraryLoads": false,
+          "NSExceptionDomains": {
+            "localhost": {
+              "NSExceptionAllowsInsecureHTTPLoads": true
+            }
+          }
+        },
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
@@ -37,10 +44,32 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "extra": {},
+    "extra": {
+      "eas": {
+        "projectId": "3bf6c644-801e-4edc-97f0-484638a4f928"
+      }
+    },
     "owner": "shiviagarwalwork",
     "plugins": [
-      "expo-font"
+      "expo-font",
+      "expo-localization",
+      [
+        "expo-notifications",
+        {
+          "color": "#E34234",
+          "sounds": []
+        }
+      ],
+      "@sentry/react-native",
+      [
+        "react-native-vision-camera",
+        {
+          "cameraPermissionText": "Nayaved AI needs camera access for tongue diagnosis and pulse analysis.",
+          "enableMicrophonePermission": false
+        }
+      ],
+      "./plugins/withBrightnessFrameProcessor.js",
+      "./plugins/withBridgingHeader.js"
     ]
   }
 }

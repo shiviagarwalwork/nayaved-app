@@ -14,6 +14,7 @@ import {
 import PaywallScreen from './PaywallScreen';
 import { MaterialCommunityIcons, Feather, Ionicons } from '@expo/vector-icons';
 import { ManuscriptColors } from '../components/ManuscriptConstants';
+import NotificationSettings from '../components/NotificationSettings';
 import { useAuth } from '../context/AuthContext';
 import { useSubscription } from '../context/SubscriptionContext';
 import { isApiConfigured } from '../services/aiService';
@@ -74,6 +75,45 @@ export default function SettingsScreen() {
     } finally {
       setIsActivating(false);
     }
+  };
+
+  const handleResetTodayScans = async () => {
+    Alert.alert(
+      'Reset Today\'s Scans',
+      'This will clear today\'s scan history so the daily check-in cards reappear. Your analysis results are not affected.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Reset',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              const today = new Date().toISOString().split('T')[0];
+              const historyJson = await AsyncStorage.getItem('nayaved_scan_history');
+              if (historyJson) {
+                const history = JSON.parse(historyJson);
+                const filtered = history.filter((s: any) => s.date !== today);
+                await AsyncStorage.setItem('nayaved_scan_history', JSON.stringify(filtered));
+              }
+              // Also reset streak's lastScanDate if it was today
+              const streakJson = await AsyncStorage.getItem('nayaved_streak_data');
+              if (streakJson) {
+                const streak = JSON.parse(streakJson);
+                if (streak.lastScanDate === today) {
+                  streak.lastScanDate = null;
+                  streak.currentStreak = Math.max(0, streak.currentStreak - 1);
+                  await AsyncStorage.setItem('nayaved_streak_data', JSON.stringify(streak));
+                }
+              }
+              Alert.alert('Done', 'Today\'s scan history has been cleared. Go back to Home to see the daily check-in cards.');
+            } catch (error) {
+              console.log('Error resetting scans:', error);
+              Alert.alert('Error', 'Failed to reset scan data.');
+            }
+          },
+        },
+      ]
+    );
   };
 
   const handleSignOut = async () => {
@@ -274,6 +314,12 @@ export default function SettingsScreen() {
         </View>
       </View>
 
+      {/* Notification Settings */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Notifications</Text>
+        <NotificationSettings />
+      </View>
+
       {/* User Profile Section */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Account</Text>
@@ -306,6 +352,59 @@ export default function SettingsScreen() {
             <Feather name="log-out" size={18} color="#C62828" />
             <Text style={styles.signOutText}>Sign Out</Text>
           </TouchableOpacity>
+        </View>
+      </View>
+
+      {/* Data Management */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Data Management</Text>
+        <View style={styles.card}>
+          <TouchableOpacity style={styles.dataRow} onPress={handleResetTodayScans}>
+            <View style={styles.dataItem}>
+              <Feather name="refresh-cw" size={20} color="#E65100" />
+              <View style={styles.dataTextContainer}>
+                <Text style={styles.dataTitle}>Reset Today's Scans</Text>
+                <Text style={styles.dataDescription}>Clear today's scan check-ins to redo them</Text>
+              </View>
+            </View>
+            <Feather name="chevron-right" size={18} color={ManuscriptColors.fadedInk} />
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      {/* Legal */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Legal</Text>
+        <View style={styles.card}>
+          <TouchableOpacity
+            style={styles.legalRow}
+            onPress={() => Linking.openURL('https://nayaved.com/privacy')}
+          >
+            <View style={styles.legalItem}>
+              <Feather name="shield" size={20} color={ManuscriptColors.copperBrown} />
+              <Text style={styles.legalText}>Privacy Policy</Text>
+            </View>
+            <Feather name="external-link" size={18} color={ManuscriptColors.fadedInk} />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.legalRow}
+            onPress={() => Linking.openURL('https://nayaved.com/terms')}
+          >
+            <View style={styles.legalItem}>
+              <Feather name="file-text" size={20} color={ManuscriptColors.copperBrown} />
+              <Text style={styles.legalText}>Terms of Service</Text>
+            </View>
+            <Feather name="external-link" size={18} color={ManuscriptColors.fadedInk} />
+          </TouchableOpacity>
+
+          <View style={styles.disclaimerBox}>
+            <Feather name="alert-circle" size={18} color="#B87333" />
+            <Text style={styles.disclaimerText}>
+              NayaVed AI provides wellness insights based on Ayurvedic principles.
+              Not intended as medical advice. Always consult a healthcare professional.
+            </Text>
+          </View>
         </View>
       </View>
 
@@ -606,6 +705,65 @@ const styles = StyleSheet.create({
   aboutValue: {
     fontSize: 15,
     color: ManuscriptColors.fadedInk,
+  },
+  legalRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: ManuscriptColors.copperBrown,
+  },
+  legalItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  legalText: {
+    fontSize: 16,
+    color: ManuscriptColors.inkBlack,
+  },
+  disclaimerBox: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: '#FFF8E7',
+    padding: 12,
+    borderRadius: 10,
+    marginTop: 12,
+    gap: 10,
+    borderLeftWidth: 3,
+    borderLeftColor: '#B87333',
+  },
+  disclaimerText: {
+    flex: 1,
+    fontSize: 12,
+    color: ManuscriptColors.inkBrown,
+    lineHeight: 18,
+  },
+  dataRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 12,
+  },
+  dataItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    gap: 12,
+  },
+  dataTextContainer: {
+    flex: 1,
+  },
+  dataTitle: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: ManuscriptColors.inkBlack,
+  },
+  dataDescription: {
+    fontSize: 12,
+    color: ManuscriptColors.fadedInk,
+    marginTop: 2,
   },
   bottomPadding: {
     height: 40,
