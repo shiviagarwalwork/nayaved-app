@@ -40,3 +40,9 @@ yarn-error.*
 /ios
 /android
 .vercel
+
+# Test artifacts (logs, screenshots, traces)
+e2e/artifacts/
+
+# Backend env files
+backend/.env
