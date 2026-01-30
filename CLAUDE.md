@@ -1,7 +1,7 @@
 # Claude Code Context Memory
 **Project:** NayaVed AI Mobile App
-**Last Updated:** 2026-01-23
-**Status:** MVP Complete - App Store Submission In Progress
+**Last Updated:** 2026-01-30
+**Status:** MVP Complete - Production Build Ready
 
 ---
 
@@ -11,21 +11,24 @@
 A React Native/Expo mobile app that brings Ayurvedic diagnostics to users through AI-powered analysis. The app allows users to:
 - Discover their dosha (Vata/Pitta/Kapha) through assessment
 - Get AI-powered analysis of tongue, eyes, skin, nails, and pulse
-- Track their Ojas (vital energy) through daily habits
+- Track their Ojas (vital energy) through daily habits + scan contributions
 - Receive personalized daily routines based on their constitution
 - Chat with an AI Ayurvedic consultant
-- Purchase Ayurvedic products via affiliate links
+- Purchase Ayurvedic products via affiliate links (US, India, Canada)
+- Share Ojas score as a screenshot image
 
 ### Tech Stack
-- **Framework:** React Native with Expo
+- **Framework:** React Native with Expo (SDK 54)
 - **Language:** TypeScript
 - **Navigation:** React Navigation (bottom tabs + stack)
 - **State:** React Context + AsyncStorage
 - **Backend:** Express.js API server
 - **AI:** Claude API (via backend proxy)
 - **Payments:** RevenueCat (In-App Purchases)
-- **Monetization:** Amazon Associates (Affiliate links)
-- **Styling:** React Native StyleSheet with custom theme
+- **Monetization:** Amazon Associates (Affiliate links - US, India, Canada)
+- **Styling:** React Native StyleSheet with custom manuscript theme
+- **Sharing:** react-native-view-shot + expo-sharing (screenshot sharing)
+- **E2E Testing:** Detox (iOS/Android) + Playwright (Web)
 
 ---
 
@@ -39,13 +42,25 @@ A React Native/Expo mobile app that brings Ayurvedic diagnostics to users throug
    - Skin/Facial Analysis (Twak Pariksha) - AI-powered
    - Nail Analysis (Nakha Pariksha) - AI-powered
    - Pulse Analysis (Nadi Pariksha) - Simulated/educational
-3. **Ojas Tracker** - Daily habit tracking with facial glow scoring
-4. **My Plan** - Personalized daily routines based on dosha
-5. **AI Consultation** - Chat interface with Ayurvedic AI assistant
-6. **Home Remedies** - Searchable remedy database
-7. **Ayurvedic Pharmacy** - Product recommendations with affiliate links
-8. **Settings** - Developer mode, subscription status, paywall
-9. **Paywall Screen** - RevenueCat integration for premium subscriptions
+3. **Ojas Tracker** - Daily habit tracking + scan contributions from all 5 scans + screenshot sharing
+4. **My Plan** - Personalized daily routines with 5 visible tabs (Morning, Midday, Evening, Diet, Herbs)
+5. **AI Consultation** - Chat interface with Ayurvedic AI assistant (Ask Vaidya)
+6. **Home Remedies** - Searchable remedy database (Quick Fixes)
+7. **Wellness Shop** - Product recommendations with regional affiliate links (tab: "Wellness")
+8. **Blog / Learn** - Ayurvedic blog posts, DailyInsight component pulls from blog data
+9. **Settings** - Developer mode, subscription status, paywall, notifications, data management
+10. **Paywall Screen** - RevenueCat integration for premium subscriptions
+11. **Daily Ritual / Streak System** - StreakBanner on Home, daily scan tracking, milestones
+12. **Push Notifications** - Morning ritual, daily wisdom, streak reminders
+
+### Bottom Tab Navigation (7 tabs)
+1. **Home** (Quick Start) - HomeStackNavigator
+2. **Consult** (Ask Vaidya) - ConsultationScreen
+3. **Ojas** (Ojas Glow) - OjasTrackerScreen
+4. **Plan** (My Plan) - PlanScreen
+5. **Pharmacy** (Wellness) - PharmacyScreen
+6. **Blog** (Learn) - BlogStackNavigator
+7. **Settings** - SettingsScreen
 
 ### Backend API
 - Running on port 4000
@@ -57,55 +72,240 @@ A React Native/Expo mobile app that brings Ayurvedic diagnostics to users throug
 
 ---
 
-## RECENT UPDATES (2026-01-23)
+## RECENT UPDATES (2026-01-28)
 
-### Amazon Affiliate Integration
-- Updated all 13 products in `products.ts` with Amazon affiliate links
-- Affiliate tag: `nayaved-20`
-- Products include herbs, oils, powders, and teas for all doshas
-- OneLink ready for international users (US, India, UK, etc.)
+### Ojas Screenshot Sharing
+- Installed `react-native-view-shot` and `expo-sharing`
+- Share button captures header + avatar + score breakdown as PNG image
+- Includes "NayaVed - Track Your Vitality" branding in captured image
+- Share button positioned outside ViewShot so it doesn't appear in screenshot
 
-### Improved Error Handling
-- All analysis screens (Tongue, Skin, Eye, Nail) now gracefully fall back to educational mode
-- Only shows alert for usage limit errors (prompts upgrade)
-- Silently handles network/parsing errors without disturbing user
-- Added null checks throughout to prevent crashes from missing data
+### Ojas Score from All 5 Scans
+- Each scan type (tongue, eye, skin, nail, pulse) contributes 3-5 pts to Ojas score
+- Created `saveScanOjasContribution()` and `calculateScanOjasContribution()` in dailyRitualService.ts
+- All 5 scan screens updated to save Ojas contributions after analysis
+- OjasTrackerScreen shows per-scan breakdown with colored icons
 
-### Backend JSON Parsing Improvements
-- Enhanced `cleanJsonResponse()` to handle various Claude response formats
-- Added `safeJsonParse()` with detailed error logging
-- Data normalization ensures arrays and numbers are correct types
-- Prevents JSON parsing crashes from malformed responses
+### Amazon Canada Support ✅
+- Added `UserRegion` type: `'US' | 'IN' | 'CA' | 'other'`
+- Region detection via locale regionCode + timezone fallback (Canadian cities)
+- Canada uses search-based Amazon links (ASINs differ across stores)
+- Amazon affiliate tags:
+  - **US:** `nayaved-20` (amazon.com)
+  - **India:** `nayaved-21` (amazon.in)
+  - **Canada:** `nayaved0c-20` (amazon.ca)
+- `ProductCard.tsx` updated: `isUserInIndia()` → `getUserRegion()` returning `UserRegion`
 
-### Code Documentation
-- Added comprehensive comments to all major files
-- Backend endpoints documented
-- RevenueCat setup instructions added
-- Affiliate setup guide included
+### Wellness Tab (Previously Missing)
+- `PharmacyScreen` was imported but not rendered in bottom tabs
+- Added `<Tab.Screen name="Pharmacy" component={PharmacyScreen} options={{ title: 'Wellness' }} />`
+
+### Plan Screen Tabs Fix
+- Changed from horizontal ScrollView (hid Diet & Herbs) to flex-wrap layout
+- All 5 tabs (Morning, Midday, Evening, Diet, Herbs) now visible without scrolling
+- Reduced icon/text size for compact fit
+
+### DailyInsight from Blogs
+- DailyInsight component now pulls from `blogs.ts` instead of hardcoded DAILY_INSIGHTS
+- Navigates to specific blog via nested navigation: `navigate('Blog', { screen: 'BlogMain', params: { blogId } })`
+- BlogScreen accepts `blogId` param and auto-opens the blog on focus
+
+### Daily Scans Visibility
+- StreakBanner filters to only show incomplete scans for today
+- Shows "All Complete" banner when all scans done
+- Added "Reset Today's Scans" in Settings > Data Management
+
+### Settings - Data Management
+- New section in SettingsScreen with "Reset Today's Scans" button
+- Clears today's scan history from AsyncStorage
+- Allows re-testing daily scan flow
+
+---
+
+## PREVIOUS UPDATES (2026-01-27)
+
+### Daily Ritual / Streak System
+- Created `src/services/dailyRitualService.ts` for streak tracking
+- Created `src/components/StreakBanner.tsx` for displaying daily ritual status
+- Integrated streak tracking into HomeScreen
+- All 6 diagnostic screens now save to dailyRitualService
+- Features: Body Weather, Streak counter, Milestones (3/7/14/30 days), Daily Wisdom quotes
+
+### Legal, Notifications, Curiosity Gap, Amazon India
+- Privacy Policy & Terms links in Settings
+- Push notifications with expo-notifications (morning ritual, wisdom, streak)
+- Curiosity Gap paywall: free users see metrics, premium gets full protocols
+- Amazon India support with region detection
 
 ---
 
 ## PENDING ITEMS / TODO
 
-### Immediate (Before App Store Submission)
-1. **Test affiliate links on mobile** - Verify Amazon links open correctly with tag
-2. **Test tongue/skin/eye/nail analysis** - Verify AI results display properly
-3. **Complete RevenueCat setup:**
-   - Add products in RevenueCat dashboard
-   - Create "premium" entitlement
-   - Create "default" offering with monthly/yearly packages
-4. **Build app:** `eas build --platform ios`
-5. **Submit to App Store**
+### Completed ✅
+- [x] Test affiliate links on mobile (US, India, Canada)
+- [x] Test tongue/skin/eye/nail analysis manually
+- [x] Build deployable (2026-01-27)
+- [x] Amazon affiliate integration (US + India + Canada)
+- [x] Privacy Policy & Terms
+- [x] Curiosity Gap paywall
+- [x] Push notifications
+- [x] Daily Ritual / Streak system
+- [x] Social sharing for Ojas (screenshot)
+- [x] Ojas contributions from all 5 scans
+- [x] DailyInsight from blogs
+- [x] Plan screen tabs visible (flex-wrap)
+- [x] Wellness/Pharmacy tab in navigation
+- [x] Canada region detection + Amazon links
+- [x] Data management (reset scans) in Settings
+- [x] Native PPG frame processor (Swift + config plugins)
+- [x] Login spinner fix (only active button shows spinner)
+- [x] User data isolation (separate storage per user)
+- [x] Google OAuth configuration
+- [x] TypeScript error fixes (FeatureGate, OjasTracker, notifications)
+- [x] App icon resized to 1024x1024
+- [x] Git commit & push to GitHub (2026-01-30)
 
-### Amazon Affiliate Setup (For Global Revenue)
-1. Sign up for Amazon Associates in key markets:
-   - Amazon.com (US) - Primary ✅ (tag: nayaved-20)
-   - Amazon.in (India) - Sign up needed
-   - Amazon.co.uk (UK) - Sign up needed
-2. Enable OneLink in Associates Central → Tools → OneLink
-3. Link international accounts for auto-redirect
+### IMMEDIATE NEXT STEPS (Do These Now)
+1. **Build iOS production app:**
+   ```bash
+   npx eas-cli build --platform ios --profile production
+   ```
+2. **Submit to TestFlight after build completes:**
+   ```bash
+   npx eas-cli submit --platform ios
+   ```
+3. **Test on TestFlight:**
+   - Verify native PPG frame processor works (no more "Frame Processors unavailable" error)
+   - Verify login buttons show spinner correctly (only clicked button)
+   - Verify user data isolation (guest vs Apple login have separate data)
+   - Verify Google login works
 
-### RevenueCat Configuration
+### High Priority - Before App Store Release
+1. **Deploy backend to Vercel:**
+   ```bash
+   cd backend && vercel --prod
+   ```
+   Then update `API_BASE_URL` in `src/services/aiService.ts`
+2. **Complete RevenueCat setup** (manual - dashboard):
+   - Create products: `nayaved_premium_monthly` ($4.99), `nayaved_premium_yearly` ($39.99)
+   - Create entitlement: `premium`
+   - Create offering: `default`
+   - Link App Store Connect app
+3. **App Store screenshots** - 3 device sizes (6.7", 6.5", 5.5")
+4. **Submit to App Store** - `eas submit --platform ios`
+
+### Medium Priority
+1. ~~**Amazon Associates signup**~~ - ✅ Done - US, Canada, India accounts active
+2. ~~**Persist developer mode**~~ - ✅ Done - File-based storage added (see backend/storage.js)
+3. ~~**Set up Sentry**~~ - ✅ Done - Configured in App.tsx, source map upload disabled for now
+4. ~~**Update Detox E2E tests**~~ - ✅ Done - 21/26 tests passing
+5. **Android build & submission** - `eas build --platform android` + Google Play Console
+
+### Low Priority
+1. **Database integration** - Replace in-memory storage with Firebase/Supabase
+2. **Dark mode** - Theme switching
+3. **Multi-language** - Hindi, Sanskrit translations
+4. **Apple Watch** - Pulse analysis integration
+5. **Offline mode** - Cache results for offline viewing
+
+---
+
+## PRODUCTION DEPLOYMENT GUIDE
+
+### Step-by-Step to Production
+
+```
+1. Deploy backend to Vercel
+   └── cd backend && vercel --prod
+   └── Update API_BASE_URL in src/services/aiService.ts
+   └── Rebuild app after URL change
+
+2. Set up RevenueCat products in dashboard
+   └── Create monthly/yearly products
+   └── Test with sandbox account
+
+3. Build production iOS
+   └── eas build --platform ios
+
+4. Submit to TestFlight
+   └── eas submit --platform ios
+   └── Test with 3-5 beta testers (24-48hr Apple review)
+
+5. Submit for App Store Review
+   └── Upload screenshots (6.7", 6.5", 5.5")
+   └── Fill out app metadata, privacy labels
+   └── Submit (typically 1-3 day review)
+
+6. Build + Submit Android
+   └── eas build --platform android
+   └── eas submit --platform android
+   └── Google review (1-7 days)
+
+7. Post-launch
+   └── Monitor crash reports (Sentry recommended)
+   └── Verify affiliate commissions flowing
+   └── Update website with store links
+```
+
+### Manual Efforts Required
+
+| Task | Where | Notes |
+|------|-------|-------|
+| RevenueCat products | RevenueCat dashboard | Create monthly/yearly, entitlement, offering |
+| Amazon CA signup | associates.amazon.ca | Tag `nayaved0c-20` already in code |
+| Amazon IN signup | affiliate-program.amazon.in | Tag `nayaved-21` already in code |
+| App Store listing | App Store Connect | Description, keywords, screenshots, privacy labels |
+| Google Play listing | Google Play Console | Store listing, data safety, content rating |
+| Backend deploy | Vercel | `cd backend && vercel --prod` |
+| Sentry setup | sentry.io | Create project, get DSN |
+| TestFlight testers | App Store Connect | Add beta tester emails |
+
+### Testing Guide
+
+**iOS Testing:**
+- Expo Go: Quick iteration, some native module limitations
+- Dev Build: `eas build --profile development --platform ios` (full native support)
+- TestFlight: `eas build && eas submit --platform ios` (pre-production, up to 10K testers)
+
+**Android Testing:**
+- Expo Go on Android device: Install from Play Store, scan QR
+- Android Emulator: Install Android Studio, create virtual device, press `a` in Expo
+- Dev Build: `eas build --profile development --platform android`
+- Internal Testing: Upload to Google Play Console Internal Testing track
+
+### Monitoring (Recommended: Sentry)
+- Install: `npx expo install @sentry/react-native`
+- Captures: crashes, JS errors, API failures, performance
+- Free tier: 5,000 errors/month
+- Shows device info, OS version, stack traces with source maps
+
+---
+
+## AMAZON AFFILIATE CONFIGURATION
+
+### Tags by Region
+| Region | Domain | Tag | Status |
+|--------|--------|-----|--------|
+| US | amazon.com | `nayaved-20` | ✅ Active |
+| India | amazon.in | `nayaved-21` | Code ready, need signup |
+| Canada | amazon.ca | `nayaved0c-20` | ✅ Active |
+| UK | amazon.co.uk | Not yet | Need signup |
+
+### How Region Detection Works
+File: `src/components/ProductCard.tsx` → `getUserRegion()`
+1. Checks `Localization.getLocales()[0].regionCode` (IN, CA, US)
+2. Checks `languageTag` suffix (-IN, -CA)
+3. Falls back to timezone detection (Kolkata, Toronto, Vancouver, etc.)
+4. Default: US
+
+### Link Strategy
+- **US**: Direct ASIN link (`amazon.com/dp/ASIN?tag=nayaved-20`)
+- **India**: India-specific ASIN link (`affiliateLinkIN` field)
+- **Canada/Other**: Search-based link (`amazon.ca/s?k=Brand+Product&tag=nayaved0c-20`) — ASINs differ across stores
+
+---
+
+## RevenueCat Configuration
 - **iOS API Key:** `appdf7562d03f` ✅
 - **Android API Key:** Not yet created
 - **Products to create:**
@@ -114,71 +314,70 @@ A React Native/Expo mobile app that brings Ayurvedic diagnostics to users throug
 - **Entitlement:** `premium`
 - **Offering:** `default`
 
-### High Priority
-1. **Persist developer mode** - Currently resets when backend restarts (need database)
-2. **Deploy backend to Vercel** - Update aiService.ts with production URL
-3. **App Store screenshots** - Create for all device sizes
-4. **Privacy policy & Terms** - Required for App Store
-
-### Medium Priority
-1. **Database integration** - Replace in-memory storage with Firebase/Supabase
-2. **Push notifications** - Daily routine reminders
-3. **Offline mode** - Cache results for offline viewing
-
-### Low Priority
-1. **Dark mode** - Theme switching
-2. **Multi-language** - Hindi, Sanskrit translations
-3. **Social sharing** - Share dosha results
-4. **Apple Watch** - Pulse analysis integration
-
 ---
 
 ## PROJECT STRUCTURE
 
 ```
-ayurveda-mobile/
+nayaved-app/
 ├── App.tsx                    # Main app entry with navigation
 ├── app.json                   # Expo configuration
 ├── package.json               # Dependencies
 ├── CLAUDE.md                  # This context file
+├── .detoxrc.js               # Detox E2E test configuration
+├── e2e/
+│   ├── jest.config.js        # Detox jest config
+│   ├── starter.test.js       # Native E2E tests (needs update)
+│   └── web.spec.ts           # Playwright web tests
 ├── src/
-│   ├── components/           # Reusable UI components
+│   ├── components/
 │   │   ├── ManuscriptConstants.ts  # Theme colors/fonts
-│   │   ├── ProductCard.tsx   # Affiliate product display
-│   │   └── ...
+│   │   ├── ProductCard.tsx   # Affiliate product display (region detection: US/IN/CA)
+│   │   ├── PremiumLock.tsx   # Curiosity Gap paywall component
+│   │   ├── StreakBanner.tsx  # Daily ritual streak display + scan cards
+│   │   ├── DailyInsight.tsx  # Blog-based daily insight with navigation
+│   │   ├── NotificationSettings.tsx # Notification preferences UI
+│   │   └── ManuscriptCard.tsx
 │   ├── context/
 │   │   ├── SubscriptionContext.tsx  # User tier management
 │   │   └── AuthContext.tsx   # Authentication state
 │   ├── data/
-│   │   ├── dailyRoutines.ts   # Dosha-specific routines
+│   │   ├── dailyRoutines.ts   # Dosha-specific routines (morning/midday/evening/diet/herbs)
 │   │   ├── homeRemedies.ts    # Remedy database
-│   │   ├── products.ts        # Affiliate products (Amazon)
+│   │   ├── products.ts        # Affiliate products (UserRegion type, getAffiliateLink, getDisplayPrice)
+│   │   ├── blogs.ts           # Blog posts for Learn tab + DailyInsight
 │   │   └── doshaQuestions.ts  # Assessment questions
 │   ├── screens/
-│   │   ├── HomeScreen.tsx     # Main dashboard
-│   │   ├── PlanScreen.tsx     # My Plan tab
-│   │   ├── ConsultScreen.tsx  # AI chat
-│   │   ├── RemediesScreen.tsx # Home remedies
-│   │   ├── PharmacyScreen.tsx # Product recommendations
-│   │   ├── SettingsScreen.tsx # Settings & developer mode
+│   │   ├── HomeScreen.tsx     # Main dashboard (Ojas+Dosha cards, StreakBanner, DailyInsight, QuickFixes)
+│   │   ├── PlanScreen.tsx     # My Plan tab (5 flex-wrap tabs)
+│   │   ├── ConsultationScreen.tsx  # AI chat (Ask Vaidya)
+│   │   ├── PharmacyScreen.tsx # Product recommendations (Wellness tab)
+│   │   ├── BlogScreen.tsx     # Learn tab (accepts blogId param)
+│   │   ├── BodyMapScreen.tsx  # Body Map (inside Blog stack)
+│   │   ├── SettingsScreen.tsx # Settings + Data Management (reset scans)
 │   │   ├── PaywallScreen.tsx  # Premium upgrade screen
-│   │   ├── LoginScreen.tsx    # Authentication
-│   │   ├── TongueDiagnosisScreen.tsx
-│   │   ├── EyeAnalysisScreen.tsx
-│   │   ├── SkinAnalysisScreen.tsx
-│   │   ├── NailAnalysisScreen.tsx
-│   │   ├── PulseAnalysisScreen.tsx
-│   │   ├── DoshaAssessmentScreen.tsx
-│   │   └── OjasTrackerScreen.tsx
+│   │   ├── OjasTrackerScreen.tsx  # Ojas tracking + ViewShot screenshot sharing
+│   │   ├── AssessmentScreen.tsx   # Dosha quiz
+│   │   ├── QuickFixDetailScreen.tsx # Remedy details
+│   │   ├── TongueDiagnosisScreen.tsx  # + Ojas contribution
+│   │   ├── EyeAnalysisScreen.tsx      # + Ojas contribution
+│   │   ├── SkinAnalysisScreen.tsx     # + Ojas contribution
+│   │   ├── NailAnalysisScreen.tsx     # + Ojas contribution
+│   │   └── PulseAnalysisScreen.tsx    # + Ojas contribution
+│   ├── navigation/
+│   │   └── AppNavigator.tsx   # Bottom tabs + HomeStack + BlogStack
 │   └── services/
 │       ├── aiService.ts       # Backend API calls
+│       ├── dailyRitualService.ts # Streak tracking, daily wisdom, scan Ojas contributions
+│       ├── notificationService.ts # Push notifications & wisdom quotes
 │       └── purchaseService.ts # RevenueCat integration
 ├── backend/
-│   ├── index.js              # Express server (documented)
+│   ├── index.js              # Express server
 │   ├── package.json
 │   ├── .env                  # API keys (not committed)
 │   ├── .env.example
 │   └── vercel.json           # Deployment config
+├── ios/                      # Native iOS build (from expo prebuild)
 └── assets/                   # App icons, images
 ```
 
@@ -223,63 +422,38 @@ POST /api/analyze/nails         # Nail analysis (Nakha Pariksha)
 POST /api/chat/consultation     # AI chat
 ```
 
-### Request Headers
-```
-x-user-id: string  # Unique user identifier
-Content-Type: application/json
-```
-
 ---
 
 ## TESTING CHECKLIST
 
-### AI Analysis (Test on Mobile)
-- [ ] Tongue analysis returns AI results and displays correctly
-- [ ] Eye analysis returns AI results and displays correctly
-- [ ] Skin analysis returns AI results and displays correctly
-- [ ] Nail analysis returns AI results and displays correctly
-- [ ] Fallback to educational mode works when backend unavailable
+### AI Analysis ✅ (Manually Tested)
+- [x] Tongue analysis returns AI results and displays correctly
+- [x] Eye analysis returns AI results and displays correctly
+- [x] Skin analysis returns AI results and displays correctly
+- [x] Nail analysis returns AI results and displays correctly
+- [x] Fallback to educational mode works when backend unavailable
 
-### Affiliate Links (Test on Mobile)
-- [ ] Pharmacy screen loads all products
-- [ ] "Buy Now" opens Amazon with correct affiliate tag (nayaved-20)
-- [ ] Products display correct prices and descriptions
-
-### Subscriptions
-- [ ] Paywall screen displays correctly
-- [ ] "Coming Soon" shows when RevenueCat not configured
-- [ ] Restore purchases button works
+### Affiliate Links ✅ (Manually Tested)
+- [x] Wellness tab loads all products
+- [x] US: "Buy Now" opens amazon.com with tag nayaved-20
+- [x] Canada: "Buy Now" opens amazon.ca search with tag nayaved0c-20
+- [x] India: "Buy Now" opens amazon.in with tag nayaved-21
 
 ### Core Features
-- [ ] Dosha assessment completes and saves
-- [ ] Ojas tracker saves daily scores
-- [ ] My Plan shows all completed analyses
-- [ ] AI consultation responds correctly
-- [ ] Developer mode activates with codes
-- [ ] Usage limits work for free tier
+- [x] Dosha assessment completes and saves
+- [x] Ojas tracker saves daily scores + scan contributions
+- [x] My Plan shows all 5 tabs (Morning, Midday, Evening, Diet, Herbs)
+- [x] AI consultation responds correctly
+- [x] Developer mode activates with codes
+- [ ] RevenueCat purchase flow (needs dashboard setup)
+- [ ] Push notifications on physical device (needs dev build)
 
----
-
-## DEPLOYMENT
-
-### Backend (Vercel)
-```bash
-cd backend
-vercel --prod
-# Update API_BASE_URL in src/services/aiService.ts with production URL
-```
-
-### Mobile App
-```bash
-# Build for iOS
-eas build --platform ios
-
-# Build for Android
-eas build --platform android
-
-# Submit to App Store
-eas submit --platform ios
-```
+### New Features (2026-01-28)
+- [x] Ojas screenshot sharing works
+- [x] Wellness tab visible in bottom navigation
+- [x] DailyInsight navigates to blog
+- [x] Reset Today's Scans in Settings works
+- [x] StreakBanner shows only incomplete scans
 
 ---
 
@@ -301,12 +475,68 @@ eas submit --platform ios
 ## RESOURCES
 
 - **RevenueCat Dashboard:** https://app.revenuecat.com
-- **Amazon Associates:** https://affiliate-program.amazon.com
+- **Amazon Associates US:** https://affiliate-program.amazon.com
+- **Amazon Associates CA:** https://associates.amazon.ca
+- **Amazon Associates IN:** https://affiliate-program.amazon.in
 - **App Store Connect:** https://appstoreconnect.apple.com
+- **Google Play Console:** https://play.google.com/console
 - **Claude API Docs:** https://docs.anthropic.com
 - **Expo Docs:** https://docs.expo.dev
+- **Sentry (monitoring):** https://sentry.io
+- **EAS Build:** https://docs.expo.dev/build/introduction/
 
 ---
 
-**Session Notes (2026-01-23):**
-Added Amazon affiliate integration with tag `nayaved-20`. Improved error handling across all analysis screens - now gracefully falls back to educational mode. Enhanced backend JSON parsing to handle various Claude response formats. Added comprehensive code comments. Ready for mobile testing of affiliate links and AI analysis before App Store submission.
+## SESSION HISTORY
+
+**Session 2026-01-30:**
+- **Native PPG Frame Processor Implementation:**
+  - Created `plugins/withBrightnessFrameProcessor.js` - config plugin to add native files to Xcode
+  - Created `plugins/withBridgingHeader.js` - config plugin for bridging header
+  - Created `plugins/native-templates/BrightnessFrameProcessor.swift` - native Swift plugin for real camera brightness
+  - Created `plugins/native-templates/BrightnessFrameProcessor.m` - Objective-C bridge for VisionCamera
+  - Handles BGRA and YUV pixel formats, detects finger covering camera
+  - Added `react-native-worklets-core` dependency for frame processor support
+
+- **Login & Authentication Fixes:**
+  - Fixed spinner showing on both Google and Apple login buttons (added `activeButton` state tracking)
+  - Fixed user data isolation - each user now has their own AsyncStorage with user-specific key prefixes
+  - Configured Google OAuth with client IDs (iOS: `gibun4qn4idqq0onf0acf9fm38iuundu.apps.googleusercontent.com`)
+  - Updated AuthContext with `saveCurrentSessionData`, `clearCommonDataKeys` functions
+
+- **TypeScript & Build Fixes:**
+  - Fixed FeatureGate.tsx - wrapped PaywallScreen in Modal component
+  - Fixed OjasTrackerScreen.tsx - array filter type error with proper type guard
+  - Fixed notificationService.ts - trigger types and handler props
+  - Fixed app icon to 1024x1024 square format (was 527x475)
+
+- **Git Commit & Push:**
+  - Committed all changes (300 files) with comprehensive message
+  - Pushed to GitHub: https://github.com/shiviagarwalwork/nayaved-app.git
+  - Commit hash: `97cbeb8`
+
+**Session 2026-01-28:**
+- Added Ojas screenshot sharing (react-native-view-shot + expo-sharing)
+- Added Ojas contributions from all 5 scan types (3-5 pts each)
+- Fixed Wellness/Pharmacy tab missing from bottom navigation
+- Fixed Plan screen tabs: horizontal scroll → flex-wrap (Diet & Herbs now visible)
+- Updated DailyInsight to pull from blogs.ts with navigation to specific blog
+- Added Amazon Canada support: region detection, search-based links, tag `nayaved0c-20`
+- Changed ProductCard from boolean `isUserInIndia` to `getUserRegion()` returning `UserRegion`
+- Added "Reset Today's Scans" in Settings > Data Management
+- StreakBanner now filters to show only incomplete scans
+- Completed production readiness assessment
+
+**Session 2026-01-27:**
+- Implemented Daily Ritual / Streak system
+- Created dailyRitualService.ts and StreakBanner.tsx
+- Added Privacy Policy & Terms links
+- Added Amazon India affiliate support (tag: nayaved-21)
+- Implemented Curiosity Gap paywall (PremiumLock.tsx)
+- Push notifications with expo-notifications
+
+**Session 2026-01-23:**
+- Amazon US affiliate integration (tag: nayaved-20)
+- Improved error handling across all analysis screens
+- Enhanced backend JSON parsing
+- Added comprehensive code comments
