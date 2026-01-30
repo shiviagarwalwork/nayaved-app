@@ -38,8 +38,8 @@ Sentry.init({
 //    - iOS application (for GOOGLE_IOS_CLIENT_ID) with bundle ID: com.nayaved.app
 // 5. Add the client IDs below
 // For now, Google Sign-In is disabled until configured
-const GOOGLE_CLIENT_ID = 'gufesder6uj92bf3nmcjbs4oeme2dql8.apps.googleusercontent.com'; // Web client ID
-const GOOGLE_IOS_CLIENT_ID = 'gibun4qn4idqq0onf0acf9fm38iuundu.apps.googleusercontent.com'; // iOS client ID
+const GOOGLE_CLIENT_ID = '725734208269-gufesder6uj92bf3nmcjbs4oeme2dql8.apps.googleusercontent.com'; // Web client ID
+const GOOGLE_IOS_CLIENT_ID = '725734208269-gibun4qn4idqq0onf0acf9fm38iuundu.apps.googleusercontent.com'; // iOS client ID
 
 function AppContent() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
