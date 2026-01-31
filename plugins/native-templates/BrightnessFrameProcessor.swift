@@ -52,13 +52,10 @@ public class BrightnessFrameProcessorPlugin: FrameProcessorPlugin {
       for y in stride(from: startY, to: endY, by: 4) { // Sample every 4th pixel for performance
         for x in stride(from: startX, to: endX, by: 4) {
           let offset = y * bytesPerRow + x * 4
-          let b = Double(buffer[offset])
-          let g = Double(buffer[offset + 1])
+          // For PPG, use RED channel only - it's most sensitive to blood volume changes
+          // Red light penetrates skin tissue and hemoglobin absorption varies with pulse
           let r = Double(buffer[offset + 2])
-
-          // Calculate luminance using standard coefficients
-          let luminance = 0.299 * r + 0.587 * g + 0.114 * b
-          totalBrightness += luminance
+          totalBrightness += r
           sampleCount += 1
         }
       }
@@ -95,11 +92,9 @@ public class BrightnessFrameProcessorPlugin: FrameProcessorPlugin {
       for y in stride(from: startY, to: endY, by: 8) {
         for x in stride(from: startX, to: endX, by: 8) {
           let offset = y * bytesPerRow + x * 4
-          let b = Double(buffer[offset])
-          let g = Double(buffer[offset + 1])
+          // Use red channel only for PPG consistency
           let r = Double(buffer[offset + 2])
-          let luminance = 0.299 * r + 0.587 * g + 0.114 * b
-          let diff = luminance - averageBrightness
+          let diff = r - averageBrightness
           sumSquaredDiff += diff * diff
         }
       }
