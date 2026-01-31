@@ -76,6 +76,7 @@ export default function PulseAnalysisScreen() {
   const [currentBPM, setCurrentBPM] = useState<number | null>(null);
   const [signalQuality, setSignalQuality] = useState<'poor' | 'fair' | 'good'>('poor');
   const [cameraError, setCameraError] = useState<string | null>(null);
+  const [attemptCount, setAttemptCount] = useState(0);
 
   const pulseAnimation = useRef(new Animated.Value(0)).current;
   const ppgSamplesRef = useRef<PPGSample[]>([]);
@@ -460,11 +461,31 @@ export default function PulseAnalysisScreen() {
       // Not enough samples - but still try to provide results with estimate
       // Only show error if we got almost no data
       if (samples.length < 10) {
+        const newAttemptCount = attemptCount + 1;
+        setAttemptCount(newAttemptCount);
+
+        // After 3 attempts, automatically use estimate
+        if (newAttemptCount >= 3) {
+          Alert.alert(
+            'Using Estimated Results',
+            'We couldn\'t get a clear pulse reading after 3 attempts. We\'ll provide estimated results based on typical values.\n\nTip: For best results, try in a darker room with your finger firmly covering both the camera and flash.',
+            [{ text: 'OK', onPress: () => {
+              finalPulseData = generateEducatedEstimate(samples);
+              finishWithData(finalPulseData);
+            }}]
+          );
+          setIsAnalyzing(false);
+          return;
+        }
+
+        // Still have attempts left - offer to try again
         Alert.alert(
-          'Insufficient Data',
+          `Attempt ${newAttemptCount}/3 - Insufficient Data`,
           'Could not detect pulse signal. Please ensure:\n\n• Your finger completely covers the camera AND flash\n• Press firmly but not too hard\n• Hold still during measurement\n\nWould you like to try again?',
           [
-            { text: 'Try Again', onPress: () => resetAnalysis() },
+            { text: 'Try Again', onPress: () => {
+              resetAnalysis(false); // Don't reset attempt count
+            }},
             { text: 'Use Estimate', onPress: () => {
               finalPulseData = generateEducatedEstimate(samples);
               finishWithData(finalPulseData);
@@ -628,7 +649,7 @@ export default function PulseAnalysisScreen() {
     };
   };
 
-  const resetAnalysis = () => {
+  const resetAnalysis = (resetAttempts: boolean = true) => {
     isMeasuringRef.current = false;
     stopPulseAnimation();
     setShowResults(false);
@@ -643,6 +664,9 @@ export default function PulseAnalysisScreen() {
     lastAnalysisTimeRef.current = 0;
     setIsAnalyzing(false);
     setCameraError(null);
+    if (resetAttempts) {
+      setAttemptCount(0);
+    }
   };
 
   const getDoshaColor = (dosha: string) => {
