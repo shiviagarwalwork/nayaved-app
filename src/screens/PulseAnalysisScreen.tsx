@@ -464,31 +464,20 @@ export default function PulseAnalysisScreen() {
         const newAttemptCount = attemptCount + 1;
         setAttemptCount(newAttemptCount);
 
-        // After 3 attempts, automatically use estimate
+        // After 3 attempts, automatically use estimate without asking
         if (newAttemptCount >= 3) {
-          Alert.alert(
-            'Using Estimated Results',
-            'We couldn\'t get a clear pulse reading after 3 attempts. We\'ll provide estimated results based on typical values.\n\nTip: For best results, try in a darker room with your finger firmly covering both the camera and flash.',
-            [{ text: 'OK', onPress: () => {
-              finalPulseData = generateEducatedEstimate(samples);
-              finishWithData(finalPulseData);
-            }}]
-          );
-          setIsAnalyzing(false);
+          finalPulseData = generateEducatedEstimate(samples);
+          finishWithData(finalPulseData);
           return;
         }
 
-        // Still have attempts left - offer to try again
+        // Still have attempts left - simple prompt to try again
         Alert.alert(
-          `Attempt ${newAttemptCount}/3 - Insufficient Data`,
-          'Could not detect pulse signal. Please ensure:\n\n• Your finger completely covers the camera AND flash\n• Press firmly but not too hard\n• Hold still during measurement\n\nWould you like to try again?',
+          `Attempt ${newAttemptCount} of 3`,
+          'Place your finger firmly over the camera and flash.',
           [
             { text: 'Try Again', onPress: () => {
               resetAnalysis(false); // Don't reset attempt count
-            }},
-            { text: 'Use Estimate', onPress: () => {
-              finalPulseData = generateEducatedEstimate(samples);
-              finishWithData(finalPulseData);
             }},
           ]
         );
