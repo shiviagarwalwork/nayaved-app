@@ -464,20 +464,20 @@ export default function PulseAnalysisScreen() {
         const newAttemptCount = attemptCount + 1;
         setAttemptCount(newAttemptCount);
 
-        // After 3 attempts, automatically use estimate without asking
+        // After 3 attempts, automatically use estimate and show results
         if (newAttemptCount >= 3) {
           finalPulseData = generateEducatedEstimate(samples);
           finishWithData(finalPulseData);
           return;
         }
 
-        // Still have attempts left - simple prompt to try again
+        // Still have attempts left - simple prompt
         Alert.alert(
-          `Attempt ${newAttemptCount} of 3`,
-          'Place your finger firmly over the camera and flash.',
+          'Try Again',
+          'Place your finger firmly over the camera.',
           [
-            { text: 'Try Again', onPress: () => {
-              resetAnalysis(false); // Don't reset attempt count
+            { text: 'OK', onPress: () => {
+              resetAnalysis(false);
             }},
           ]
         );
