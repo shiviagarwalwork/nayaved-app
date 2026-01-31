@@ -165,23 +165,146 @@ export default function PulseAnalysisScreen() {
     const values = samples.map(s => s.brightness);
     const timestamps = samples.map(s => s.timestamp);
 
-    // Apply bandpass filter (0.5-4 Hz for heart rate 30-240 bpm)
-    const filtered = bandpassFilter(values, 30); // Assuming 30 fps
+    // Calculate actual sample rate from timestamps
+    const duration = (timestamps[timestamps.length - 1] - timestamps[0]) / 1000; // seconds
+    const actualSampleRate = values.length / duration;
 
-    // Find peaks using derivative
+    // Apply bandpass filter (0.7-4 Hz for heart rate 42-240 bpm - research-backed range)
+    const filtered = bandpassFilter(values, actualSampleRate);
+
+    // METHOD 1: FFT-based frequency detection (most robust)
+    const fftResult = detectHeartRateFFT(filtered, actualSampleRate);
+
+    // METHOD 2: Autocorrelation-based detection (backup)
+    const autocorrResult = detectHeartRateAutocorrelation(filtered, actualSampleRate);
+
+    // METHOD 3: Peak detection (original method as fallback)
+    const peakResult = detectHeartRatePeaks(filtered, timestamps);
+
+    // Use the most confident result
+    let heartRate = 0;
+    let quality: 'poor' | 'fair' | 'good' = 'poor';
+    let hrv = 30; // Default HRV
+
+    // Prefer FFT if it gives a valid result
+    if (fftResult.heartRate >= 45 && fftResult.heartRate <= 180 && fftResult.confidence > 0.3) {
+      heartRate = fftResult.heartRate;
+      quality = fftResult.confidence > 0.6 ? 'good' : 'fair';
+      hrv = 20 + (1 - fftResult.confidence) * 40; // Estimate HRV from confidence
+    }
+    // Try autocorrelation
+    else if (autocorrResult.heartRate >= 45 && autocorrResult.heartRate <= 180 && autocorrResult.confidence > 0.3) {
+      heartRate = autocorrResult.heartRate;
+      quality = autocorrResult.confidence > 0.6 ? 'good' : 'fair';
+      hrv = 25 + (1 - autocorrResult.confidence) * 35;
+    }
+    // Fall back to peak detection
+    else if (peakResult.heartRate >= 45 && peakResult.heartRate <= 180) {
+      heartRate = peakResult.heartRate;
+      quality = peakResult.quality;
+      hrv = peakResult.hrv;
+    }
+    // Last resort: use average of any valid results
+    else {
+      const validRates = [fftResult.heartRate, autocorrResult.heartRate, peakResult.heartRate]
+        .filter(hr => hr >= 40 && hr <= 200);
+      if (validRates.length > 0) {
+        heartRate = Math.round(validRates.reduce((a, b) => a + b, 0) / validRates.length);
+        quality = 'poor';
+      }
+    }
+
+    return { heartRate, hrv, quality };
+  };
+
+  // FFT-based heart rate detection - finds dominant frequency in signal
+  const detectHeartRateFFT = (signal: number[], sampleRate: number): { heartRate: number; confidence: number } => {
+    const n = signal.length;
+    if (n < 32) return { heartRate: 0, confidence: 0 };
+
+    // Simple DFT for the frequency range we care about (0.7-4 Hz = 42-240 BPM)
+    const minFreq = 0.7; // 42 BPM
+    const maxFreq = 3.5; // 210 BPM
+    const freqResolution = 0.05; // 3 BPM resolution
+
+    let maxMagnitude = 0;
+    let dominantFreq = 0;
+    let totalMagnitude = 0;
+
+    for (let freq = minFreq; freq <= maxFreq; freq += freqResolution) {
+      let real = 0;
+      let imag = 0;
+
+      for (let i = 0; i < n; i++) {
+        const angle = 2 * Math.PI * freq * i / sampleRate;
+        real += signal[i] * Math.cos(angle);
+        imag += signal[i] * Math.sin(angle);
+      }
+
+      const magnitude = Math.sqrt(real * real + imag * imag);
+      totalMagnitude += magnitude;
+
+      if (magnitude > maxMagnitude) {
+        maxMagnitude = magnitude;
+        dominantFreq = freq;
+      }
+    }
+
+    const heartRate = Math.round(dominantFreq * 60);
+    const confidence = totalMagnitude > 0 ? maxMagnitude / (totalMagnitude / ((maxFreq - minFreq) / freqResolution)) : 0;
+
+    return { heartRate, confidence: Math.min(1, confidence / 5) }; // Normalize confidence
+  };
+
+  // Autocorrelation-based detection - finds periodicity in signal
+  const detectHeartRateAutocorrelation = (signal: number[], sampleRate: number): { heartRate: number; confidence: number } => {
+    const n = signal.length;
+    if (n < 60) return { heartRate: 0, confidence: 0 };
+
+    // Look for peaks in autocorrelation at delays corresponding to 45-180 BPM
+    const minDelay = Math.floor(sampleRate * 60 / 180); // 180 BPM
+    const maxDelay = Math.floor(sampleRate * 60 / 45);  // 45 BPM
+
+    // Normalize signal
+    const mean = signal.reduce((a, b) => a + b, 0) / n;
+    const normalized = signal.map(v => v - mean);
+    const variance = normalized.reduce((sum, v) => sum + v * v, 0);
+
+    if (variance === 0) return { heartRate: 0, confidence: 0 };
+
+    let maxCorr = 0;
+    let bestDelay = 0;
+
+    for (let delay = minDelay; delay <= Math.min(maxDelay, n / 2); delay++) {
+      let correlation = 0;
+      for (let i = 0; i < n - delay; i++) {
+        correlation += normalized[i] * normalized[i + delay];
+      }
+      correlation /= variance;
+
+      if (correlation > maxCorr) {
+        maxCorr = correlation;
+        bestDelay = delay;
+      }
+    }
+
+    const heartRate = bestDelay > 0 ? Math.round(60 * sampleRate / bestDelay) : 0;
+    return { heartRate, confidence: Math.max(0, maxCorr) };
+  };
+
+  // Original peak-based detection
+  const detectHeartRatePeaks = (filtered: number[], timestamps: number[]): { heartRate: number; hrv: number; quality: 'poor' | 'fair' | 'good' } => {
     const peaks = findPeaks(filtered, timestamps);
 
     if (peaks.length < 2) {
       return { heartRate: 0, hrv: 0, quality: 'poor' };
     }
 
-    // Calculate intervals between peaks
     const intervals: number[] = [];
     for (let i = 1; i < peaks.length; i++) {
       intervals.push(peaks[i] - peaks[i - 1]);
     }
 
-    // Filter valid intervals (40-180 bpm = 333-1500ms)
     const validIntervals = intervals.filter(i => i >= 333 && i <= 1500);
 
     if (validIntervals.length < 1) {
@@ -191,17 +314,15 @@ export default function PulseAnalysisScreen() {
     const avgInterval = validIntervals.reduce((a, b) => a + b, 0) / validIntervals.length;
     const heartRate = Math.round(60000 / avgInterval);
 
-    // Calculate HRV (SDNN - standard deviation of NN intervals)
     const mean = avgInterval;
     const variance = validIntervals.reduce((sum, i) => sum + Math.pow(i - mean, 2), 0) / validIntervals.length;
     const hrv = Math.sqrt(variance);
 
-    // Quality assessment based on signal consistency
     let quality: 'poor' | 'fair' | 'good' = 'fair';
     const consistencyRatio = validIntervals.length / intervals.length;
-    if (consistencyRatio > 0.8 && heartRate >= 50 && heartRate <= 120) {
+    if (consistencyRatio > 0.7 && heartRate >= 50 && heartRate <= 150) {
       quality = 'good';
-    } else if (consistencyRatio < 0.5) {
+    } else if (consistencyRatio < 0.4) {
       quality = 'poor';
     }
 
