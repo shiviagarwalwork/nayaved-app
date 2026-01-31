@@ -15,7 +15,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.nayaved.app",
-      "buildNumber": "11",
+      "buildNumber": "12",
       "icon": "./assets/icon-appstore.png",
       "infoPlist": {
         "NSCameraUsageDescription": "NayaVed AI uses your camera for tongue diagnosis and pulse analysis to provide personalized Ayurvedic health insights.",
