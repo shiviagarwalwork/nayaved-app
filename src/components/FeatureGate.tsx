@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import PaywallScreen from '../screens/PaywallScreen';
+// FREE APP MODE: Paywall disabled
+// import PaywallScreen from '../screens/PaywallScreen';
 import { ManuscriptColors, ManuscriptFonts } from './ManuscriptConstants';
 
 interface FeatureGateProps {
@@ -34,14 +35,17 @@ export default function FeatureGate({
         {usageInfo && (
           <Text style={styles.usageInfo}>{usageInfo}</Text>
         )}
+        {/* FREE APP MODE: Upgrade button disabled
         <TouchableOpacity
           style={styles.upgradeButton}
           onPress={() => setShowPaywall(true)}
         >
           <Text style={styles.upgradeButtonText}>Upgrade to Premium</Text>
         </TouchableOpacity>
+        */}
       </View>
 
+      {/* FREE APP MODE: Paywall Modal disabled
       <Modal
         visible={showPaywall}
         animationType="slide"
@@ -50,6 +54,7 @@ export default function FeatureGate({
       >
         <PaywallScreen onClose={() => setShowPaywall(false)} />
       </Modal>
+      */}
     </View>
   );
 }

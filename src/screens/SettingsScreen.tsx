@@ -11,7 +11,8 @@ import {
   Linking,
   Modal,
 } from 'react-native';
-import PaywallScreen from './PaywallScreen';
+// FREE APP MODE: Paywall disabled
+// import PaywallScreen from './PaywallScreen';
 import { MaterialCommunityIcons, Feather, Ionicons } from '@expo/vector-icons';
 import { ManuscriptColors } from '../components/ManuscriptConstants';
 import NotificationSettings from '../components/NotificationSettings';
@@ -42,7 +43,8 @@ export default function SettingsScreen() {
   const [isActivating, setIsActivating] = useState(false);
   const [backendConnected, setBackendConnected] = useState(false);
   const [isCheckingBackend, setIsCheckingBackend] = useState(true);
-  const [showPaywall, setShowPaywall] = useState(false);
+  // FREE APP MODE: Paywall disabled
+  // const [showPaywall, setShowPaywall] = useState(false);
 
   useEffect(() => {
     checkBackendConnection();
@@ -134,9 +136,10 @@ export default function SettingsScreen() {
     );
   };
 
-  const handleUpgrade = () => {
-    setShowPaywall(true);
-  };
+  // FREE APP MODE: Paywall disabled
+  // const handleUpgrade = () => {
+  //   setShowPaywall(true);
+  // };
 
   const getTierBadgeColor = () => {
     if (isDeveloper) return '#9C27B0';
@@ -152,6 +155,7 @@ export default function SettingsScreen() {
 
   return (
     <>
+    {/* FREE APP MODE: Paywall Modal disabled
     <Modal
       visible={showPaywall}
       animationType="slide"
@@ -163,6 +167,7 @@ export default function SettingsScreen() {
         onSuccess={() => setShowPaywall(false)}
       />
     </Modal>
+    */}
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <Text style={styles.title}>Settings</Text>
 
@@ -179,11 +184,13 @@ export default function SettingsScreen() {
               />
               <Text style={styles.tierBadgeText}>{getTierName()}</Text>
             </View>
+            {/* FREE APP MODE: Upgrade button disabled
             {!isPremium && !isDeveloper && (
               <TouchableOpacity style={styles.upgradeButton} onPress={handleUpgrade}>
                 <Text style={styles.upgradeButtonText}>Upgrade</Text>
               </TouchableOpacity>
             )}
+            */}
           </View>
 
           {/* Usage Stats */}
@@ -234,7 +241,7 @@ export default function SettingsScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Premium Features Info */}
+        {/* FREE APP MODE: Premium upsell disabled
         {!isPremium && !isDeveloper && (
           <View style={styles.premiumInfoCard}>
             <MaterialCommunityIcons name="crown" size={24} color="#FFD700" />
@@ -246,6 +253,7 @@ export default function SettingsScreen() {
             </View>
           </View>
         )}
+        */}
       </View>
 
       {/* Developer Access */}
