@@ -78,10 +78,10 @@ app.use(express.json({ limit: '10mb' })); // Increased limit for base64 encoded 
 const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
 const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
 const DEVELOPER_CODES = (process.env.DEVELOPER_CODES || 'AYUVED_DEV_2024').split(',');
-// FREE APP MODE: Set very high limits (effectively unlimited)
+// FREE APP MODE: Generous limits for free users
 // To re-enable paid tiers later, change back to 2 and 10
-const FREE_SCAN_LIMIT = parseInt(process.env.FREE_SCAN_LIMIT || '99999');  // Free app - unlimited scans
-const FREE_CHAT_LIMIT = parseInt(process.env.FREE_CHAT_LIMIT || '99999'); // Free app - unlimited chats
+const FREE_SCAN_LIMIT = parseInt(process.env.FREE_SCAN_LIMIT || '30');  // 30 scans per user (~$0.60 max)
+const FREE_CHAT_LIMIT = parseInt(process.env.FREE_CHAT_LIMIT || '50'); // 50 chats per user (~$0.50 max)
 
 // ============================================================
 // PERSISTENT STORAGE
