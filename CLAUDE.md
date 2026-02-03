@@ -1,7 +1,7 @@
 # Claude Code Context Memory
 **Project:** NayaVed AI Mobile App
-**Last Updated:** 2026-01-30
-**Status:** MVP Complete - Production Build Ready
+**Last Updated:** 2026-02-02
+**Status:** MVP Complete - FREE APP (Subscriptions Disabled)
 
 ---
 
@@ -164,35 +164,32 @@ A React Native/Expo mobile app that brings Ayurvedic diagnostics to users throug
 - [x] TypeScript error fixes (FeatureGate, OjasTracker, notifications)
 - [x] App icon resized to 1024x1024
 - [x] Git commit & push to GitHub (2026-01-30)
+- [x] TestFlight build & testing (2026-01-31)
+- [x] Backend deployed to Vercel
+- [x] Amazon India Associates signup
+- [x] App Store screenshots (8 screenshots in app-store-listing/)
+- [x] App Store metadata (description, keywords, privacy labels)
 
 ### IMMEDIATE NEXT STEPS (Do These Now)
-1. **Build iOS production app:**
-   ```bash
-   npx eas-cli build --platform ios --profile production
-   ```
-2. **Submit to TestFlight after build completes:**
-   ```bash
-   npx eas-cli submit --platform ios
-   ```
-3. **Test on TestFlight:**
-   - Verify native PPG frame processor works (no more "Frame Processors unavailable" error)
-   - Verify login buttons show spinner correctly (only clicked button)
-   - Verify user data isolation (guest vs Apple login have separate data)
-   - Verify Google login works
+1. **Complete RevenueCat setup** (manual - dashboard)
+2. **Submit to App Store** - `eas submit --platform ios`
+
+### App Store Assets Ready ✅
+- 8 screenshots in `app-store-listing/` folder
+- Full App Store listing text in `app-store-listing/APP_STORE_LISTING.md`
+- Screenshot captions in `app-store-listing/SCREENSHOT_CAPTIONS.md`
+- Submission checklist in `app-store-listing/SUBMISSION_CHECKLIST.md`
 
 ### High Priority - Before App Store Release
-1. **Deploy backend to Vercel:**
-   ```bash
-   cd backend && vercel --prod
-   ```
-   Then update `API_BASE_URL` in `src/services/aiService.ts`
-2. **Complete RevenueCat setup** (manual - dashboard):
+1. ~~**Deploy backend to Vercel**~~ - ✅ Done - Live at `https://backend-nu-gold-17.vercel.app`
+2. ~~**App Store screenshots**~~ - ✅ Done - 8 screenshots in `app-store-listing/`
+3. ~~**App Store metadata**~~ - ✅ Done - Description, keywords, privacy labels in `APP_STORE_LISTING.md`
+4. **Complete RevenueCat setup** (manual - dashboard):
    - Create products: `nayaved_premium_monthly` ($4.99), `nayaved_premium_yearly` ($39.99)
    - Create entitlement: `premium`
    - Create offering: `default`
    - Link App Store Connect app
-3. **App Store screenshots** - 3 device sizes (6.7", 6.5", 5.5")
-4. **Submit to App Store** - `eas submit --platform ios`
+5. **Submit to App Store** - `eas submit --platform ios`
 
 ### Medium Priority
 1. ~~**Amazon Associates signup**~~ - ✅ Done - US, Canada, India accounts active
@@ -204,9 +201,43 @@ A React Native/Expo mobile app that brings Ayurvedic diagnostics to users throug
 ### Low Priority
 1. **Database integration** - Replace in-memory storage with Firebase/Supabase
 2. **Dark mode** - Theme switching
-3. **Multi-language** - Hindi, Sanskrit translations
-4. **Apple Watch** - Pulse analysis integration
-5. **Offline mode** - Cache results for offline viewing
+3. **Apple Watch** - Pulse analysis integration
+4. **Offline mode** - Cache results for offline viewing
+
+---
+
+## POST-LAUNCH TECHNICAL DEBT (2026-01-31 Audit)
+
+Issues identified during pre-launch audit. None are critical, but should be addressed post-launch.
+
+### Security Improvements (Medium Priority)
+1. **Add `Sentry.captureException()` in catch blocks** - Currently only console.log, errors not explicitly sent to Sentry
+2. **Wrap JSON.parse in try-catch** - 5 locations risk crash on corrupted AsyncStorage:
+   - `HomeScreen.tsx` (lines 391-398)
+   - `OjasTrackerScreen.tsx` (lines 134, 150)
+   - `dailyRitualService.ts` (lines 114, 194, 224, 326, 349)
+   - `AuthContext.tsx` (line 94)
+3. **Enable Sentry source maps** - Currently disabled in `eas.json`, stack traces are minified
+4. **Add Error Boundary component** - Catch React component crashes gracefully
+5. **Validate Google OAuth response** - Check `response.ok` before parsing JSON in `AuthContext.tsx`
+
+### Backend Improvements (Medium Priority)
+1. **Persistent database** - Replace `/tmp` file storage with Vercel KV, Supabase, or Firebase
+   - Current `/tmp` storage resets on Vercel cold starts
+   - Usage tracking and developer codes may reset unexpectedly
+2. **Verify RevenueCat webhook secret** - Ensure `REVENUECAT_WEBHOOK_SECRET` is set in Vercel env vars
+3. **Add input validation** - Validate image base64 format and size before sending to Claude API
+4. **Add message length validation** - Limit chat messages to prevent abuse
+
+### Code Quality (Low Priority)
+1. **Remove `as any` type casts** - ~20 instances, mostly icon names
+2. **Fix duplicate ChatMessage interface** - `types/index.ts` vs `aiService.ts` have different definitions
+3. **Add array bounds checking** - `ConsultationScreen.tsx` line 285 accesses `results[0]` without length check
+4. **Reduce console logging** - Remove debug logs from production backend
+
+### Android (Before Play Store)
+1. **Add RevenueCat Android API key** - Currently placeholder `YOUR_REVENUECAT_ANDROID_API_KEY`
+2. **Test on Android devices** - Verify all features work on Android
 
 ---
 
@@ -253,10 +284,10 @@ A React Native/Expo mobile app that brings Ayurvedic diagnostics to users throug
 |------|-------|-------|
 | RevenueCat products | RevenueCat dashboard | Create monthly/yearly, entitlement, offering |
 | Amazon CA signup | associates.amazon.ca | Tag `nayaved0c-20` already in code |
-| Amazon IN signup | affiliate-program.amazon.in | Tag `nayaved-21` already in code |
-| App Store listing | App Store Connect | Description, keywords, screenshots, privacy labels |
+| ~~Amazon IN signup~~ | ~~affiliate-program.amazon.in~~ | ✅ Done - Tag `nayaved-21` |
+| ~~App Store listing~~ | ~~App Store Connect~~ | ✅ Done - See `app-store-listing/` folder |
 | Google Play listing | Google Play Console | Store listing, data safety, content rating |
-| Backend deploy | Vercel | `cd backend && vercel --prod` |
+| ~~Backend deploy~~ | ~~Vercel~~ | ✅ Done - `backend-nu-gold-17.vercel.app` |
 | Sentry setup | sentry.io | Create project, get DSN |
 | TestFlight testers | App Store Connect | Add beta tester emails |
 
@@ -287,7 +318,7 @@ A React Native/Expo mobile app that brings Ayurvedic diagnostics to users throug
 | Region | Domain | Tag | Status |
 |--------|--------|-----|--------|
 | US | amazon.com | `nayaved-20` | ✅ Active |
-| India | amazon.in | `nayaved-21` | Code ready, need signup |
+| India | amazon.in | `nayaved-21` | ✅ Active |
 | Canada | amazon.ca | `nayaved0c-20` | ✅ Active |
 | UK | amazon.co.uk | Not yet | Need signup |
 
@@ -488,6 +519,36 @@ POST /api/chat/consultation     # AI chat
 ---
 
 ## SESSION HISTORY
+
+**Session 2026-02-02:**
+- **App Made Free for Launch:**
+  - Modified `SubscriptionContext.tsx` to set `isPremium = true` for all users
+  - All content now accessible without subscription
+  - PaywallScreen and RevenueCat code retained for future activation
+  - PremiumLock components automatically show content (no upgrade prompts)
+
+- **Improved Dosha Assessment:**
+  - Expanded from 8 to 16 comprehensive questions
+  - Based on AYUSH/CCRAS guidelines and Prakriti200 research
+  - Covers 3 domains: Physical (6), Physiological (6), Psychological (4)
+  - More inclusive options that cover all body types
+  - Updated `src/data/symptoms.ts` with new questions
+
+- **Monetization Strategy Document:**
+  - Created `MONETIZATION_STRATEGY.md` with future revenue ideas
+  - Affiliate marketing expansion (Kerala Ayurveda, Banyan Botanicals, etc.)
+  - Practitioner marketplace concept
+  - Corporate B2B wellness programs
+  - Physical product line ideas
+  - Revenue projections for Years 1-3
+
+- **Production Audit Completed:**
+  - Security review: No critical issues
+  - Mock/placeholder check: All production URLs verified
+  - Backend: Deployed to Vercel at `backend-nu-gold-17.vercel.app`
+  - Sentry: Working (user confirmed receiving errors)
+
+- **Post-Launch Technical Debt documented in CLAUDE.md**
 
 **Session 2026-01-30:**
 - **Native PPG Frame Processor Implementation:**

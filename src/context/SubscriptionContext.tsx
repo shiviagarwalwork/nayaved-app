@@ -71,7 +71,11 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
     await refreshStatus();
   };
 
-  const isPremium = tier === 'premium';
+  // FREE APP MODE: All users get premium access
+  // To re-enable subscriptions later, change these back to:
+  // const isPremium = tier === 'premium';
+  // const isDeveloper = tier === 'developer';
+  const isPremium = true;  // Everyone is premium for free launch
   const isDeveloper = tier === 'developer';
 
   // Usage stats
