@@ -1037,7 +1037,7 @@ export default function PulseAnalysisScreen() {
               <Text style={styles.ojasButtonText}>View Ojas Tracker →</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.secondaryButton} onPress={resetAnalysis}>
+            <TouchableOpacity style={styles.secondaryButton} onPress={() => resetAnalysis()}>
               <View style={styles.buttonContent}>
                 <Feather name="refresh-cw" size={18} color="#6B8E23" />
                 <Text style={styles.secondaryButtonText}> Measure Again</Text>
