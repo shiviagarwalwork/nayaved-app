@@ -1,7 +1,20 @@
 # Claude Code Context Memory
 **Project:** NayaVed AI Mobile App
-**Last Updated:** 2026-02-02
+**Last Updated:** 2026-02-04
 **Status:** MVP Complete - FREE APP (Subscriptions Disabled)
+
+---
+
+## ⚠️ IMPORTANT REMINDERS
+
+### Before App Store Submission
+**ALWAYS bump the build number before building for App Store submission!**
+1. Edit `app.json` → `expo.ios.buildNumber` (increment by 1)
+2. Commit the change
+3. Then run `eas build --platform ios --profile production`
+4. Then run `eas submit --platform ios --latest`
+
+Apple rejects duplicate build numbers. Current build number: **14**
 
 ---
 
