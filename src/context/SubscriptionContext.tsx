@@ -75,20 +75,20 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
   // To re-enable subscriptions later, change these back to:
   // const isPremium = tier === 'premium';
   // const isDeveloper = tier === 'developer';
+  // const hasUnlimitedScans = userStatus?.features.unlimitedScans ?? false;
+  // const hasUnlimitedChats = userStatus?.features.unlimitedChats ?? false;
   const isPremium = true;  // Everyone is premium for free launch
   const isDeveloper = tier === 'developer';
+  const hasUnlimitedScans = true;  // Free app - unlimited for everyone
+  const hasUnlimitedChats = true;  // Free app - unlimited for everyone
 
-  // Usage stats
+  // Usage stats (not shown when unlimited, but kept for future use)
   const scansUsed = userStatus?.usage.scans.used ?? 0;
-  const scansLimit = userStatus?.usage.scans.limit ?? 2;
-  const scansRemaining = userStatus?.usage.scans.remaining ?? 2;
+  const scansLimit = userStatus?.usage.scans.limit ?? 30;
+  const scansRemaining = userStatus?.usage.scans.remaining ?? 30;
   const chatsUsed = userStatus?.usage.chats.used ?? 0;
-  const chatsLimit = userStatus?.usage.chats.limit ?? 10;
-  const chatsRemaining = userStatus?.usage.chats.remaining ?? 10;
-
-  // Feature flags
-  const hasUnlimitedScans = userStatus?.features.unlimitedScans ?? false;
-  const hasUnlimitedChats = userStatus?.features.unlimitedChats ?? false;
+  const chatsLimit = userStatus?.usage.chats.limit ?? 50;
+  const chatsRemaining = userStatus?.usage.chats.remaining ?? 50;
 
   return (
     <SubscriptionContext.Provider
