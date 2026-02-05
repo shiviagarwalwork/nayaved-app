@@ -30,6 +30,10 @@ module.exports = {
       type: 'android.apk',
       binaryPath: 'android/app/build/outputs/apk/release/app-release.apk',
       build: 'cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release'
+    },
+    'android.preview': {
+      type: 'android.apk',
+      binaryPath: '/tmp/nayaved-preview.apk'
     }
   },
   devices: {
@@ -48,7 +52,7 @@ module.exports = {
     emulator: {
       type: 'android.emulator',
       device: {
-        avdName: 'Pixel_4_API_30'
+        avdName: 'Medium_Phone_API_36.1'
       }
     }
   },
@@ -76,6 +80,10 @@ module.exports = {
     'android.emu.release': {
       device: 'emulator',
       app: 'android.release'
+    },
+    'android.emu.preview': {
+      device: 'emulator',
+      app: 'android.preview'
     }
   },
   behavior: {
