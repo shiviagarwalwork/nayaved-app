@@ -4,15 +4,10 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  TextInput,
   TouchableOpacity,
   Alert,
-  ActivityIndicator,
   Linking,
-  Modal,
 } from 'react-native';
-// FREE APP MODE: Paywall disabled
-// import PaywallScreen from './PaywallScreen';
 import { MaterialCommunityIcons, Feather, Ionicons } from '@expo/vector-icons';
 import { ManuscriptColors } from '../components/ManuscriptConstants';
 import NotificationSettings from '../components/NotificationSettings';
@@ -23,28 +18,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SettingsScreen() {
   const { user, signOut } = useAuth();
-  const {
-    tier,
-    isLoading: subLoading,
-    isPremium,
-    isDeveloper,
-    scansUsed,
-    scansLimit,
-    scansRemaining,
-    chatsUsed,
-    chatsLimit,
-    chatsRemaining,
-    hasUnlimitedScans,
-    refreshStatus,
-    activateDevMode,
-  } = useSubscription();
+  const { isPremium, isDeveloper } = useSubscription();
 
-  const [devCode, setDevCode] = useState('');
-  const [isActivating, setIsActivating] = useState(false);
   const [backendConnected, setBackendConnected] = useState(false);
   const [isCheckingBackend, setIsCheckingBackend] = useState(true);
-  // FREE APP MODE: Paywall disabled
-  // const [showPaywall, setShowPaywall] = useState(false);
 
   useEffect(() => {
     checkBackendConnection();
@@ -55,28 +32,6 @@ export default function SettingsScreen() {
     const connected = await isApiConfigured();
     setBackendConnected(connected);
     setIsCheckingBackend(false);
-  };
-
-  const handleActivateDevMode = async () => {
-    if (!devCode.trim()) {
-      Alert.alert('Error', 'Please enter a developer code');
-      return;
-    }
-
-    setIsActivating(true);
-    try {
-      const success = await activateDevMode(devCode.trim());
-      if (success) {
-        Alert.alert('Success', 'Developer access activated! You now have unlimited access to all features.');
-        setDevCode('');
-      } else {
-        Alert.alert('Error', 'Invalid developer code. Please check and try again.');
-      }
-    } catch (error) {
-      Alert.alert('Error', 'Failed to activate developer mode. Please try again.');
-    } finally {
-      setIsActivating(false);
-    }
   };
 
   const handleResetTodayScans = async () => {
@@ -193,52 +148,28 @@ export default function SettingsScreen() {
             */}
           </View>
 
-          {/* Usage Stats */}
+          {/* FREE APP MODE: Always show unlimited */}
           <View style={styles.usageContainer}>
             <View style={styles.usageRow}>
               <View style={styles.usageItem}>
                 <Feather name="camera" size={18} color={ManuscriptColors.vermillion} />
                 <Text style={styles.usageLabel}>AI Scans</Text>
                 <Text style={styles.usageValue}>
-                  {hasUnlimitedScans ? (
-                    <Text style={styles.unlimited}>Unlimited</Text>
-                  ) : (
-                    `${scansUsed} / ${scansLimit}`
-                  )}
+                  <Text style={styles.unlimited}>Unlimited</Text>
                 </Text>
-                {!hasUnlimitedScans && typeof scansRemaining === 'number' && (
-                  <Text style={styles.usageRemaining}>{scansRemaining} remaining</Text>
-                )}
               </View>
               <View style={styles.usageDivider} />
               <View style={styles.usageItem}>
                 <Feather name="message-circle" size={18} color={ManuscriptColors.indigo} />
                 <Text style={styles.usageLabel}>Chat Messages</Text>
                 <Text style={styles.usageValue}>
-                  {hasUnlimitedScans ? (
-                    <Text style={styles.unlimited}>Unlimited</Text>
-                  ) : (
-                    `${chatsUsed} / ${chatsLimit}`
-                  )}
+                  <Text style={styles.unlimited}>Unlimited</Text>
                 </Text>
-                {!hasUnlimitedScans && typeof chatsRemaining === 'number' && (
-                  <Text style={styles.usageRemaining}>{chatsRemaining} remaining</Text>
-                )}
               </View>
             </View>
           </View>
 
-          {/* Refresh Button */}
-          <TouchableOpacity style={styles.refreshButton} onPress={refreshStatus} disabled={subLoading}>
-            {subLoading ? (
-              <ActivityIndicator size="small" color={ManuscriptColors.vermillion} />
-            ) : (
-              <>
-                <Feather name="refresh-cw" size={16} color={ManuscriptColors.vermillion} />
-                <Text style={styles.refreshButtonText}>Refresh Status</Text>
-              </>
-            )}
-          </TouchableOpacity>
+          {/* FREE APP MODE: Refresh Status button removed - always shows unlimited */}
         </View>
 
         {/* FREE APP MODE: Premium upsell disabled
@@ -256,46 +187,7 @@ export default function SettingsScreen() {
         */}
       </View>
 
-      {/* Developer Access */}
-      {!isDeveloper && (
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Developer Access</Text>
-          <View style={styles.card}>
-            <View style={styles.devInfoRow}>
-              <MaterialCommunityIcons name="code-braces" size={24} color="#9C27B0" />
-              <View style={styles.devInfoText}>
-                <Text style={styles.devTitle}>Have a Developer Code?</Text>
-                <Text style={styles.devDescription}>
-                  Enter your code below for unlimited access to all features.
-                </Text>
-              </View>
-            </View>
-
-            <View style={styles.devInputContainer}>
-              <TextInput
-                style={styles.devInput}
-                placeholder="Enter developer code"
-                placeholderTextColor={ManuscriptColors.fadedInk}
-                value={devCode}
-                onChangeText={setDevCode}
-                autoCapitalize="characters"
-                autoCorrect={false}
-              />
-              <TouchableOpacity
-                style={[styles.activateButton, !devCode.trim() && styles.activateButtonDisabled]}
-                onPress={handleActivateDevMode}
-                disabled={!devCode.trim() || isActivating}
-              >
-                {isActivating ? (
-                  <ActivityIndicator size="small" color="#FFFFFF" />
-                ) : (
-                  <Text style={styles.activateButtonText}>Activate</Text>
-                )}
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      )}
+      {/* FREE APP MODE: Developer Access section removed - not needed for free app */}
 
       {/* Backend Status */}
       <View style={styles.section}>

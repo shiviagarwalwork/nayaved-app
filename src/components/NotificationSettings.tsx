@@ -117,29 +117,17 @@ export default function NotificationSettings() {
 
       {settings.enabled && (
         <>
-          {/* Morning Ritual Time */}
+          {/* Morning Ritual Time - Fixed at 7:00 AM */}
           <View style={styles.settingRow}>
             <View style={styles.settingInfo}>
               <Ionicons name="sunny" size={22} color="#FFA726" />
               <View style={styles.settingTextContainer}>
                 <Text style={styles.settingLabel}>Morning Ritual Reminder</Text>
                 <Text style={styles.settingDescription}>
-                  {formatTime(settings.morningRitualTime.hour, settings.morningRitualTime.minute)}
+                  Daily at {formatTime(settings.morningRitualTime.hour, settings.morningRitualTime.minute)}
                 </Text>
               </View>
             </View>
-            <TouchableOpacity
-              style={styles.timeButton}
-              onPress={() => {
-                Alert.alert(
-                  'Coming Soon',
-                  'Time picker will be available in the next update. Default: 7:00 AM',
-                  [{ text: 'OK' }]
-                );
-              }}
-            >
-              <Ionicons name="time-outline" size={20} color={ManuscriptColors.vermillion} />
-            </TouchableOpacity>
           </View>
 
           {/* Daily Wisdom */}

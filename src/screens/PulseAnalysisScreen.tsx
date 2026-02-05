@@ -76,10 +76,12 @@ export default function PulseAnalysisScreen() {
   const [currentBPM, setCurrentBPM] = useState<number | null>(null);
   const [signalQuality, setSignalQuality] = useState<'poor' | 'fair' | 'good'>('poor');
   const [cameraError, setCameraError] = useState<string | null>(null);
-  const [attemptCount, setAttemptCount] = useState(0);
+  const [readingNumber, setReadingNumber] = useState(1);
+  const [totalReadings] = useState(3); // We collect 3 readings for accuracy
 
   const pulseAnimation = useRef(new Animated.Value(0)).current;
   const ppgSamplesRef = useRef<PPGSample[]>([]);
+  const allReadingsRef = useRef<PPGSample[][]>([]); // Store samples from all readings
   const isMeasuringRef = useRef(false);
   const lastAnalysisTimeRef = useRef(0);
 
@@ -416,22 +418,53 @@ export default function PulseAnalysisScreen() {
     stopPulseAnimation();
 
     const samples = ppgSamplesRef.current;
+
+    // Save this reading's samples
+    if (samples.length > 0) {
+      allReadingsRef.current.push([...samples]);
+    }
+
+    // Check if we need more readings
+    if (readingNumber < totalReadings) {
+      // Show positive progress message
+      const readingsLeft = totalReadings - readingNumber;
+      Alert.alert(
+        `Reading ${readingNumber} Complete!`,
+        `Great job! ${readingsLeft} more reading${readingsLeft > 1 ? 's' : ''} to go for accurate results.\n\nMultiple readings help us measure your pulse more precisely.`,
+        [
+          {
+            text: 'Continue',
+            onPress: () => {
+              setReadingNumber(readingNumber + 1);
+              // Reset for next reading but keep accumulated data
+              ppgSamplesRef.current = [];
+              setPpgSignal([]);
+              setCurrentBPM(null);
+              setSignalQuality('poor');
+              setFingerDetected(false);
+              lastAnalysisTimeRef.current = 0;
+              setIsAnalyzing(false);
+            }
+          },
+        ]
+      );
+      return;
+    }
+
+    // All 3 readings complete - combine and analyze
+    const allSamples = allReadingsRef.current.flat();
     let finalPulseData: PulseData;
 
-    // Lower threshold - 30 samples is about 1 second of data at 30fps
-    if (samples.length >= 30) {
-      const analysis = analyzeRealPPGSignal(samples);
+    if (allSamples.length >= 30) {
+      const analysis = analyzeRealPPGSignal(allSamples);
 
-      // Accept any valid heart rate, even with poor quality
       if (analysis.heartRate > 0) {
-        // Use real data
-        const values = samples.map(s => s.brightness);
-        const avgBrightness = values.reduce((a, b) => a + b, 0) / values.length;
+        const values = allSamples.map(s => s.brightness);
         const maxBrightness = Math.max(...values);
         const minBrightness = Math.min(...values);
         const pulseStrength = Math.min(1, Math.max(0.5, (maxBrightness - minBrightness) / 50));
 
-        const timestamps = samples.map(s => s.timestamp);
+        const timestamps = allSamples.map(s => s.timestamp);
         const filtered = bandpassFilter(values, 30);
         const peaks = findPeaks(filtered, timestamps);
         let regularity = 0.75;
@@ -454,39 +487,10 @@ export default function PulseAnalysisScreen() {
           regularity,
         };
       } else {
-        // Fallback to educated estimation based on partial data
-        finalPulseData = generateEducatedEstimate(samples);
+        finalPulseData = generateEducatedEstimate(allSamples);
       }
     } else {
-      // Not enough samples - but still try to provide results with estimate
-      // Only show error if we got almost no data
-      if (samples.length < 10) {
-        const newAttemptCount = attemptCount + 1;
-        setAttemptCount(newAttemptCount);
-
-        // After 3 attempts, automatically use estimate and show results
-        if (newAttemptCount >= 3) {
-          finalPulseData = generateEducatedEstimate(samples);
-          finishWithData(finalPulseData);
-          return;
-        }
-
-        // Still have attempts left - simple prompt
-        Alert.alert(
-          'Try Again',
-          'Place your finger firmly over the camera.',
-          [
-            { text: 'OK', onPress: () => {
-              resetAnalysis(false);
-            }},
-          ]
-        );
-        setIsAnalyzing(false);
-        return;
-      } else {
-        // We have some data, use educated estimate
-        finalPulseData = generateEducatedEstimate(samples);
-      }
+      finalPulseData = generateEducatedEstimate(allSamples);
     }
 
     finishWithData(finalPulseData);
@@ -638,7 +642,7 @@ export default function PulseAnalysisScreen() {
     };
   };
 
-  const resetAnalysis = (resetAttempts: boolean = true) => {
+  const resetAnalysis = (fullReset: boolean = true) => {
     isMeasuringRef.current = false;
     stopPulseAnimation();
     setShowResults(false);
@@ -653,8 +657,9 @@ export default function PulseAnalysisScreen() {
     lastAnalysisTimeRef.current = 0;
     setIsAnalyzing(false);
     setCameraError(null);
-    if (resetAttempts) {
-      setAttemptCount(0);
+    if (fullReset) {
+      setReadingNumber(1);
+      allReadingsRef.current = [];
     }
   };
 
@@ -826,6 +831,12 @@ export default function PulseAnalysisScreen() {
               <Ionicons name="information-circle" size={22} color="#1976D2" />
               <Text style={styles.instructionsTitle}> How to Measure</Text>
             </View>
+            <View style={styles.threeReadingsNote}>
+              <MaterialCommunityIcons name="chart-line" size={18} color="#1976D2" />
+              <Text style={styles.threeReadingsText}>
+                We take <Text style={styles.bold}>3 readings</Text> for accurate pulse analysis
+              </Text>
+            </View>
             <View style={styles.instructionStep}>
               <Text style={styles.stepNumber}>1</Text>
               <Text style={styles.stepText}>
@@ -841,13 +852,13 @@ export default function PulseAnalysisScreen() {
             <View style={styles.instructionStep}>
               <Text style={styles.stepNumber}>3</Text>
               <Text style={styles.stepText}>
-                Hold still for 20 seconds while measuring
+                Hold still for 20 seconds per reading (3 readings total)
               </Text>
             </View>
             <View style={styles.instructionStep}>
               <Text style={styles.stepNumber}>4</Text>
               <Text style={styles.stepText}>
-                Stay relaxed and breathe normally
+                Stay relaxed and breathe normally throughout
               </Text>
             </View>
           </View>
@@ -857,9 +868,33 @@ export default function PulseAnalysisScreen() {
             <TouchableOpacity style={styles.primaryButton} onPress={startAnalysis}>
               <View style={styles.buttonContent}>
                 <MaterialCommunityIcons name="heart-pulse" size={24} color="#FFFFFF" />
-                <Text style={styles.primaryButtonText}> Start Pulse Measurement</Text>
+                <Text style={styles.primaryButtonText}>
+                  {readingNumber === 1
+                    ? ' Start Pulse Measurement'
+                    : ` Start Reading ${readingNumber} of ${totalReadings}`}
+                </Text>
               </View>
             </TouchableOpacity>
+          )}
+
+          {/* Reading Progress Indicator */}
+          {!isAnalyzing && readingNumber > 1 && (
+            <View style={styles.readingProgress}>
+              <Text style={styles.readingProgressText}>
+                {readingNumber - 1} of {totalReadings} readings collected
+              </Text>
+              <View style={styles.progressDots}>
+                {[1, 2, 3].map((num) => (
+                  <View
+                    key={num}
+                    style={[
+                      styles.progressDot,
+                      num < readingNumber ? styles.progressDotComplete : styles.progressDotPending
+                    ]}
+                  />
+                ))}
+              </View>
+            </View>
           )}
 
           {/* Educational Info */}
@@ -1232,6 +1267,21 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#1976D2',
   },
+  threeReadingsNote: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#BBDEFB',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    marginBottom: 12,
+    gap: 8,
+  },
+  threeReadingsText: {
+    fontSize: 14,
+    color: '#1565C0',
+    flex: 1,
+  },
   instructionStep: {
     flexDirection: 'row',
     alignItems: 'flex-start',
@@ -1265,6 +1315,39 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: 'center',
     marginBottom: 16,
+  },
+  readingProgress: {
+    alignItems: 'center',
+    marginBottom: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    backgroundColor: '#E8F5E9',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#4CAF50',
+  },
+  readingProgressText: {
+    fontSize: 14,
+    color: '#2E7D32',
+    fontWeight: '600',
+    marginBottom: 8,
+  },
+  progressDots: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  progressDot: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+  },
+  progressDotComplete: {
+    backgroundColor: '#4CAF50',
+  },
+  progressDotPending: {
+    backgroundColor: '#C8E6C9',
+    borderWidth: 1,
+    borderColor: '#81C784',
   },
   primaryButtonText: {
     color: '#FFFFFF',
