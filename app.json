@@ -13,9 +13,9 @@
       "backgroundColor": "#F5F1E8"
     },
     "ios": {
-      "supportsTablet": true,
+      "supportsTablet": false,
       "bundleIdentifier": "com.nayaved.app",
-      "buildNumber": "16",
+      "buildNumber": "20",
       "icon": "./assets/icon-appstore.png",
       "infoPlist": {
         "NSCameraUsageDescription": "NayaVed AI uses your camera for tongue diagnosis and pulse analysis to provide personalized Ayurvedic health insights.",
@@ -38,7 +38,12 @@
         "backgroundColor": "#F5F1E8"
       },
       "package": "com.nayaved.app",
-      "versionCode": 3
+      "versionCode": 3,
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.POST_NOTIFICATIONS"
+      ]
     },
     "description": "Ancient Ayurveda wisdom powered by AI. Your personal health guide based on 5,000 years of Charaka Samhita teachings.",
     "primaryColor": "#9EBF88",
