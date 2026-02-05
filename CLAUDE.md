@@ -1,11 +1,15 @@
 # Claude Code Context Memory
 **Project:** NayaVed AI Mobile App
-**Last Updated:** 2026-02-04
-**Status:** MVP Complete - FREE APP (Subscriptions Disabled)
+**Last Updated:** 2026-02-05
+**Status:** App Store Submitted (In Review) | Android Build Complete (Testing)
 
 ---
 
 ## ⚠️ IMPORTANT REMINDERS
+
+### Build Numbers (Current)
+- **iOS Build Number:** 20
+- **Android Version Code:** 3
 
 ### Before App Store Submission
 **ALWAYS bump the build number before building for App Store submission!**
@@ -14,7 +18,7 @@
 3. Then run `eas build --platform ios --profile production`
 4. Then run `eas submit --platform ios --latest`
 
-Apple rejects duplicate build numbers. Current build number: **14**
+Apple rejects duplicate build numbers.
 
 ---
 
@@ -178,44 +182,45 @@ A React Native/Expo mobile app that brings Ayurvedic diagnostics to users throug
 - [x] App icon resized to 1024x1024
 - [x] Git commit & push to GitHub (2026-01-30)
 - [x] TestFlight build & testing (2026-01-31)
-- [x] Backend deployed to Vercel
+- [x] Backend deployed to Vercel (`https://backend-nu-gold-17.vercel.app`)
 - [x] Amazon India Associates signup
 - [x] App Store screenshots (8 screenshots in app-store-listing/)
 - [x] App Store metadata (description, keywords, privacy labels)
+- [x] iOS App Store submission (2026-02-05) - IN REVIEW
+- [x] Settings screen cleanup (removed Developer Access, Refresh Status)
+- [x] Pulse Analysis rewritten with 3-reading positive flow
+- [x] Notification settings cleanup (removed Coming Soon time picker)
+- [x] Instagram launch prompts created (`app-store-listing/INSTAGRAM_PROMPTS.md`)
+- [x] Google Play listing documentation (`app-store-listing/GOOGLE_PLAY_LISTING.md`)
+- [x] Android screenshots resized for Google Play
+- [x] Fixed `chakras.png` (WebP → PNG for Android build)
+- [x] Android build completed via EAS
 
-### IMMEDIATE NEXT STEPS (Do These Now)
-1. **Complete RevenueCat setup** (manual - dashboard)
-2. **Submit to App Store** - `eas submit --platform ios`
+### IMMEDIATE NEXT STEPS
+1. **Test Android APK** on physical Android device or emulator
+2. **Create Google Play Feature Graphic** (1024x500) - using AI image generator
+3. **Wait for Google Play Developer Account Verification** (2-7 days)
+4. **Wait for iOS App Store Review** (1-3 days)
+
+### After Verification Complete
+1. **Submit to Google Play** - Upload AAB, fill store listing, submit for review
+2. **Monitor iOS App Store review** - Respond to any rejection feedback
 
 ### App Store Assets Ready ✅
 - 8 screenshots in `app-store-listing/` folder
 - Full App Store listing text in `app-store-listing/APP_STORE_LISTING.md`
 - Screenshot captions in `app-store-listing/SCREENSHOT_CAPTIONS.md`
 - Submission checklist in `app-store-listing/SUBMISSION_CHECKLIST.md`
+- Instagram prompts in `app-store-listing/INSTAGRAM_PROMPTS.md`
+- Google Play listing in `app-store-listing/GOOGLE_PLAY_LISTING.md`
+- Android screenshots in `app-store-listing/resized_android/`
 
-### High Priority - Before App Store Release
-1. ~~**Deploy backend to Vercel**~~ - ✅ Done - Live at `https://backend-nu-gold-17.vercel.app`
-2. ~~**App Store screenshots**~~ - ✅ Done - 8 screenshots in `app-store-listing/`
-3. ~~**App Store metadata**~~ - ✅ Done - Description, keywords, privacy labels in `APP_STORE_LISTING.md`
-4. **Complete RevenueCat setup** (manual - dashboard):
-   - Create products: `nayaved_premium_monthly` ($4.99), `nayaved_premium_yearly` ($39.99)
-   - Create entitlement: `premium`
-   - Create offering: `default`
-   - Link App Store Connect app
-5. **Submit to App Store** - `eas submit --platform ios`
-
-### Medium Priority
-1. ~~**Amazon Associates signup**~~ - ✅ Done - US, Canada, India accounts active
-2. ~~**Persist developer mode**~~ - ✅ Done - File-based storage added (see backend/storage.js)
-3. ~~**Set up Sentry**~~ - ✅ Done - Configured in App.tsx, source map upload disabled for now
-4. ~~**Update Detox E2E tests**~~ - ✅ Done - 21/26 tests passing
-5. **Android build & submission** - `eas build --platform android` + Google Play Console
-
-### Low Priority
+### Low Priority (Post-Launch)
 1. **Database integration** - Replace in-memory storage with Firebase/Supabase
 2. **Dark mode** - Theme switching
 3. **Apple Watch** - Pulse analysis integration
 4. **Offline mode** - Cache results for offline viewing
+5. **RevenueCat setup** - For future premium features (currently FREE app)
 
 ---
 
@@ -532,6 +537,52 @@ POST /api/chat/consultation     # AI chat
 ---
 
 ## SESSION HISTORY
+
+**Session 2026-02-05:**
+- **iOS App Store Submission:**
+  - Submitted app to App Store Connect for review
+  - Completed App Privacy data collection form
+  - Completed Age Rating questionnaire (9+ for Health & Wellness)
+  - Uploaded screenshots for 6.5" display
+  - Disabled iPad support (`supportsTablet: false`) to avoid iPad screenshot requirement
+  - Build number: 20
+
+- **Settings Screen Cleanup for Free App:**
+  - Removed Developer Access section (code entry box)
+  - Removed Refresh Status button
+  - Simplified subscription display to always show "Unlimited"
+  - Cleaned up unused imports and state variables
+
+- **Pulse Analysis 3-Reading Flow:**
+  - Rewrote retry logic from negative "Try Again" to positive 3-reading collection
+  - Shows progress dots (●●○) and encouraging messages
+  - "Reading 1 Complete! 2 more to go for accurate results."
+  - Combines all samples after 3 readings for analysis
+
+- **Notification Settings Cleanup:**
+  - Removed incomplete "Coming Soon" time picker for Morning Ritual
+  - Changed to static "Daily at 7:00 AM" text
+
+- **Android Build Preparation:**
+  - Fixed `assets/chakras.png` - was WebP disguised as PNG, converted to real PNG
+  - Added Android permissions to app.json
+  - Android build completed via EAS (versionCode: 3)
+
+- **Google Play Store Listing:**
+  - Created `app-store-listing/GOOGLE_PLAY_LISTING.md` with full listing
+  - Short description, full description, content rating answers
+  - Data safety form answers
+  - Resized screenshots for Android (1440x2560)
+
+- **Instagram Launch Prompts:**
+  - Created `app-store-listing/INSTAGRAM_PROMPTS.md`
+  - 8 posts with AI image generation prompts and captions
+  - Brand color guidelines and 8-day posting schedule
+
+- **Feature Graphic Attempts:**
+  - Multiple iterations using Pillow/Python
+  - Shows app screenshots in phone mockups
+  - User decided to create final version using AI image generator
 
 **Session 2026-02-02:**
 - **App Made Free for Launch:**
