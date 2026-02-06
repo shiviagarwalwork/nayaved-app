@@ -1,7 +1,7 @@
 # Claude Code Context Memory
 **Project:** NayaVed AI Mobile App
 **Last Updated:** 2026-02-05
-**Status:** App Store Submitted (In Review) | Android Build Complete (Testing)
+**Status:** App Store Resubmitted (Build 25, Addressing Guideline 1.4.1) | Android Build Complete (Testing)
 
 ---
 
@@ -197,14 +197,14 @@ A React Native/Expo mobile app that brings Ayurvedic diagnostics to users throug
 - [x] Android build completed via EAS
 
 ### IMMEDIATE NEXT STEPS
-1. **Test Android APK** on physical Android device or emulator
-2. **Create Google Play Feature Graphic** (1024x500) - using AI image generator
-3. **Wait for Google Play Developer Account Verification** (2-7 days)
-4. **Wait for iOS App Store Review** (1-3 days)
+1. **Wait for iOS App Store Re-review** (24-48 hours) - Build 25 submitted with Guideline 1.4.1 fixes
+2. **Test Android APK** on physical Android device or emulator
+3. **Create Google Play Feature Graphic** (1024x500) - using AI image generator
+4. **Wait for Google Play Developer Account Verification** (2-7 days)
 
 ### After Verification Complete
 1. **Submit to Google Play** - Upload AAB, fill store listing, submit for review
-2. **Monitor iOS App Store review** - Respond to any rejection feedback
+2. **Monitor iOS App Store re-review** - Respond to any further feedback
 
 ### App Store Assets Ready ✅
 - 8 screenshots in `app-store-listing/` folder
@@ -537,6 +537,56 @@ POST /api/chat/consultation     # AI chat
 ---
 
 ## SESSION HISTORY
+
+**Session 2026-02-06:**
+- **Apple Guideline 1.4.1 Rejection Response:**
+  - App rejected for Guideline 1.4.1 (Safety - Physical Harm) — missing medical disclaimers
+  - Reviewed on iPad Air 11-inch (M3), Submission ID: e039984d-01b4-4755-a080-5656eeb0ee9b
+
+- **Medical Disclaimers Added (8 screens):**
+  - HomeScreen — disclaimer banner at bottom of Quick Fixes section
+  - ConsultationScreen — strengthened welcome message, per-response disclaimer, footer bar
+  - PulseAnalysisScreen — new disclaimer in results section (had none before)
+  - QuickFixDetailScreen — new disclaimer at bottom of remedy details (had none before)
+  - TongueDiagnosisScreen — strengthened both AI and educational mode disclaimers
+  - EyeAnalysisScreen — strengthened disclaimer language
+  - SkinAnalysisScreen — strengthened disclaimer language
+  - NailAnalysisScreen — strengthened disclaimer language
+  - Consistent language: "For educational purposes only. Not a substitute for medical advice. Consult a qualified healthcare provider."
+
+- **Medical Terminology Cleanup:**
+  - "Tongue Diagnosis" → "Tongue Analysis" (nav title, screen header, education section, CTA)
+  - "Eye Diagnosis" → "Eye Analysis" (education section)
+  - "Nail Diagnosis" → "Nail Analysis" (education section)
+  - "pulse diagnosis" → "pulse analysis" (education text)
+  - "diagnostic scans" → "wellness scans" (Paywall, Plan, Login, Home, Consultation)
+  - "Ayurvedic diagnostics" → "Ayurvedic wellness practices" (Home subtitle)
+
+- **Sources & Methodology Section Added (Settings):**
+  - New section between Legal and About in SettingsScreen
+  - Classical texts: Charaka Samhita, Sushruta Samhita, Ashtanga Hridayam (with descriptions)
+  - Analysis methodology for each feature (Dosha Assessment, AI Analysis, Pulse Analysis)
+  - States results are "not clinically validated"
+  - Disclaimer at bottom of section
+
+- **App Store Listing Updated:**
+  - "AI-POWERED DIAGNOSTICS" → "AI-POWERED WELLNESS ANALYSIS"
+  - Feature descriptions softened to use "educational insights" language
+  - Old "Note:" disclaimer replaced with prominent "IMPORTANT HEALTH DISCLAIMER" block
+  - FDA-style language: "not intended to be a substitute for professional medical advice"
+
+- **Build & Submission:**
+  - Build 25 submitted to App Store Connect (EAS bumped from 24 to 25)
+  - App Store description updated with new disclaimer text
+  - Review Notes added explaining educational wellness nature of app
+  - Response drafted for Resolution Center citing FDA General Wellness Policy
+  - Commit `fec7ef0` pushed to GitHub
+
+- **Research Findings (Apple 1.4.1):**
+  - Similar apps approved: Tongue Analyzer (AI Health), Prana Ayurveda, Skincare AI
+  - Regulatory docs NOT required for educational/wellness apps
+  - Key: disclaimers + sources + no medical terminology + FDA General Wellness Policy
+  - Expected re-review timeline: 24-48 hours
 
 **Session 2026-02-05:**
 - **iOS App Store Submission:**
