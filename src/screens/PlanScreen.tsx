@@ -143,7 +143,7 @@ export default function PlanScreen() {
           </View>
           <Text style={styles.emptyTitle}>No Personalized Plan Yet</Text>
           <Text style={styles.emptyText}>
-            Take the Dosha Assessment or complete a diagnostic scan to get your personalized daily routine based on ancient Ayurvedic wisdom.
+            Take the Dosha Assessment or complete a wellness scan to get your personalized daily routine based on ancient Ayurvedic wisdom.
           </Text>
           <TouchableOpacity
             style={styles.primaryButton}

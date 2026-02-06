@@ -98,7 +98,7 @@ export default function PaywallScreen({ onClose, onSuccess }: PaywallScreenProps
   };
 
   const features = [
-    { icon: 'camera', text: 'Unlimited AI diagnostic scans' },
+    { icon: 'camera', text: 'Unlimited AI wellness scans' },
     { icon: 'message-circle', text: 'Unlimited AI consultations' },
     { icon: 'zap', text: 'Priority AI processing' },
     { icon: 'clock', text: 'Extended analysis history' },

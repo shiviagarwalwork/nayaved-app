@@ -174,7 +174,7 @@ export default function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
         <View style={styles.exclusiveCard}>
           <MaterialCommunityIcons name="shield-check" size={20} color={ManuscriptColors.copperBrown} />
           <Text style={styles.exclusiveText}>
-            Sign in to save your dosha profile, diagnostic results, and personalized recommendations across devices.
+            Sign in to save your dosha profile, analysis results, and personalized recommendations across devices.
           </Text>
         </View>
 

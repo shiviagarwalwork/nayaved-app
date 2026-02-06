@@ -443,8 +443,8 @@ export default function SkinAnalysisScreen() {
             <Ionicons name="information-circle" size={18} color={useAI ? '#4CAF50' : '#B87333'} />
             <Text style={[styles.disclaimer, useAI && styles.aiDisclaimer]}>
               {useAI
-                ? 'AI-powered analysis based on Ayurvedic Twak Pariksha principles. For medical advice, consult a dermatologist or Ayurvedic practitioner.'
-                : 'Demo mode - Backend connection required for AI analysis. For medical advice, consult a dermatologist or Ayurvedic practitioner.'}
+                ? 'For educational purposes only. AI-powered insights based on Ayurvedic Twak Pariksha principles. Not a substitute for medical advice. Consult a qualified healthcare provider for any health concerns.'
+                : 'For educational purposes only. Not a substitute for medical advice. Consult a qualified healthcare provider for any health concerns.'}
             </Text>
           </View>
 

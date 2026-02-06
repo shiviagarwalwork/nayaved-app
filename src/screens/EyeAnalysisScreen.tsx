@@ -446,8 +446,8 @@ export default function EyeAnalysisScreen() {
             <Ionicons name="information-circle" size={18} color={useAI ? '#4CAF50' : '#B87333'} />
             <Text style={[styles.disclaimer, useAI && styles.aiDisclaimer]}>
               {useAI
-                ? 'AI-powered analysis based on Ayurvedic Netra Pariksha principles. For medical concerns, consult an eye doctor or Ayurvedic practitioner.'
-                : 'Demo mode - Backend connection required for AI analysis. For medical concerns, consult an eye doctor or Ayurvedic practitioner.'}
+                ? 'For educational purposes only. AI-powered insights based on Ayurvedic Netra Pariksha principles. Not a substitute for medical advice. Consult a qualified healthcare provider for any health concerns.'
+                : 'For educational purposes only. Not a substitute for medical advice. Consult a qualified healthcare provider for any health concerns.'}
             </Text>
           </View>
 
@@ -637,7 +637,7 @@ export default function EyeAnalysisScreen() {
       <View style={styles.educationCard}>
         <View style={styles.educationTitleRow}>
           <Ionicons name="eye" size={20} color="#1976D2" />
-          <Text style={styles.educationTitle}> Why Eye Diagnosis?</Text>
+          <Text style={styles.educationTitle}> Why Eye Analysis?</Text>
         </View>
         <Text style={styles.educationText}>
           In Ayurveda, the eyes are considered gateways to the mind and soul. Netra Pariksha

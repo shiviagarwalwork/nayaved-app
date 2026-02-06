@@ -8,7 +8,7 @@
 ## ⚠️ IMPORTANT REMINDERS
 
 ### Build Numbers (Current)
-- **iOS Build Number:** 20
+- **iOS Build Number:** 24
 - **Android Version Code:** 3
 
 ### Before App Store Submission

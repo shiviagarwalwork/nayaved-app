@@ -904,7 +904,7 @@ export default function PulseAnalysisScreen() {
               <Text style={styles.educationTitle}> Ancient Wisdom Meets Modern Technology</Text>
             </View>
             <Text style={styles.educationText}>
-              Nadi Pariksha (pulse diagnosis) has been practiced by Ayurvedic physicians for
+              Nadi Pariksha (pulse analysis) has been practiced by Ayurvedic physicians for
               5,000 years. They detect subtle qualities in the pulse that reveal the balance
               of Vata, Pitta, and Kapha doshas.
             </Text>
@@ -943,6 +943,14 @@ export default function PulseAnalysisScreen() {
             <View style={styles.resultsTitleRow}>
               <Ionicons name="stats-chart" size={24} color="#3E2723" />
               <Text style={styles.resultsTitle}> Your Pulse Analysis</Text>
+            </View>
+
+            {/* Medical Disclaimer */}
+            <View style={styles.disclaimerContainer}>
+              <Ionicons name="information-circle" size={18} color="#B87333" />
+              <Text style={styles.disclaimerText}>
+                For educational purposes only. Pulse readings are approximations inspired by Ayurvedic Nadi Pariksha and are not medical measurements. Consult a qualified healthcare provider for any health concerns.
+              </Text>
             </View>
 
             {/* Pulse Metrics */}
@@ -1653,5 +1661,23 @@ const styles = StyleSheet.create({
     color: '#2E7D32',
     fontSize: 14,
     fontWeight: '600',
+  },
+  disclaimerContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: '#FFF9E6',
+    padding: 12,
+    borderRadius: 8,
+    borderLeftWidth: 3,
+    borderLeftColor: '#B87333',
+    marginBottom: 16,
+  },
+  disclaimerText: {
+    fontSize: 12,
+    color: '#5D4037',
+    marginLeft: 8,
+    flex: 1,
+    lineHeight: 18,
+    fontStyle: 'italic',
   },
 });

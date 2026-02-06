@@ -56,7 +56,7 @@ function HomeStackNavigator() {
           headerShown: true,
           headerStyle: { backgroundColor: '#F5F1E8' },
           headerTintColor: '#3E2723',
-          title: 'Tongue Diagnosis',
+          title: 'Tongue Analysis',
         }}
       />
       <HomeStack.Screen

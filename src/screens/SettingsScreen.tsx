@@ -301,8 +301,73 @@ export default function SettingsScreen() {
           <View style={styles.disclaimerBox}>
             <Feather name="alert-circle" size={18} color="#B87333" />
             <Text style={styles.disclaimerText}>
-              NayaVed AI provides wellness insights based on Ayurvedic principles.
-              Not intended as medical advice. Always consult a healthcare professional.
+              NayaVed AI is for educational and informational purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare provider for any health concerns.
+            </Text>
+          </View>
+        </View>
+      </View>
+
+      {/* Sources & Methodology */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Sources & Methodology</Text>
+        <View style={styles.card}>
+          <View style={styles.sourcesIntro}>
+            <MaterialCommunityIcons name="book-open-variant" size={20} color={ManuscriptColors.copperBrown} />
+            <Text style={styles.sourcesIntroText}>
+              NayaVed AI is an educational wellness app. All insights are based on traditional Ayurvedic frameworks and classical texts. This app does not diagnose, treat, or prevent any disease.
+            </Text>
+          </View>
+
+          <Text style={styles.sourcesHeading}>Classical Texts Referenced</Text>
+
+          <View style={styles.sourceItem}>
+            <Text style={styles.sourceTitle}>Charaka Samhita</Text>
+            <Text style={styles.sourceDescription}>
+              One of the foundational texts of Ayurveda (est. 400-200 BCE), covering internal medicine, diagnostics, and treatment principles including Nadi Pariksha (pulse examination) and Jihva Pariksha (tongue examination).
+            </Text>
+          </View>
+
+          <View style={styles.sourceItem}>
+            <Text style={styles.sourceTitle}>Sushruta Samhita</Text>
+            <Text style={styles.sourceDescription}>
+              Ancient Ayurvedic text (est. 600 BCE) focused on surgical techniques and physical examination methods, including detailed observation of eyes, skin, and nails as indicators of wellness.
+            </Text>
+          </View>
+
+          <View style={styles.sourceItem}>
+            <Text style={styles.sourceTitle}>Ashtanga Hridayam</Text>
+            <Text style={styles.sourceDescription}>
+              Comprehensive Ayurvedic text by Vagbhata (est. 7th century CE) synthesizing earlier works, covering daily routines (Dinacharya), seasonal practices, and dosha-balancing lifestyle recommendations.
+            </Text>
+          </View>
+
+          <Text style={styles.sourcesHeading}>Analysis Methodology</Text>
+
+          <View style={styles.sourceItem}>
+            <Text style={styles.sourceTitle}>Dosha Assessment</Text>
+            <Text style={styles.sourceDescription}>
+              Based on Prakriti assessment frameworks from AYUSH/CCRAS guidelines covering physical, physiological, and psychological characteristics.
+            </Text>
+          </View>
+
+          <View style={styles.sourceItem}>
+            <Text style={styles.sourceTitle}>AI-Powered Analysis</Text>
+            <Text style={styles.sourceDescription}>
+              Tongue, eye, skin, and nail analyses use AI to identify visual patterns described in classical Ayurvedic examination methods. Results are educational wellness insights, not clinical assessments.
+            </Text>
+          </View>
+
+          <View style={styles.sourceItem}>
+            <Text style={styles.sourceTitle}>Pulse Analysis</Text>
+            <Text style={styles.sourceDescription}>
+              Inspired by Nadi Pariksha. Uses camera-based photoplethysmography to approximate pulse rhythm. Results are wellness approximations, not medical-grade measurements.
+            </Text>
+          </View>
+
+          <View style={styles.disclaimerBox}>
+            <Feather name="alert-circle" size={18} color="#B87333" />
+            <Text style={styles.disclaimerText}>
+              All analysis results are for educational purposes only. They are not clinically validated and should not be used for medical decision-making. Always consult a qualified healthcare provider.
             </Text>
           </View>
         </View>
@@ -664,6 +729,43 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: ManuscriptColors.fadedInk,
     marginTop: 2,
+  },
+  sourcesIntro: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 16,
+    gap: 10,
+  },
+  sourcesIntroText: {
+    flex: 1,
+    fontSize: 13,
+    color: ManuscriptColors.inkBrown,
+    lineHeight: 20,
+    fontStyle: 'italic',
+  },
+  sourcesHeading: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: ManuscriptColors.inkBlack,
+    marginBottom: 10,
+    marginTop: 4,
+  },
+  sourceItem: {
+    marginBottom: 14,
+    paddingLeft: 12,
+    borderLeftWidth: 2,
+    borderLeftColor: ManuscriptColors.copperBrown,
+  },
+  sourceTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: ManuscriptColors.inkBlack,
+    marginBottom: 4,
+  },
+  sourceDescription: {
+    fontSize: 12,
+    color: ManuscriptColors.fadedInk,
+    lineHeight: 18,
   },
   bottomPadding: {
     height: 40,

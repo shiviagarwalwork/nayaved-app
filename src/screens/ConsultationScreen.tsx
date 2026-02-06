@@ -278,7 +278,7 @@ const searchKnowledgeBase = (query: string): SearchResult[] => {
 // Generate response based on search results
 const generateResponse = (query: string, results: SearchResult[]): string => {
   if (results.length === 0) {
-    return "I couldn't find specific guidance for \"" + query + "\" in our Ayurvedic knowledge base.\n\n**Recommendation:** Please consult with a qualified Ayurvedic practitioner (Vaidya) who can assess your unique constitution and provide personalized guidance.\n\nYou can also try:\n- Our diagnostic tools to understand your dosha\n- The Learn section for general wellness practices\n- Asking about specific symptoms like sleep, digestion, or stress";
+    return "I couldn't find specific guidance for \"" + query + "\" in our Ayurvedic knowledge base.\n\n**Recommendation:** Please consult with a qualified Ayurvedic practitioner (Vaidya) who can assess your unique constitution and provide personalized guidance.\n\nYou can also try:\n- Our wellness tools to understand your dosha\n- The Learn section for general wellness practices\n- Asking about specific symptoms like sleep, digestion, or stress";
   }
 
   // Get the top result for main recommendation
@@ -318,7 +318,7 @@ const generateResponse = (query: string, results: SearchResult[]): string => {
     }
   }
 
-  response += "*This is educational guidance based on Ayurvedic texts. For persistent issues, please consult a practitioner.*";
+  response += "*This is for educational purposes only and is not medical advice. Please consult a qualified healthcare provider for any health concerns.*";
 
   return response;
 };
@@ -328,7 +328,7 @@ export default function ConsultationScreen() {
     {
       id: '0',
       type: 'assistant',
-      content: "Namaste! I'm your Ayurvedic guide, powered by ancient wisdom from the Charaka Samhita and other classical texts.\n\n**How I can help:**\n- Describe any health concern or symptom\n- Ask about Ayurvedic remedies\n- Learn about your dosha imbalances\n- Get lifestyle and diet recommendations\n\n*Note: I only provide guidance found in authentic Ayurvedic texts. For conditions not covered, I'll recommend consulting a practitioner.*\n\nWhat's troubling you today?",
+      content: "Namaste! I'm your Ayurvedic wellness guide, drawing from ancient wisdom in the Charaka Samhita and other classical texts.\n\n**How I can help:**\n- Learn about Ayurvedic wellness practices\n- Explore dosha-based lifestyle tips\n- Discover traditional herbal recommendations\n- Get diet and routine suggestions\n\n**Important:** This is for educational purposes only and is not a substitute for professional medical advice. Always consult a qualified healthcare provider for medical concerns.\n\nWhat would you like to explore today?",
       timestamp: new Date(),
     }
   ]);
@@ -575,8 +575,8 @@ export default function ConsultationScreen() {
         <Feather name={useAI ? 'cpu' : 'info'} size={14} color={useAI ? '#4CAF50' : ManuscriptColors.fadedInk} />
         <Text style={[styles.disclaimerText, useAI && styles.aiDisclaimerText]}>
           {useAI
-            ? 'AI-powered Vaidya consultation. Not a substitute for medical advice.'
-            : 'Educational guidance only. Add Claude API key in Settings for AI responses.'}
+            ? 'For educational purposes only. Not a substitute for professional medical advice.'
+            : 'Educational guidance only. Not a substitute for professional medical advice.'}
         </Text>
       </View>
     </KeyboardAvoidingView>

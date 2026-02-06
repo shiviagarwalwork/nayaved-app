@@ -460,8 +460,8 @@ export default function NailAnalysisScreen() {
             <Ionicons name="information-circle" size={18} color={useAI ? '#4CAF50' : '#B87333'} />
             <Text style={[styles.disclaimer, useAI && styles.aiDisclaimer]}>
               {useAI
-                ? 'AI-powered analysis based on Ayurvedic Nakha Pariksha principles. For medical concerns, consult a healthcare provider.'
-                : 'Demo mode - Backend connection required for AI analysis. For medical concerns, consult a healthcare provider.'}
+                ? 'For educational purposes only. AI-powered insights based on Ayurvedic Nakha Pariksha principles. Not a substitute for medical advice. Consult a qualified healthcare provider for any health concerns.'
+                : 'For educational purposes only. Not a substitute for medical advice. Consult a qualified healthcare provider for any health concerns.'}
             </Text>
           </View>
 
@@ -651,7 +651,7 @@ export default function NailAnalysisScreen() {
       <View style={styles.educationCard}>
         <View style={styles.educationTitleRow}>
           <MaterialCommunityIcons name="hand-back-right" size={20} color="#7B1FA2" />
-          <Text style={styles.educationTitle}> Why Nail Diagnosis?</Text>
+          <Text style={styles.educationTitle}> Why Nail Analysis?</Text>
         </View>
         <Text style={styles.educationText}>
           Nails are considered a by-product of Asthi Dhatu (bone tissue) in Ayurveda. Their

@@ -61,7 +61,7 @@ export default function TongueDiagnosisScreen() {
     if (status !== 'granted') {
       Alert.alert(
         'Camera Permission',
-        'We need camera access to take a photo of your tongue for diagnosis.',
+        'We need camera access to take a photo of your tongue for analysis.',
         [{ text: 'OK' }]
       );
       return false;
@@ -243,10 +243,10 @@ export default function TongueDiagnosisScreen() {
       <View style={styles.header}>
         <View style={styles.headerIconRow}>
           <MaterialCommunityIcons name="account-voice" size={32} color="#6B8E23" />
-          <Text style={styles.title}> Tongue Diagnosis</Text>
+          <Text style={styles.title}> Tongue Analysis</Text>
         </View>
         <Text style={styles.subtitle}>
-          Jihva Pariksha - Ancient Ayurvedic diagnostic method
+          Jihva Pariksha - Ancient Ayurvedic wellness practice
         </Text>
       </View>
 
@@ -340,7 +340,7 @@ export default function TongueDiagnosisScreen() {
           <View style={[styles.disclaimerContainer, styles.aiDisclaimerContainer]}>
             <Ionicons name="information-circle" size={18} color="#4CAF50" />
             <Text style={styles.disclaimerAI}>
-              AI-powered analysis based on Ayurvedic Jihva Pariksha principles. For medical concerns, consult an Ayurvedic practitioner.
+              For educational purposes only. AI-powered insights based on Ayurvedic Jihva Pariksha principles. Not a substitute for medical advice. Consult a qualified healthcare provider for any health concerns.
             </Text>
           </View>
 
@@ -480,7 +480,7 @@ export default function TongueDiagnosisScreen() {
           <View style={styles.disclaimerContainer}>
             <Ionicons name="information-circle" size={18} color="#B87333" />
             <Text style={styles.disclaimer}>
-              Educational guide based on Ayurvedic principles. AI-powered personalized analysis available when connected to backend.
+              For educational purposes only. Based on Ayurvedic Jihva Pariksha principles. Not a substitute for medical advice. Consult a qualified healthcare provider for any health concerns.
             </Text>
           </View>
 
@@ -517,7 +517,7 @@ export default function TongueDiagnosisScreen() {
       <View style={styles.educationCard}>
         <View style={styles.educationTitleRow}>
           <MaterialCommunityIcons name="meditation" size={20} color="#B87333" />
-          <Text style={styles.educationTitle}> Why Tongue Diagnosis?</Text>
+          <Text style={styles.educationTitle}> Why Tongue Analysis?</Text>
         </View>
         <Text style={styles.educationText}>
           In Ayurveda, the tongue is a map of your internal organs. Practitioners have

@@ -28,14 +28,14 @@ Discover your unique mind-body constitution with Nayaved — the first AI-powere
 KNOW YOUR DOSHA
 Take our comprehensive assessment to discover your Prakriti (natural constitution) — whether you're Vata, Pitta, Kapha, or a unique combination. Understanding your dosha is the first step to personalized wellness.
 
-AI-POWERED DIAGNOSTICS
-Experience traditional Ayurvedic examination methods enhanced by modern AI:
+AI-POWERED WELLNESS ANALYSIS
+Explore traditional Ayurvedic examination methods enhanced by modern AI:
 
-• Tongue Analysis (Jihva Pariksha) — Photograph your tongue to reveal digestive health, toxin levels, and organ imbalances
-• Eye Analysis (Netra Pariksha) — Scan your eyes to detect dosha imbalances and overall vitality
-• Skin Analysis (Twak Pariksha) — Analyze your skin for hydration, dosha signs, and personalized skincare tips
-• Nail Analysis (Nakha Pariksha) — Examine nail health for nutritional deficiencies and circulation insights
-• Pulse Analysis (Nadi Pariksha) — Digital pulse reading inspired by ancient diagnostic techniques
+• Tongue Analysis (Jihva Pariksha) — Photograph your tongue for educational insights on digestive wellness and dosha balance
+• Eye Analysis (Netra Pariksha) — Explore your eyes for educational insights on dosha balance and vitality
+• Skin Analysis (Twak Pariksha) — Analyze your skin for hydration, dosha signs, and personalized wellness tips
+• Nail Analysis (Nakha Pariksha) — Explore nail health for educational insights on nutrition and circulation
+• Pulse Analysis (Nadi Pariksha) — Digital pulse reading inspired by ancient Ayurvedic techniques
 
 TRACK YOUR OJAS (VITALITY)
 Ojas is your vital essence — the reserve of immunity, strength, and radiance. Track daily habits that build or deplete your Ojas:
@@ -81,9 +81,12 @@ Discover carefully selected Ayurvedic products — herbs, supplements, and welln
 
 ---
 
-Download Nayaved today and begin your personalized Ayurvedic wellness journey.
+IMPORTANT HEALTH DISCLAIMER
+Nayaved is designed for educational and informational purposes only. It is not intended to be a substitute for professional medical advice, diagnosis, or treatment. The Ayurvedic insights provided by this app are based on traditional wellness practices and should not replace consultation with a qualified healthcare provider.
 
-Note: Nayaved is for educational and wellness purposes only. It is not intended to diagnose, treat, cure, or prevent any disease. Always consult a qualified healthcare provider for medical concerns.
+Always seek the advice of your physician or other qualified health provider with any questions regarding a medical condition. Never disregard professional medical advice or delay in seeking it because of something you have read or received from this app.
+
+Download Nayaved today and begin your personalized Ayurvedic wellness journey.
 ```
 
 ---

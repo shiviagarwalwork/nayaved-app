@@ -159,6 +159,14 @@ export default function QuickFixDetailScreen() {
       <View style={styles.doshaSection}>
         <Text style={styles.doshaText}>Related to: {detail.doshaLink}</Text>
       </View>
+
+      {/* Medical Disclaimer */}
+      <View style={styles.disclaimerContainer}>
+        <Ionicons name="information-circle" size={16} color="#B87333" />
+        <Text style={styles.disclaimerText}>
+          For educational purposes only. These traditional Ayurvedic suggestions are not medical advice. Always consult a qualified healthcare provider before making health decisions.
+        </Text>
+      </View>
     </ScrollView>
   );
 }
@@ -350,5 +358,24 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#6B8E23',
     fontWeight: '600',
+  },
+  disclaimerContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: '#FFF9E6',
+    padding: 12,
+    borderRadius: 8,
+    borderLeftWidth: 3,
+    borderLeftColor: '#B87333',
+    marginBottom: 24,
+    marginTop: 8,
+  },
+  disclaimerText: {
+    fontSize: 12,
+    color: '#5D4037',
+    marginLeft: 8,
+    flex: 1,
+    lineHeight: 18,
+    fontStyle: 'italic',
   },
 });

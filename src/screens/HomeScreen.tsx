@@ -97,13 +97,13 @@ const diagnostics: DiagnosticItem[] = [
   {
     id: 'tongue',
     name: 'Tongue',
-    title: 'Tongue Diagnosis',
+    title: 'Tongue Analysis',
     subtitle: 'Jihva Pariksha - Learn tongue analysis',
     icon: 'account-voice',
     iconFamily: 'MaterialCommunityIcons',
     color: '#9EBF88',
     borderColor: '#6B8E23',
-    ctaText: 'Start Diagnosis',
+    ctaText: 'Start Analysis',
     screen: 'TongueDiagnosis',
   },
 ];
@@ -527,7 +527,7 @@ export default function HomeScreen() {
           </View>
           <Text style={styles.welcomeTitle}>Welcome{userData.name ? `, ${userData.name}` : ''}!</Text>
           <Text style={styles.subtitle}>
-            Let's discover your unique constitution through ancient Ayurvedic diagnostics
+            Discover your unique constitution through ancient Ayurvedic wellness practices
           </Text>
         </View>
       )}
@@ -621,6 +621,13 @@ export default function HomeScreen() {
         )}
       </View>
 
+      {/* Medical Disclaimer */}
+      <View style={styles.medicalDisclaimer}>
+        <Ionicons name="information-circle" size={16} color="#B87333" />
+        <Text style={styles.medicalDisclaimerText}>
+          For educational purposes only. Not a substitute for professional medical advice. Always consult a qualified healthcare provider before making health decisions.
+        </Text>
+      </View>
 
     </ScrollView>
   );
@@ -1051,5 +1058,23 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: ManuscriptColors.inkBlack,
     lineHeight: 17,
+  },
+  medicalDisclaimer: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: '#FFF9E6',
+    padding: 12,
+    borderRadius: 8,
+    borderLeftWidth: 3,
+    borderLeftColor: '#B87333',
+    marginBottom: 24,
+  },
+  medicalDisclaimerText: {
+    fontSize: 12,
+    color: '#5D4037',
+    marginLeft: 8,
+    flex: 1,
+    lineHeight: 18,
+    fontStyle: 'italic',
   },
 });
